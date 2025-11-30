@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     home,
-    blog_post_view,
+    all_blog_post_view,
     blog_details_view,
     update_blog_stat,
     category_post,
@@ -10,7 +10,6 @@ from .views import (
     contact_page,
     popular_blog_post,
     all_article,
-    popular_category_post,
 
     right_blog_details_partial,
     
@@ -25,9 +24,8 @@ from .views import add_comment, add_reply
 
 urlpatterns = [
     path("", home, name="homepage"),
-    path("blogs/", blog_post_view, name="blogs"),
+    path("blogs/", all_blog_post_view, name="blogs"),
     path("popular-blogs/", popular_blog_post, name="popular_blogs"),
-    path("popular/<slug:slug>/", popular_category_post, name="popular_category_post"),
     path("all-blog/", all_article, name='all_article'),
     path("blog_details/<slug:slug>/", blog_details_view, name="blog_details"),
     path('blog/detials/update/<slug:slug>/', right_blog_details_partial, name='right_blog_details_partial'),

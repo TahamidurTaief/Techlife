@@ -86,6 +86,14 @@
                     <a href="{% url 'homepage' %}"
                         class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Home</a>
 
+                    <a href="{% url 'blogs' %}"
+                        class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">All
+                        Blogs</a>
+
+                    <a href="{% url 'popular_blogs' %}"
+                        class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
+                        Popular</a>
+
                     <button onclick="showForumWarningModal()"
                         class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Question</button>
 
@@ -95,7 +103,7 @@
                 </div>
 
                 <!-- Country Dropdown -->
-                <div class="relative group flex-shrink-0">
+                {% comment %} <div class="relative group flex-shrink-0">
                     <button
                         class="text-gray-700 font-medium hover:text-blue-600 transition-colors flex items-center cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
                         Country
@@ -105,15 +113,39 @@
                     <div
                         class="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                         <div class="py-2">
+
                             <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Bangladesh</a>
+                                class="flex items-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                                <svg class="w-4 h-4 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                Bangladesh
+                            </a>
+
                             <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Asia</a>
+                                class="flex items-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                                <svg class="w-4 h-4 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                Asia
+                            </a>
+
                             <a href="#"
-                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">World</a>
+                                class="flex items-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">
+                                <svg class="w-4 h-4 text-gray-500 mr-2" fill="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                                </svg>
+                                World
+                            </a>
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Popular Categories with overflow handling -->
                 <div class="flex items-center space-x-1 flex-1 min-w-0">
@@ -134,12 +166,12 @@
                                 class="fas fa-chevron-down text-xs ml-1 text-gray-500 group-hover:text-blue-600 transition-colors"></i>
                         </button>
                         <div
-                            class="absolute right-0 top-full mt-1 w-80 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <div class="p-4 grid grid-cols-2 gap-2">
+                            class="absolute right-0 top-full mt-1 w-80 bg-white border border-gray-400 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <div class="p-4 grid grid-cols-2">
                                 {% for category in popular_categories|slice:"3:" %}
                                 <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container"
                                     hx-swap="innerHTML" hx-push-url="true"
-                                    class="cursor-pointer block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>
+                                    class="cursor-pointer block px-1 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -235,6 +267,18 @@
                     class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-home mr-3 w-5 text-center"></i>
                     Home
+                </a>
+
+                <a href="{% url 'blogs' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i>
+                    All Blogs
+                </a>
+
+                <a href="{% url 'popular_blogs' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-home mr-3 w-5 text-center"></i>
+                    Popular
                 </a>
 
                 <button onclick="showForumWarningModal(); closeMobileSidebar();"

@@ -14,7 +14,7 @@ from .models import BlogPost, Like
 from accounts.models import CustomUserModel
 
 from comments.models import Comment
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
@@ -334,11 +334,11 @@ def redirect_search_results(request):
 
 
 
-def blog_post_view(request):
+def all_blog_post_view(request):
 
     blogs = BlogPost.objects.filter(status="published").select_related(
         "category", "author"
-    )
+    ).order_by('-created_at')
     categories = Category.objects.all()
     
 
@@ -354,54 +354,59 @@ def blog_post_view(request):
         .order_by("-views", "-likes")[:5]
     )
     
+    paginator = Paginator(blogs, 8)  
+    
+    page_number = request.GET.get('page')
+
+    blogs = paginator.get_page(page_number)
+    
 
     
 
     context = {
         "blogs": blogs,
-        "category": categories,
+        "categories": categories,
         "sidebar_blogs": sidebar_blogs,
         "popular_blogs": popular_blogs,
         'action':'all_blogs',
     }
 
 
-    if request.headers.get("HX-Request"):
-        return render(request, "components/blogs/partial_all_blog_page.html", context)
+    # if request.headers.get("HX-Request"):
+    #     return render(request, "components/blogs/partial_all_blog_page.html", context)
     return render(request, "components/blogs/all_blog_page.html", context)
 
 
+
 def popular_blog_post(request):
-
-    blogs = BlogPost.objects.filter(status="published").select_related(
-        "category", "author"
-    )
-    categories = Category.objects.all()
-    
-
-
-    popular_blogs = (
-    BlogPost.objects.filter(
-        status="published",
-        views__gte=1000,
-        likes__gte=100
-    )
-    .select_related("category", "author")
-    .order_by("-views", "-likes")[:8]
+    popular_blogs_list = (
+        BlogPost.objects.filter(
+            status="published",
+            views__gte=100,
+            likes__gte=10
+        )
+        .select_related("category", "author")
+        .order_by("-views", "-likes")
     )
     
-    popular_categories = Category.objects.filter(blogpost__in=popular_blogs).distinct()
+    blogs_per_page = 8 
+    
+    paginator = Paginator(popular_blogs_list, blogs_per_page)
+    
+    page = request.GET.get('page')
+    
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
+
 
     context = {
-        "blogs": blogs,
-        "popular_categories": popular_categories,
-        "popular_blogs": popular_blogs,
-        'action':'popular_blogs',
+        "blogs": blogs, 
     }
 
-
-    if request.headers.get("HX-Request"):
-        return render(request, "components/popular/popular_post_partial.html", context)
     return render(request, "components/popular/popular_post.html", context)
 
 def all_article(request):
@@ -642,39 +647,6 @@ def category_post(request, slug):
     return render(request, "components/category/category_post.html", context)
 
 
-
-def popular_category_post(request, slug):
-    popular_category = get_object_or_404(Category, slug=slug)
-    categories = Category.objects.all()
-
-    # Filter popular blogs 
-    all_popular_blogs = BlogPost.objects.filter(
-        status="published",
-        views__gte=1000,
-        likes__gte=100
-    ).select_related("category", "author").order_by("-views", "-likes")
-
-    popular_blogs = all_popular_blogs[:8]
-
-    # oi popular blogs jeishob category te ace
-    popular_categories = Category.objects.filter(blogpost__in=popular_blogs).distinct()
-
-    # oi category gulor popular blog 
-    category_popular_blogs = all_popular_blogs.filter(category=popular_category)[:8]
-
-    context = {
-        "categories": categories,
-        "popular_category": popular_category,
-        "category_popular_blogs": category_popular_blogs,
-        "popular_categories": popular_categories,
-        "popular_blogs": popular_blogs,
-        "action": "popular_category_post",
-    }
-
-    if request.headers.get("HX-Request"):
-        return render(request, "components/popular/popular_category_post_partial.html", context)
-
-    return render(request, "components/popular/popular_category_post.html", context)
 
 def contact_page(request):
     context = {

@@ -2,28 +2,25 @@
 
 
 <style>
-    /* Base styles */
     body {
         font-family: 'Inter', sans-serif;
         margin: 0;
-        background-color: #f3f4f6; /* bg-gray-100 */
+        background-color: #f3f4f6; 
     }
 
-    /* --- Scrollbar Hiding CSS --- */
     .scrollbar-hide::-webkit-scrollbar {
         display: none;
     }
     .scrollbar-hide {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
     }
 
-    /* --- Custom Form Styles --- */
 
     .login-container {
         display: flex;
-        justify-content: center; /* horizontal center */
-        align-items: center; /* vertical center */
+        justify-content: center; 
+        align-items: center; 
         height: 100vh;
         width: 100%;
         padding: 1rem;
@@ -178,7 +175,7 @@
     }
 </style>
 
-<div class="mt-10 login-container mx-auto">
+<div class="login-container mx-auto">
     <div class="login-card border border-gray-300 font-inter shadow-sm">
         <form class="login-form scrollbar-hide" id="loginForm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -274,7 +271,7 @@
             <!-- submit and cancle button-->
             <div class="sticky bottom-0 bg-white pt-4 pb-2 border-t border-gray-100 -mr-3 flex-shrink-0">
                 <div class="flex justify-end space-x-3 mt-6">
-                    <button hx-get="{% url 'create_blog' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" type="button" class="px-6 py-2 border cursor-pointer border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Cancel</button>
+                    <button href="{% url 'homepage' %}" type="button" class="px-6 py-2 border cursor-pointer border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Cancel</button>
 
                     <button hx-post="{% url 'create_blog' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" type="submit" class="px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Submit</button>
                 </div>
