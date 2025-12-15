@@ -1,0 +1,427 @@
+<style>
+    @keyframes swing {
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+        10%,
+        30% {
+            transform: rotate(15deg);
+        }
+        20%,
+        40% {
+            transform: rotate(-15deg);
+        }
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .bell-animation {
+        animation: swing 2s ease-in-out infinite;
+    }
+    
+    .panel-enter {
+        animation: panelSlide 0.7s ease-out forwards;
+    }
+    
+    .panel-exit {
+        animation: panelSlideOut 0.7s ease-out forwards;
+    }
+    
+    @keyframes panelSlide {
+        from {
+            opacity: 0;
+            transform: scale(0.75) translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    
+    @keyframes panelSlideOut {
+        from {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.75) translateY(30px);
+        }
+    }
+    
+    .notification-item {
+        animation: slideIn 0.5s ease-out both;
+    }
+    
+    .notification-item:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    
+    .notification-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .notification-item:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+    
+    .notification-item:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+    
+    .notification-item:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+    
+    .notification-item:nth-child(6) {
+        animation-delay: 0.6s;
+    }
+    
+    .hidden-panel {
+        display: none;
+    }
+    /* Custom Scrollbar */
+    /*     
+    .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+        background: #e4effe;
+    } */
+    
+    .custom-scroll {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+</style>
+
+
+
+
+
+
+<!-- Notification Icon Button -->
+<style>
+    /* --- CSS Animations for Swing and Panel Transitions --- */
+    
+    @keyframes swing {
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+        10%,
+        30% {
+            transform: rotate(15deg);
+        }
+        20%,
+        40% {
+            transform: rotate(-15deg);
+        }
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .bell-animation {
+        animation: swing 2s ease-in-out infinite;
+    }
+    
+    .panel-enter {
+        animation: panelSlide 0.7s ease-out forwards;
+    }
+    
+    .panel-exit {
+        animation: panelSlideOut 0.7s ease-out forwards;
+    }
+    
+    @keyframes panelSlide {
+        from {
+            opacity: 0;
+            transform: scale(0.75) translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    
+    @keyframes panelSlideOut {
+        from {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.75) translateY(30px);
+        }
+    }
+    
+    .notification-item {
+        animation: slideIn 0.5s ease-out both;
+    }
+    
+    .notification-item:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+    
+    .notification-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .notification-item:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+    
+    .notification-item:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+    
+    .notification-item:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+    
+    .notification-item:nth-child(6) {
+        animation-delay: 0.6s;
+    }
+    
+    .hidden-panel {
+        display: none;
+    }
+    /* Custom Scrollbar */
+    
+    .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-track {
+        background: #f1f5f9;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+    
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
+
+<button id="notificationBtn" class="fixed bottom-8 right-8 bg-blue-500 text-blue-600 rounded-full p-4 shadow-2xl ring-2 ring-blue-500/50 hover:shadow-3xl transition-all duration-300 hover:scale-105 z-50">
+    <div class="relative">
+        <svg class="w-6 h-6 bell-animation text-gray-50" fill="currentColor" stroke="none" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 13.5v-6a6 6 0 10-12 0v6l-2 2v1h16v-1l-2-2zM12 21a2 2 0 100-4 2 2 0 000 4z" />
+        </svg>
+        <span id="unreadBadge"
+            class="absolute -top-3 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+            2
+        </span>
+    </div>
+</button>
+
+<!-- Notification Panel -->
+<div id="notificationPanel" class="border border-blue-300 fixed bottom-24 right-8 w-96 bg-white rounded-2xl shadow-3xl z-40 hidden-panel origin-bottom-right">
+    <div class="flex items-center justify-between p-5 bg-blue-500 rounded-t-2xl text-white">
+        <div>
+            <h3 class="text-xl font-bold">Notifications</h3>
+            <p class="text-sm opacity-90"><span id="unreadCount">2</span> unread messages</p>
+        </div>
+        <button id="closeBtn" class="p-1 rounded-full text-white/80 hover:text-white transition-all duration-300 hover:rotate-90">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div id="notificationList" class="max-h-80 overflow-y-auto custom-scroll">
+
+        <div class="notification-item p-4 border-b border-blue-100 hover:bg-blue-100/70 transition-all duration-300 cursor-pointer bg-blue-50">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 mt-1">
+                    <svg class="w-5 h-5 text-indigo-500" fill="currentColor" stroke="none" viewBox="0 0 24 24">
+                        <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between gap-2">
+                        <h4 class="font-bold text-slate-800 text-sm">New Offer Available!</h4>
+                        <span class="w-2.5 h-2.5 bg-blue-400 rounded-full flex-shrink-0 mt-1"></span>
+                    </div>
+                    <p class="text-sm text-slate-700 mt-1 line-clamp-2">Special discount available for you</p>
+                    <p class="text-xs text-slate-400 mt-2">2 minutes ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification-item p-4 border-b border-blue-100 hover:bg-blue-100/70 transition-all duration-300 cursor-pointer bg-blue-50">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 mt-1">
+                    <svg class="w-5 h-5 text-green-600" fill="currentColor" stroke="none" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between gap-2">
+                        <h4 class="font-bold text-slate-800 text-sm">Order Successful</h4>
+                        <span class="w-2.5 h-2.5 bg-blue-600 rounded-full flex-shrink-0 mt-1"></span>
+                    </div>
+                    <p class="text-sm text-slate-700 mt-1 line-clamp-2">Your order has been completed successfully</p>
+                    <p class="text-xs text-slate-400 mt-2">1 hour ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification-item p-4 border-b border-slate-100 hover:bg-slate-50 transition-all duration-300 cursor-pointer">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0 mt-1">
+                    <svg class="w-5 h-5 text-orange-500" fill="currentColor" stroke="none" viewBox="0 0 24 24">
+                        <path
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-semibold text-slate-700 text-sm">Payment Attention Required</h4>
+                    <p class="text-sm text-slate-600 mt-1 line-clamp-2">Please update your payment method</p>
+                    <p class="text-xs text-slate-400 mt-2">3 hours ago</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="extraNotifications" style="display: none;">
+            <div class="notification-item p-4 border-b border-slate-100 hover:bg-slate-50 transition-all duration-300 cursor-pointer">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 mt-1">
+                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" stroke="none" viewBox="0 0 24 24">
+                            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-slate-700 text-sm">New Feature Added</h4>
+                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Check out our latest feature</p>
+                        <p class="text-xs text-slate-400 mt-2">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notification-item p-4 border-b border-slate-100 hover:bg-slate-50 transition-all duration-300 cursor-pointer">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 mt-1">
+                        <svg class="w-5 h-5 text-green-600" fill="currentColor" stroke="none" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-slate-700 text-sm">Profile Update Complete</h4>
+                        <p class="text-sm text-slate-600 mt-1 line-clamp-2">Your profile has been updated successfully
+                        </p>
+                        <p class="text-xs text-slate-400 mt-2">2 days ago</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="p-4 border-t border-slate-100">
+        <button id="toggleBtn" class="w-full py-2.5 px-4 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-all duration-300 font-medium shadow-md">
+            See More
+        </button>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationPanel = document.getElementById('notificationPanel');
+    const closeBtn = document.getElementById('closeBtn');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const extraNotifications = document.getElementById('extraNotifications');
+
+    let isPanelOpen = false;
+    let isShowingAll = false;
+
+    // Toggle notification panel
+    notificationBtn.addEventListener('click', function() {
+        if (!isPanelOpen) {
+            notificationPanel.classList.remove('hidden-panel');
+            notificationPanel.classList.remove('panel-exit');
+            notificationPanel.classList.add('panel-enter');
+            isPanelOpen = true;
+        }
+    });
+
+    // Close notification panel
+    closeBtn.addEventListener('click', function() {
+        notificationPanel.classList.remove('panel-enter');
+        notificationPanel.classList.add('panel-exit');
+        isPanelOpen = false;
+
+        setTimeout(() => {
+            notificationPanel.classList.add('hidden-panel');
+        }, 700);
+    });
+
+    // Toggle see more/less
+    toggleBtn.addEventListener('click', function() {
+        if (!isShowingAll) {
+            extraNotifications.style.display = 'block';
+            toggleBtn.textContent = 'See Less';
+            isShowingAll = true;
+        } else {
+            extraNotifications.style.display = 'none';
+            toggleBtn.textContent = 'See More';
+            isShowingAll = false;
+        }
+    });
+
+    // Close panel when clicking outside
+    document.addEventListener('click', function(event) {
+        if (isPanelOpen &&
+            !notificationPanel.contains(event.target) &&
+            !notificationBtn.contains(event.target)) {
+            notificationPanel.classList.remove('panel-enter');
+            notificationPanel.classList.add('panel-exit');
+            isPanelOpen = false;
+
+            setTimeout(() => {
+                notificationPanel.classList.add('hidden-panel');
+            }, 700);
+        }
+    });
+</script>

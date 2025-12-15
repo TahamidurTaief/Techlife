@@ -1,9 +1,7 @@
-{% load static %}
-{% load humanize %}
-{% load custom_filters %}
+{% load static %} {% load humanize %} {% load custom_filters %}
 
 
-<section class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100 mb-6">
+<section class="bg-white p-4 sm:p-6 rounded-xl shadow-md border border-gray-300 mb-6">
     <h3 class="text-lg font-semibold mb-4 text-gray-800">Blog Post Performance</h3>
 
     <div class="overflow-x-auto">
@@ -27,12 +25,9 @@
                     <td class="sm:hidden block p-4 bg-gray-50 border-b border-gray-200">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" 
-                                     alt="{{ post.title }} Post Thumbnail" 
-                                     class="w-10 h-10 rounded object-cover border border-gray-300">
+                                <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" alt="{{ post.title }} Post Thumbnail" class="w-10 h-10 rounded object-cover border border-gray-300">
                                 <div>
-                                    <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" 
-                                          class="text-sm font-medium text-gray-800 cursor-pointer block">{{ post.title|truncatechars:"30" }}</span>
+                                    <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-sm font-medium text-gray-800 cursor-pointer block">{{ post.title|truncatechars:"30" }}</span>
                                     <span class="text-xs text-gray-500">{{ post.created_at|date }}</span>
                                 </div>
                             </div>
@@ -44,19 +39,16 @@
                     <td class="hidden sm:table-cell py-4 px-2 text-center">
                         <i class="fas fa-file-alt text-gray-400 text-lg"></i>
                     </td>
-                    
+
                     <td class="hidden sm:table-cell py-4 px-2">
                         <div class="flex items-center space-x-3">
-                            <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" 
-                                 alt="{{ post.title }} Post Thumbnail" 
-                                 class="w-8 h-8 rounded object-cover border border-gray-300">
-                            <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" 
-                                  class="text-sm font-medium text-gray-800 cursor-pointer">{{ post.title|truncatechars:"40" }}</span>
+                            <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" alt="{{ post.title }} Post Thumbnail" class="w-8 h-8 rounded object-cover border border-gray-300">
+                            <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-sm font-medium text-gray-800 cursor-pointer">{{ post.title|truncatechars:"40" }}</span>
                         </div>
                     </td>
 
                     <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.created_at|date }}</td>
-                    
+
                     <td class="hidden sm:table-cell py-4 px-2 text-sm text-green-600 font-semibold">{{ post.category.name }}</td>
 
                     <!-- Mobile Stats Row -->
@@ -80,7 +72,7 @@
                     <!-- Desktop Stats Cells -->
                     <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.views|humanize_number }}</td>
                     <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.likes.count|humanize_number }}</td>
-                    
+
                     <td class="hidden sm:table-cell py-4 px-2">
                         <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-green-600">{{ post.status.title }}</span>
                     </td>

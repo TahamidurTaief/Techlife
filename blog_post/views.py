@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from django.db import IntegrityError # Required for handling database constraints
+from django.db import IntegrityError 
 from .models import BlogPost, Like 
 
 from accounts.models import CustomUserModel
