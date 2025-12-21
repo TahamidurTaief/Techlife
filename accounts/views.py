@@ -17,8 +17,9 @@ from datetime import timedelta
 from accounts.utils import send_verification_code_email
 from blog_post.models import BlogPost
 from accounts.models import CustomUserModel
+from forum.models import Question, Answer
 
-# views.py - signup_view (CORRECTED)
+
 def signup_view(request):
     if request.method == "POST":
         first_name = request.POST.get("first_name")
@@ -56,7 +57,7 @@ def signup_view(request):
             return redirect("signup")
 
     return render(request, "account/register_page.html")
-# -------------------- VERIFY EMAIL --------------------
+
 def verify_code_view(request):
     user_id = request.session.get("pending_user_id")
     if not user_id:
@@ -82,7 +83,6 @@ def verify_code_view(request):
     return render(request, "account/verify_code.html")
 
 
-# -------------------- LOGIN --------------------
 def login_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -169,24 +169,26 @@ def new_password_view(request):
 
 
 def contact_us_view(request):
-    # Check if it's an HTMX request
     if request.headers.get('HX-Request'):
-        # Return only the content without base layout
         return render(request, "contact_us_content.html")
     
-    # Return full page with base layout
     return render(request, "contact_us_page.html")
 
 
 
 
-# User dashboard section
 @login_required
 
 def user_dashboard_view(request):
     user = request.user
     user_blog_posts = BlogPost.objects.filter(author=user).select_related('author','category').prefetch_related('comments').order_by('-created_at')
     
+    # forum section
+    user_questions = Question.objects.filter(author=user).prefetch_related('answers').order_by('-created_at')
+    user_answers = Answer.objects.filter(author=user).select_related('question').order_by('-created_at')
+    questions_count = user_questions.count()
+    answers_count = user_answers.count()
+
 
     total_reaction = BlogPost.objects.filter(author=request.user).annotate(
     like_count=Count('likes')
@@ -222,75 +224,27 @@ def user_dashboard_view(request):
 
 
 
-    # earning section logic
-    # earning = EarningSetting.objects.first()  
-
-    # post_point = earning.quality_rate * total_quality
-
-    # others_point = (
-    #     total_views * earning.view_rate +
-    #     total_reaction * earning.like_rate +
-    #     total_comments * earning.comment_rate
-    # )
-
-    # total_point = post_point + others_point
-
-
-    # badge section
-    # badge_level  = ""
-    # if (1<total_point<=50):
-    #     badge_level +="Bronze"
-    # elif (50<total_point<=80):
-    #     badge_level +="Silver"
-    # elif (80<total_point<=120):
-    #     badge_level +="Gold"
-    # elif (120<total_point<=150):
-    #     badge_level +="Platinum"
-    # elif (150<total_point<=200):
-    #     badge_level +="Diamond"
-    # elif (200<total_point<=250):
-    #     badge_level +="Master"
-    # elif (250<total_point<=300):
-    #     badge_level +="Legend"
-    # elif total_point > 300:
-    #     badge_level  += "Grand Master"   
-
-
     context = {
         "user": user,
         "user_blog_posts": user_blog_posts,
         "total_views": total_views,
         "total_comments": total_comments,
         "total_reaction" : total_reaction,
-        # "others_point" : others_point,
-        # "post_point" : post_point,
-        # "total_point" : total_point,
-        # "badge_level" : badge_level,
+      
         "views_last_week": int(views_last_week),
         "latest_comment":latest_comment,
         "views_last_month":views_last_month,
-        "action":"user_dashboard"
+        "action":"user_dashboard",
+
+
+        'user_questions': user_questions,
+        'user_answers': user_answers,
+        'questions_count': questions_count,
+        'answers_count': answers_count,
        
     }
 
-    # return render(request, "account/user_dashboard.html", context)
     return render(request, "account/demo/user_dashboard.html", context)
-
-
-# def particular_user_view(request, id):
-  
-#     user_to_show = get_object_or_404(CustomUserModel, id=id)
-
-#     user_posts = BlogPost.objects.filter(author=user_to_show)
-    
-
-#     context = {
-#         'user_to_show': user_to_show,
-#         'user_posts': user_posts,
-#         'total_posts': user_posts.count(),
-#     }
-    
-#     return render(request, 'account/particular_user_profile.html', context)
 
 
 

@@ -162,40 +162,39 @@
     {% endfor %}
     <!-- paginator section -->
     {% if paginator_answer %}
-    <div class="mt-16 mb-10 flex justify-center ">
-        <nav class="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-sm ring-1 ring-black/5 " aria-label="Pagination ">
+    <div class="mt-16 mb-10 flex justify-center">
+        <nav class="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-sm ring-1 ring-black/5" aria-label="Pagination">
 
             {% if paginator_answer.has_previous %}
-            <a href="?page={{ paginator_answer.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %} " class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all
-            duration-200 " title="Previous ">
-                <svg class="w-5 h-5 " fill="none " stroke="currentColor " viewBox="0 0 24 24 "><path stroke-linecap="round " stroke-linejoin="round " stroke-width="1.75 " d="M15 19l-7-7 7-7 "/></svg>
+            <a hx-get="?page={{ paginator_answer.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                title="Previous">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 19l-7-7 7-7"/></svg>
             </a>
             {% else %}
-            <span class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-200 cursor-not-allowed ">
-            <svg class="w-5 h-5 " fill="none " stroke="currentColor " viewBox="0 0 24 24 "><path stroke-linecap="round " stroke-linejoin="round " stroke-width="1.75 " d="M15 19l-7-7 7-7 "/></svg>
+            <span class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-200 cursor-not-allowed">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 19l-7-7 7-7"/></svg>
         </span> {% endif %}
 
-            <div class="flex items-center px-4 h-10 bg-gray-50/50 rounded-xl border border-gray-100 mx-1 ">
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mr-2 ">Page</span>
-                <span class="text-sm font-semibold text-blue-600 ">{{ paginator_answer.number }}</span>
-                <span class="text-sm font-medium text-gray-300 mx-2 ">of</span>
-                <span class="text-sm font-semibold text-gray-600 ">{{ paginator_answer.paginator.num_pages }}</span>
+            <div class="flex items-center px-4 h-10 bg-gray-50/50 rounded-xl border border-gray-100 mx-1">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400 mr-2">Page</span>
+                <span class="text-sm font-semibold text-blue-600">{{ paginator_answer.number }}</span>
+                <span class="text-sm font-medium text-gray-300 mx-2">of</span>
+                <span class="text-sm font-semibold text-gray-600">{{ paginator_answer.paginator.num_pages }}</span>
             </div>
 
             {% if paginator_answer.has_next %}
-            <a href="?page={{ paginator_answer.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %} " class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all
-            duration-200 " title="Next ">
-                <svg class="w-5 h-5 " fill="none " stroke="currentColor " viewBox="0 0 24 24 "><path stroke-linecap="round " stroke-linejoin="round " stroke-width="1.75 " d="M9 5l7 7-7 7 "/></svg>
+            <a hx-get="?page={{ paginator_answer.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                title="Next">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/></svg>
             </a>
             {% else %}
-            <span class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-200 cursor-not-allowed ">
-            <svg class="w-5 h-5 " fill="none " stroke="currentColor " viewBox="0 0 24 24 "><path stroke-linecap="round " stroke-linejoin="round " stroke-width="1.75 " d="M9 5l7 7-7 7 "/></svg>
+            <span class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-200 cursor-not-allowed">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/></svg>
         </span> {% endif %}
 
         </nav>
     </div>
     {% endif %}
-
 
 </div>
 

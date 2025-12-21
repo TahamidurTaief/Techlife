@@ -186,7 +186,8 @@
                 <nav class="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-sm ring-1 ring-black/5" aria-label="Pagination">
 
                     {% if questions.has_previous %}
-                    <a href="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200" title="Previous">
+                    <a hx-get="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                        title="Previous">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 19l-7-7 7-7"/></svg>
                     </a>
                     {% else %}
@@ -202,7 +203,8 @@
                     </div>
 
                     {% if questions.has_next %}
-                    <a href="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200" title="Next">
+                    <a hx-get="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                        title="Next">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/></svg>
                     </a>
                     {% else %}
@@ -218,7 +220,6 @@
         <!-- MIDDLE GAP -->
         <div class="w-1 bg-gray-100 flex-shrink-0 mx-auto"></div>
 
-        <!-- RIGHT SIDEBAR -->
         <!-- RIGHT SIDEBAR -->
         {% include 'forum/right_sidebar.html' %}
     </div>

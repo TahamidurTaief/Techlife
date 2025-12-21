@@ -1,10 +1,6 @@
 {% load static %} {% load humanize %} {% load custom_filters %}
 
 <style>
-    /* This custom utility class ensures the progress line is rounded.
-    Tailwind doesn't have a direct class for stroke-linecap: round on SVG elements.
-*/
-    
     .stroke-line-cap-round {
         stroke-linecap: round;
     }
@@ -24,6 +20,7 @@
                         stroke-width="8" stroke="currentColor" fill="transparent" r="66" cx="72" cy="72"
                         style="stroke-dasharray: 414.69; stroke-dashoffset: 414.69" />
                 </svg>
+
                 <div class="absolute inset-0 flex items-center justify-center text-center text-xs text-gray-500">
                     <span class="text-xl font-bold text-gray-800">$450.50</span>
                     <span class="text-xs text-blue-600 absolute bottom-8">Total Payout</span>
