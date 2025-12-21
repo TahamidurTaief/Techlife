@@ -179,7 +179,7 @@
                     </div>
 
                     <div x-show="!showSearch" class="bg-white p-4 rounded-lg -mb-6" x-cloak>
-                        <form action="{% url 'post_answer' slug=particular_question.slug %}" method="POST">
+                        <form hx-post="{% url 'post_answer' slug=particular_question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-on::after-request="this.reset()">
                             {% csrf_token %}
                             <textarea name="content" id="editor" class="required w-full rounded-lg p-2 resize-none text-sm text-gray-500" placeholder="Write your answer..."></textarea>
                             <div class="flex justify-end mt-2 gap-2">
@@ -202,19 +202,23 @@
         {% include 'forum/right_sidebar.html' %}
     </div>
 
-    <script>
-        // CKEditor initialization logic
-        let editorInstance;
-
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .then(editor => {
-                editorInstance = editor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
 
 
 </div>
+
+
+
+
+<script>
+    // CKEditor initialization logic
+    let editorInstance;
+
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => {
+            editorInstance = editor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+</script>
