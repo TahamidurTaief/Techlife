@@ -50,8 +50,12 @@ def questions(request, slug):
         "paginator_answer":paginator_answer,
 
         "right_side_questions" : right_side_questions,
+
+        "question_details":"question_details"
     }
 
+    if request.headers.get("HX-Request"):
+        return render(request, "forum/partial_question_page.html", context)
     return render(request, "forum/question_page.html",context)
 
 
@@ -88,9 +92,13 @@ def questions_list(request):
         "blogs":blogs,
         "questions" :questions,
 
-        "right_side_questions":right_side_questions
+        "right_side_questions":right_side_questions,
+
+        "question_list":"question_list"
     
     }
+    if request.headers.get("HX-Request"):
+        return render(request, "forum/partial_all_question.html", context)
     return render(request, "forum/all_question.html", context)
 
 
@@ -161,10 +169,14 @@ def popular_question(request):
         "blogs":blogs,
         "popular_question" :popular_question,
 
-        "right_side_questions":right_side_questions
+        "right_side_questions":right_side_questions,
+
+        "popular_questions":"popular_questions"
     
     }
 
+    if request.headers.get("HX-Request"):
+        return render(request, "forum/partial_popular_question.html", context)
     return render(request, 'forum/popular_question.html', context)
 
 
@@ -178,9 +190,11 @@ def forum_all_user_list(request):
     all_users = paginator.get_page(page_number)
 
     context = {
-        'all_users': all_users
+        'all_users': all_users,
+        'all_user':'all_user'
     }
-    
+    if request.headers.get("HX-Request"):
+        return render(request, "forum/partial_forum_user.html", context)
     return render(request, "forum/forum_user.html", context)
 
 
@@ -216,8 +230,10 @@ def forum_user_profile_details(request, pk):
         'user_questions' : user_questions,
         'user_profile':user_profile,
         'all_blogs':all_blogs,
-        'all_questions':all_questions
+        'all_questions':all_questions,
+        "user_profile_details" : "user_profile_details",
 
     }
-
+    if request.headers.get("HX-Request"):
+            return render(request, "forum/partial_forum_user_profile.html", context)
     return render(request, "forum/forum_user_profile.html", context)

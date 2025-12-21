@@ -42,7 +42,7 @@
                     </svg>
                     <span class="text-md">Home</span>
                 </a>
-                <a href="{% url 'popular_question' %}" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200">
+                <a hx-get="{% url 'popular_question' %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200 cursor-pointer">
                     <svg rpl="" class="rpl-rtl-icon" fill="currentColor" height="20" icon-name="popular-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                         <!--?lit$9022823636$-->
                         <!--?lit$9022823636$-->
@@ -53,7 +53,7 @@
                     </svg>
                     <span class="text-md">Popular</span>
                 </a>
-                <a href="{% url 'questions_list' %}" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200">
+                <a hx-get="{% url 'questions_list' %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200 cursor-pointer">
                     <svg rpl="" class="rpl-rtl-icon" fill="currentColor" height="20" icon-name="all-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                         <!--?lit$9022823636$-->
                         <!--?lit$9022823636$-->
@@ -64,7 +64,7 @@
                     </svg>
                     <span class="text-md">Questions</span>
                 </a>
-                <a href="{% url 'forum_all_user_list' %}" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200 text-md">
+                <a hx-get="{% url 'forum_all_user_list' %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="flex items-center gap-3 mb-2 p-2 ml-6 rounded hover:bg-gray-200 text-md cursor-pointer">
                     <svg aria-hidden="true" class="svg-icon iconPeople" width="18" height="18" viewBox="0 0 18 18">
                         <path
                             d="M17 14c0 .44-.45 1-1 1H9a1 1 0 0 1-1-1H2c-.54 0-1-.56-1-1 0-2.63 3-4 3-4s.23-.4 0-1c-.84-.62-1.06-.59-1-3s1.37-3 2.5-3 2.44.58 2.5 3-.16 2.38-1 3c-.23.59 0 1 0 1s1.55.71 2.42 2.09c.78-.72 1.58-1.1 1.58-1.1s.23-.4 0-1c-.84-.61-1.06-.58-1-3s1.37-3 2.5-3 2.44.59 2.5 3c.05 2.42-.16 2.39-1 3-.23.6 0 1 0 1s3 1.38 3 4">

@@ -1,0 +1,220 @@
+{% load static %}
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
+
+
+<div class="max-w-7xl mx-auto px-1 font-inter -mt-10">
+    <!-- Flex container for main content -->
+    <div class="flex flex-col lg:flex-row gap-4 mx-auto">
+        <!-- LEFT CONTENT (Post) -->
+        <div class="w-full lg:w-2/3 max-w-2xl flex-shrink-0 mx-auto">
+            {% comment %} Questions section {% endcomment %}
+            <div class="bg-gray-50 rounded-2xl p-4 mt-5 mb-2 pb-10">
+
+                <div class="py-5 px-4">
+                    <!-- Header -->
+                    <div class="flex items-start text-gray-500 pb-0 w-full">
+                        <div class="flex items-start gap-3 w-full">
+                            <!-- <img src="{{ particular_question.author.profile_picture.url }}" class="w-10 h-10 rounded-full flex-shrink-0" /> -->
+
+                            <div class="flex items-start text-gray-500 pb-0 w-full" x-data="{ 
+                                    hoverCardHovered: false,
+                                    hoverCardDelay: 200,
+                                    hoverCardLeaveDelay: 200,
+                                    hoverCardTimout: null,
+                                    hoverCardLeaveTimeout: null,
+                                    hoverCardEnter () {
+                                        clearTimeout(this.hoverCardLeaveTimeout);
+                                        if(this.hoverCardHovered) return;
+                                        clearTimeout(this.hoverCardTimout);
+                                        this.hoverCardTimout = setTimeout(() => {
+                                            this.hoverCardHovered = true;
+                                        }, this.hoverCardDelay);
+                                    },
+                                    hoverCardLeave () {
+                                        clearTimeout(this.hoverCardTimout);
+                                        if(!this.hoverCardHovered) return;
+                                        clearTimeout(this.hoverCardLeaveTimeout);
+                                        this.hoverCardLeaveTimeout = setTimeout(() => {
+                                            this.hoverCardHovered = false;
+                                        }, this.hoverCardLeaveDelay);
+                                    }
+                                }">
+
+                                <div class="flex items-start gap-3 w-full relative">
+                                    <img src="{{ particular_question.author.profile_picture.url }}" class="border border-2 border-blue-500 w-10 h-10 rounded-full flex-shrink-0 cursor-pointer" @mouseover="hoverCardEnter()" @mouseleave="hoverCardLeave()" />
+
+                                    <div class="flex flex-1 justify-between items-start min-w-0">
+
+                                        <div class="flex flex-col leading-tight min-w-0 flex-1" @mouseover="hoverCardEnter()" @mouseleave="hoverCardLeave()">
+
+                                            <div class="flex items-center gap-2 group cursor-pointer">
+                                                <span class="font-inter text-2xl font-semibold text-gray-800 group-hover:text-blue-500 truncate">
+                                                    {{ particular_question.author.first_name }} {{ particular_question.author.last_name }}
+                                                </span>
+                                                <div class="flex items-center gap-1 flex-shrink-0">
+                                                    <span class="text-green-400">•</span>
+                                                    <span class="font-inter text-sm text-gray-500">{{ particular_question.created_at|timesince|slice:"8" }} ago</span>
+                                                </div>
+                                            </div>
+
+                                            <span class="text-sm text-gray-500 cursor-pointer block truncate">{{ particular_question.author.email }}</span>
+
+                                            <div x-show="hoverCardHovered" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="absolute top-full left-0 mt-2 z-50 cursor-default" @mouseover="hoverCardEnter()"
+                                                @mouseleave="hoverCardLeave()" x-cloak>
+
+                                                <div class="w-[320px] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                                                    <div class="relative h-20 overflow-hidden">
+                                                        <img src="https://img.freepik.com/free-photo/3d-rendering-hexagonal-texture-background_23-2150796421.jpg?semt=ais_hybrid&w=740&q=80" alt="Card Header" class="w-full h-full object-cover" />
+                                                    </div>
+
+                                                    <div class="flex items-center justify-between p-3 -mt-6 relative px-4">
+                                                        <div class="flex items-end gap-3">
+                                                            <div class="w-16 h-16 rounded-full ring-4 ring-white overflow-hidden shadow-md bg-white">
+                                                                <img src="{{ particular_question.author.profile_picture.url }}" alt="avatar" class="w-full h-full object-cover" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex items-center gap-2 mt-6">
+                                                            <button class="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors flex items-center justify-center border border-gray-200" title="Chat">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600"
+                                                                    fill="none" viewBox="0 0 24 24"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                                </svg>
+                                                            </button>
+
+                                                            <button class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-semibold">
+                                                                Follow
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="px-4 pb-2">
+                                                        <div class="font-inter text-xl font-bold text-gray-900">{{ particular_question.author.first_name }} {{ particular_question.author.last_name }}</div>
+                                                        <div class="text-sm text-gray-500">{{ particular_question.author.email }}</div>
+                                                    </div>
+
+                                                    <div class="p-4 border-t border-gray-100">
+                                                        <p class="text-sm text-gray-600 leading-relaxed">This community is dedicated to Nepali culture, news, and discussion. Join to connect!</p>
+                                                    </div>
+
+                                                    <div class="p-4 flex justify-between bg-gray-50 border-t border-gray-100">
+                                                        <div class="text-center">
+                                                            <div class="font-bold text-gray-800">77K</div>
+                                                            <div class="text-xs text-gray-500">Followers</div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <div class="font-bold text-gray-800">138</div>
+                                                            <div class="text-xs text-gray-500">Posts</div>
+                                                        </div>
+                                                        <div class="text-center">
+                                                            <div class="font-bold text-green-600">Active</div>
+                                                            <div class="text-xs text-gray-500">Status</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div x-data="{ open: false }" class="relative flex-shrink-0 ml-4" @click.away="open = false">
+                                            <button @click="open = !open" class="text-gray-400 hover:text-gray-600 p-1">
+                                                <span class="text-2xl leading-none font-bold">...</span>
+                                            </button>
+
+                                            <div x-show="open" x-cloak class="absolute right-0 mt-2 w-44 bg-white border rounded-xl shadow-xl z-50 py-1">
+                                                <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-2 text-gray-700">
+                                                    <span class="text-sm">Follow Post</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post Title -->
+                    <h1 class="text-xl font-bold mb-1 mt-3 break-words leading-tight">{{ particular_question.title }}
+                    </h1>
+                    <!-- photo -->
+                    {% if particular_question.image %}
+                    <div class="W-[100%] rounded-md mt-2 mb-2">
+                        <img src="{{ particular_question.image.url }}" alt=" " width="100%" height="100%" class="rounded-md">
+                    </div>
+                    {% endif %}
+
+                    <!-- Post Content -->
+                    <p class="mt-2 break-words leading-0 text-gray-500 text-sm ">{{ particular_question.content }}</p>
+
+                    <!-- Interaction Bar -->
+                    <!-- <div class="flex items-center justify-between mt-5 text-gray-600 ">
+                        <div class="flex items-center gap-3 flex-wrap ">
+                            <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 cursor-pointer ">
+                                <i class="fa-regular fa-thumbs-up "></i> Like
+                            </a>
+                            <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 cursor-pointer ">
+                                <i class="fa-regular fa-comment "></i> Comment
+                            </a>
+                            <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 ">
+                                <i class="fa-regular fa-eye "></i> View
+                            </a>
+
+                        </div>
+                    </div> -->
+
+                </div>
+
+
+                <div x-data="{ showSearch: true } " class="mt-2" x-cloak>
+                    <div x-show="showSearch" class="text-center w-full" x-cloak>
+                        <div class="relative w-full ml-0.5">
+                            <input type="search" placeholder="Add your answer" class="w-[95%] pl-5 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm" @focus="showSearch = false" />
+                        </div>
+                    </div>
+
+                    <div x-show="!showSearch" class="bg-white p-4 rounded-lg -mb-6" x-cloak>
+                        <form action="{% url 'post_answer' slug=particular_question.slug %}" method="POST">
+                            {% csrf_token %}
+                            <textarea name="content" id="editor" class="required w-full rounded-lg p-2 resize-none text-sm text-gray-500" placeholder="Write your answer..."></textarea>
+                            <div class="flex justify-end mt-2 gap-2">
+                                <button type="button" @click="showSearch = true" class="px-5 py-1 border border-gray-300 text-gray-600 rounded-full hover:bg-gray-100 transition">Cancel</button>
+
+                                <button type="submit" class="px-4 bg-gray-400 text-[15px] text-white rounded-full hover:bg-gray-500 shadow-sm transition">Add Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% comment %} Answer section {% endcomment %} {% include "forum/forum_answer.html " %}
+        </div>
+
+        <!-- MIDDLE GAP -->
+        <div class="w-1 bg-gray-100 flex-shrink-0 mx-auto "></div>
+
+        <!-- RIGHT SIDEBAR -->
+        {% include 'forum/right_sidebar.html' %}
+    </div>
+
+    <script>
+        // CKEditor initialization logic
+        let editorInstance;
+
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .then(editor => {
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+
+</div>
