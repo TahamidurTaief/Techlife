@@ -16,6 +16,7 @@ from django.utils.html import format_html
 admin.site.register(compnay_logo)
 
 
+
 class SubCategoryInline(admin.TabularInline):
     model = SubCategory
     extra = 1 
@@ -165,3 +166,6 @@ class PostViewIpAdmin(ModelAdmin):
     search_fields = ("post__title", "user__email", "ip_address")
     list_filter = ("viewed_at",)
     ordering = ("-viewed_at",)
+
+
+
