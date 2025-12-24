@@ -16,7 +16,7 @@ def popular_questions(request):
 
 def global_follow_list(request):
     if request.user.is_authenticated:
-        follow_obj, _ = Follow_section.objects.get_or_create(user=request.user)
+        follow_obj, created = Follow_section.objects.get_or_create(user=request.user)
         
         return {
             'global_followers': [f.user for f in request.user.followers.all()],

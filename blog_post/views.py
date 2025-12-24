@@ -142,10 +142,23 @@ def blog_details_view(request, slug):
 
 
 def home(request):
-    """
-    Home page view - handles both regular and HTMX requests
-    """
+   
     blogs = BlogPost.objects.filter(status="published")[:6]
+
+    top_categories = Category.objects.annotate(
+        post_count=Count('blogpost') 
+    ).filter(post_count__gt=0).order_by('-post_count')[:3]
+
+    first_category = top_categories[0] if top_categories.count() > 0 else None
+    second_category = top_categories[1] if top_categories.count() > 1 else None
+    third_category = top_categories[2] if top_categories.count() > 2 else None
+
+    first_blogs = BlogPost.objects.filter(category=first_category, status='published').order_by('-created_at')
+    second_blogs = BlogPost.objects.filter(category=second_category, status='published').order_by('-created_at')
+    third_blogs = BlogPost.objects.filter(category=third_category, status='published').order_by('-created_at')
+
+
+
     latest_blog = (
         BlogPost.objects.filter(status="published").order_by("-created_at").first()
     )
@@ -193,7 +206,6 @@ def home(request):
     
     
     
-    # popular category er popular blog gulo nibo, (popular category bolte, jei category er post beshi)
     popular_categories = (
         Category.objects
         .annotate(
@@ -234,7 +246,6 @@ def home(request):
             })
 
         
-        
     
     # news related post
     news__related_posts = BlogPost.objects.filter(
@@ -264,16 +275,29 @@ def home(request):
     company_logo = compnay_logo.objects.all()
 
 
-    tags = Tag.objects.all()
+    all_tags = Tag.objects.annotate(
+        num_posts=Count('blog_posts')
+    ).order_by('-num_posts')
+
+    top_tags = all_tags[:15]
 
 
 
     context = {
+        "first_category" : first_category,
+        "second_category": second_category,
+        "third_category" : third_category,
+
+
+        "first_blogs":first_blogs,
+        "second_blogs":second_blogs,
+        "third_blogs":third_blogs,
+
         "blogs": blogs,
         "latest_blog": latest_blog,
         "top_users": top_users,
         "carousel_blogs": carousel_blogs,
-        "tags": tags,
+        "top_tags": top_tags,
         "technology_posts":technology_posts,
         "news_posts":news_posts,
         "tips_posts":tips_posts,
@@ -286,6 +310,8 @@ def home(request):
         "most_viewed_blogs":most_viewed_blogs,
         "all_category":all_category,
         "company_logo":company_logo,
+
+        "top_categories":top_categories,
         
         
         "action" : "home_page",
@@ -769,3 +795,30 @@ def record_share(request, post_slug):
 
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
+    
+
+
+
+
+def tag_posts(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+
+    blogs = BlogPost.objects.filter(tags=tag, status='published').order_by('-created_at')
+
+
+    paginator = Paginator(blogs, 8) 
+    page = request.GET.get('page')
+    
+    try:
+        blogs = paginator.page(page)
+    except PageNotAnInteger:
+        blogs = paginator.page(1)
+    except EmptyPage:
+        blogs = paginator.page(paginator.num_pages)
+
+    
+    context = {
+        'tag': tag,
+        'blogs': blogs,
+    }
+    return render(request, 'components/blogs/tag_realted_post.html', context)

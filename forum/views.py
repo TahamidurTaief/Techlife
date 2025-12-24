@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from accounts.models import CustomUserModel
 from forum.models import Follow_section
+from tags.models import Tag
 
 def questions(request, slug):
     blogs = BlogPost.objects.all().order_by('-created_at')
@@ -259,7 +260,6 @@ def toggle_follow(request, user_id):
 
         return redirect(request.META.get('HTTP_REFERER', 'forum_all_user_list'))
     return redirect(request.META.get('HTTP_REFERER', 'forum_all_user_list'))
-
 
 
 
