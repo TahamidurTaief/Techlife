@@ -19,6 +19,10 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+
+    'ckeditor',
+    'ckeditor_uploader',
+
     "unfold",  
     "unfold.contrib.filters", 
     "unfold.contrib.forms",  
@@ -55,9 +59,11 @@ INSTALLED_APPS = [
     "django_browser_reload",
     "save_post",
     'django_tailwind_cli',
-    'ckeditor'
+   
     
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
 
 
 REST_FRAMEWORK = {

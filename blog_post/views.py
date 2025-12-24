@@ -175,16 +175,22 @@ def home(request):
     .order_by('-post_count')[:4]
 
     # category wise 4 ta kore blogs nibo
+    tech_cat = Category.objects.filter(slug='technology').first()
+
     technology_posts = BlogPost.objects.filter(
         status="published", 
         category__slug='technology'
     ).order_by("-created_at")[:4]
 
+
+    news_cat = Category.objects.filter(slug='news').first()
     news_posts = BlogPost.objects.filter(
         status="published", 
         category__slug='news'
     ).order_by("-created_at")[:4]
     
+
+    tips_cat = Category.objects.filter(slug='tips-tricks').first()
     tips_posts = BlogPost.objects.filter(
         status="published", 
         category__slug='tips-tricks'
@@ -272,7 +278,7 @@ def home(request):
 
 
     #company logo
-    company_logo = compnay_logo.objects.all()
+    logos = compnay_logo.objects.all()
 
 
     all_tags = Tag.objects.annotate(
@@ -288,6 +294,9 @@ def home(request):
         "second_category": second_category,
         "third_category" : third_category,
 
+        "tech_cat" : tech_cat,
+        "news_cat" : news_cat,
+        "tips_cat": tips_cat,
 
         "first_blogs":first_blogs,
         "second_blogs":second_blogs,
@@ -309,7 +318,7 @@ def home(request):
         "programming_related_posts":programming_related_posts,
         "most_viewed_blogs":most_viewed_blogs,
         "all_category":all_category,
-        "company_logo":company_logo,
+        "logos":logos,
 
         "top_categories":top_categories,
         
@@ -798,8 +807,6 @@ def record_share(request, post_slug):
     
 
 
-
-
 def tag_posts(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
 
@@ -822,3 +829,7 @@ def tag_posts(request, tag_slug):
         'blogs': blogs,
     }
     return render(request, 'components/blogs/tag_realted_post.html', context)
+
+
+
+

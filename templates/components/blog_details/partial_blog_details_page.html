@@ -1,14 +1,92 @@
 {% load static %} {% load humanize %} {% load custom_filters %}
 
+
+
+<!-- Hidden data container for Django -->
+<!-- Hidden data container for Django -->
+<div id="share-data-container" class="hidden" data-post-id="{{ blog_detail.id }}" data-share-url="{% url 'share_post' %}" data-csrf-token="{{ csrf_token }}" data-post-title="{{ blog_detail.title }}" data-post-description="{{ blog_detail.short_description|truncatewords:30 }}">
+</div>
+
+<!-- Share Modal -->
+<div id="shareModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 items-center justify-center">
+    <div class="bg-white rounded-2xl w-11/12 max-w-md mx-4 p-6 shadow-2xl">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center pb-4 border-b border-gray-200 mb-5">
+            <h2 class="text-xl font-semibold text-gray-900">Share this post</h2>
+            <button id="closeModal" class="text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg p-2 transition-colors">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+        </div>
+
+        <!-- Share Options -->
+        <div class="grid grid-cols-2 gap-3 mb-5">
+            <!-- Facebook -->
+            <button class="share-option flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 group" data-platform="facebook">
+                <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span class="font-medium text-sm">Facebook</span>
+            </button>
+
+            <!-- WhatsApp -->
+            <button class="share-option flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md hover:border-green-500 hover:bg-green-500 hover:text-white transition-all duration-200 group" data-platform="whatsapp">
+                <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                <span class="font-medium text-sm">WhatsApp</span>
+            </button>
+
+            <!-- LinkedIn -->
+            <button class="share-option flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-700 hover:bg-blue-700 hover:text-white transition-all duration-200 group" data-platform="linkedin">
+                <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                <span class="font-medium text-sm">LinkedIn</span>
+            </button>
+
+            <!-- Twitter -->
+            <button class="share-option flex items-center gap-3 p-4 border border-gray-200 rounded-xl hover:shadow-md hover:border-sky-500 hover:bg-sky-500 hover:text-white transition-all duration-200 group" data-platform="twitter">
+                <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+                <span class="font-medium text-sm">Twitter</span>
+            </button>
+        </div>
+
+        <!-- Copy Link Section -->
+        <div class="pt-5 border-t border-gray-200">
+            <label class="block text-sm text-gray-600 mb-2">Or copy link</label>
+            <div class="flex gap-2">
+                <input type="text" id="shareLink" readonly class="flex-1 px-3 py-2.5 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="copyLinkBtn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+                    Copy
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Toast -->
+<div id="successToast" class="hidden fixed top-5 right-5 bg-green-500 text-white px-5 py-3 rounded-lg shadow-lg z-50">
+    <div class="flex items-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+        <span class="font-medium">Link copied!</span>
+    </div>
+</div>
+
 <header data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 sm:-mt-[30px]">
     <div class="flex items-center flex-wrap text-sm sm:text-base">
         <!-- Home Icon -->
         <i class="fa-solid fa-house text-gray-500 text-xs sm:text-sm"></i>
 
         <!-- Breadcrumb Items -->
-        <span class="text-gray-600 pl-2 pr-1">Bangladesh</span>
-        <span class="text-gray-600 mx-1">/</span>
-        <a class="text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-200 truncate max-w-[150px] sm:max-w-none">
+        <!-- <span class="text-gray-600 pl-2 pr-1">Bangladesh</span>
+        <span class="text-gray-600 mx-1">/</span> -->
+        <a class="pl-2 text-gray-600 hover:text-blue-600 cursor-pointer transition-colors duration-200 truncate max-w-[150px] sm:max-w-none">
             {{ blog_detail.category.name }}
         </a>
     </div>
@@ -52,26 +130,26 @@
 
                         <!-- Social Icons -->
                         <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="flex flex-wrap items-center gap-2">
-                            <div class="flex w-8 h-8 border rounded-full border-[#1877F2] justify-center items-center hover:bg-[#1877F2] hover:text-white">
-                                <a href="#" onclick="shareOnFacebook()" class="text-[#1877F2] hover:text-white">
+                            <div class="share-option flex w-8 h-8 border rounded-full border-[#1877F2] justify-center items-center hover:bg-[#1877F2] hover:text-white cursor-pointer" data-platform="facebook">
+                                <a href="javascript:void(0)" class="text-[#1877F2] hover:text-white">
                                     <i class="fa-brands fa-facebook-f"></i>
                                 </a>
                             </div>
 
-                            <div class="flex w-8 h-8 border rounded-full border-[#1DA1F2] justify-center items-center hover:bg-[#1DA1F2] hover:text-white">
-                                <a href="#" onclick="shareOnTwitter()" class="text-[#1DA1F2] hover:text-white">
+                            <div class="share-option flex w-8 h-8 border rounded-full border-[#1DA1F2] justify-center items-center hover:bg-[#1DA1F2] hover:text-white cursor-pointer" data-platform="twitter">
+                                <a href="javascript:void(0)" class="text-[#1DA1F2] hover:text-white">
                                     <i class="fa-brands fa-x-twitter"></i>
                                 </a>
                             </div>
 
-                            <div class="flex w-8 h-8 border rounded-full border-[#0A66C2] justify-center items-center hover:bg-[#0A66C2] hover:text-white">
-                                <a href="#" onclick="shareOnLinkedIn()" class="text-[#0A66C2] hover:text-white">
+                            <div class="share-option flex w-8 h-8 border rounded-full border-[#0A66C2] justify-center items-center hover:bg-[#0A66C2] hover:text-white cursor-pointer" data-platform="linkedin">
+                                <a href="javascript:void(0)" class="text-[#0A66C2] hover:text-white">
                                     <i class="fa-brands fa-linkedin-in"></i>
                                 </a>
                             </div>
 
-                            <div class="flex w-8 h-8 border rounded-full border-[#25D366] justify-center items-center hover:bg-[#25D366] hover:text-white">
-                                <a href="#" onclick="shareOnWhatsApp()" target="_blank" class="text-[#25D366] hover:text-white">
+                            <div class="share-option flex w-8 h-8 border rounded-full border-[#25D366] justify-center items-center hover:bg-[#25D366] hover:text-white cursor-pointer" data-platform="whatsapp">
+                                <a href="javascript:void(0)" class="text-[#25D366] hover:text-white">
                                     <i class="fa-brands fa-whatsapp"></i>
                                 </a>
                             </div>
@@ -96,7 +174,7 @@
                                 <span class="text-gray-900 ml-1 font-bold">Techlife Blog</span>
                             </span>
                         </div>
-
+                        <!-- 
                         <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500" class="flex items-center py-1 cursor-pointer">
                             <div class="audio-controls flex items-center gap-2 group rounded-sm px-2 hover:border-blue-500 transition-all duration-500">
                                 <button id="main-audio-btn" class="flex items-center gap-1 border border-gray-300 px-2 rounded-xl" title="Listen">
@@ -107,7 +185,7 @@
                                             class="fa-solid fa-microphone"></i></span>
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-600 mt-2 space-y-2 sm:space-y-0">
@@ -147,33 +225,29 @@
                             {% endif %} {% endif %}
 
                             <!-- Share Button -->
-                            <span id="shareBtn" class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
-
-                                <svg class="pt-[1.5px]" width="14" height="18" viewBox="0 0 12 14"
-                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
-                                    </path>
-                                </svg>
-                                <span>Share</span>
+                            <!-- Share Button -->
+                            <span id="shareBtn" class="inline-flex items-center gap-1 cursor-pointer hover:text-gray-800 text-gray-600">
+    <svg class="w-4 h-4" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
+        </path>
+    </svg>
+    <span class="text-sm">Share</span>
                             </span>
-                            <div id="share-data-container" style="display:none;" data-post-id="{{ blog_detail.id }}" data-share-url="{% url 'share_post' %}" data-csrf-token="{{ csrf_token }}">
-                            </div>
 
-                            {% comment %} save funtion {% endcomment %}
-                            <!-- Save Button -->
+
 
                             <!-- Save Button -->
-                            <span x-data="saveModalHandler({{ blog_detail.id }}, {{ user.is_authenticated|yesno:'true,false' }})">
+                            <!-- <span x-data="saveModalHandler({{ blog_detail.id }}, {{ user.is_authenticated|yesno:'true,false' }})">
 
                                 <span @click="checkAndOpen()"
                                     class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
                                     <span>Save</span>
                             <svg width="14" height="20" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                                        <path
-                                            d="M5.99996 9.43351L9.46496 11.0741L9.46496 2.0125L2.53496 2.0125L2.53496 11.0741L5.99996 9.43351ZM0.959961 13.5625L0.959961 0.4375L11.04 0.4375L11.04 13.5625L5.99996 11.1761L0.959961 13.5625Z" />
-                                    </svg>
-                            </span>
+                                                <path
+                                                    d="M5.99996 9.43351L9.46496 11.0741L9.46496 2.0125L2.53496 2.0125L2.53496 11.0741L5.99996 9.43351ZM0.959961 13.5625L0.959961 0.4375L11.04 0.4375L11.04 13.5625L5.99996 11.1761L0.959961 13.5625Z" />
+                                            </svg>
+                            </span> -->
 
                             <!-- Modal + Toast -->
                             <template x-teleport="body">
@@ -227,7 +301,7 @@
 
     <!-- Blog Description -->
     <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" id="blog-description" class="article-body mt-6 space-y-5 text-gray-800 font-serif-custom">
-        <p>{{ blog_detail.description|linebreaksbr }}</p>
+        <p>{{ blog_detail.description|linebreaksbr|safe }}</p>
     </div>
 </div>
 
@@ -393,7 +467,7 @@
         </div>
 
         {% for news in related_news|slice:":8" %}
-        <a hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-100 pb-3 group last:border-b-0">
+        <a hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-300 pb-3 group last:border-b-0">
             <div class="w-20 h-16 min-w-20 flex-shrink-0 overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-105">
                 <img class="w-full h-full object-cover" src="{{ news.featured_image_url }}" alt="{{ news.title }}" />
             </div>
@@ -416,7 +490,7 @@
         </div>
 
         {% for news in most_viewed_blogs|slice:":8" %}
-        <div hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-100 pb-3 group last:border-b-0 cursor-pointer">
+        <div hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-300 pb-3 group last:border-b-0 cursor-pointer">
             <div class="w-20 h-16 min-w-20 flex-shrink-0 overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-105">
                 <img class="w-full h-full object-cover" src="{{ news.featured_image_url }}" alt="{{ news.title }}" />
             </div>
@@ -444,7 +518,7 @@
 </script>
 
 <!-- audio control -->
-<script>
+<!-- <script>
     let speech = null;
     const titleElement = document.getElementById('blog-title');
     const descriptionElement = document.getElementById('blog-description');
@@ -510,29 +584,10 @@
     });
     // Initial state set করা
     updateUI(false, false);
-</script>
+</script> -->
 
-{% comment %} save sectioin {% endcomment %}
 
-<script>
-    function saveModalHandler(postId, userAuthenticated) {
-        return {
-            modalOpen: false,
-            toastOpen: false,
-            toastMessage: '',
-            postId: postId,
-            userAuthenticated: userAuthenticated,
-            checkAndOpen() {
-                if (!this.userAuthenticated) {
-                    this.modalOpen = true;
-                    return;
-                }
-            },
-        };
-    }
-</script>
-
-{% comment %} reply button toggle reply form {% endcomment %}
+<!-- reply button -->
 <script>
     document.querySelectorAll('.reply-btn').forEach((btn) => {
         btn.onclick = function(e) {
@@ -547,82 +602,125 @@
     });
 </script>
 
-<!-- for share -->
-<!-- for share -->
-<!-- for share -->
 
-<!-- for share -->
-{% if blog_detail.slug %}
-<!-- FIX: post.slug er bodole blog_detail.slug use kora holo -->
+<!-- for share modal -->
 <script>
-    // Helper function to get the CSRF token (required for Django POST requests)
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+    const shareBtn = document.getElementById('shareBtn');
+    const shareModal = document.getElementById('shareModal');
+    const closeModal = document.getElementById('closeModal');
+    const shareLinkInput = document.getElementById('shareLink');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const successToast = document.getElementById('successToast');
+    const shareOptions = document.querySelectorAll('.share-option');
+    const dataContainer = document.getElementById('share-data-container');
+
+    // Get data
+    const postId = dataContainer.dataset.postId;
+    const shareUrl = dataContainer.dataset.shareUrl;
+    const csrfToken = dataContainer.dataset.csrfToken;
+    const postTitle = dataContainer.dataset.postTitle || document.title;
+    const postDescription = dataContainer.dataset.postDescription || '';
+    const currentUrl = window.location.href;
+
+    shareLinkInput.value = currentUrl;
+
+    // Open modal
+    shareBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        shareModal.classList.remove('hidden');
+        shareModal.classList.add('flex');
+    });
+
+    // Close modal
+    function closeShareModal() {
+        shareModal.classList.add('hidden');
+        shareModal.classList.remove('flex');
+    }
+
+    closeModal.addEventListener('click', closeShareModal);
+
+    shareModal.addEventListener('click', (e) => {
+        if (e.target === shareModal) closeShareModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeShareModal();
+    });
+
+    // Copy link
+    copyLinkBtn.addEventListener('click', async() => {
+        try {
+            await navigator.clipboard.writeText(currentUrl);
+            copyLinkBtn.textContent = 'Copied!';
+            copyLinkBtn.classList.add('bg-green-600');
+            copyLinkBtn.classList.remove('bg-blue-600');
+
+            showToast();
+
+            setTimeout(() => {
+                copyLinkBtn.textContent = 'Copy';
+                copyLinkBtn.classList.remove('bg-green-600');
+                copyLinkBtn.classList.add('bg-blue-600');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
         }
-        return cookieValue;
-    }
-    const SHARE_URL = "{% url 'record_share' post_slug=blog_detail.slug %}";
-    const PAGE_URL = window.location.href;
-    const SHARE_TEXT = document.title;
+    });
 
-    function openShareWindow(url) {
-        window.open(url, 'share-dialog', 'width=626,height=436,toolbar=0,menubar=0,scrollbars=yes');
-        return false;
-    }
-    // New function to record the share using AJAX (Fetch API)
-    function recordShare(platform) {
-        fetch(SHARE_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: `platform=${platform}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(`Share Status (${platform}):`, data.message);
-            })
-            .catch(error => {
-                console.error('Error recording share:', error);
-            });
+    // Show toast
+    function showToast() {
+        successToast.classList.remove('hidden');
+        setTimeout(() => {
+            successToast.classList.add('hidden');
+        }, 3000);
     }
 
-    function shareOnFacebook() {
-        const facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(PAGE_URL);
-        openShareWindow(facebookUrl);
-        recordShare('facebook');
-    }
+    // Share functionality
+    shareOptions.forEach(option => {
+        option.addEventListener('click', async(e) => {
+            e.preventDefault();
+            const platform = option.dataset.platform;
 
-    function shareOnTwitter() {
-        const twitterUrl = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(PAGE_URL) + '&text=' +
-            encodeURIComponent(SHARE_TEXT);
-        openShareWindow(twitterUrl);
-        recordShare('twitter');
-    }
+            // Track share
+            try {
+                await fetch(shareUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        post_id: postId,
+                        platform: platform
+                    })
+                });
+            } catch (error) {
+                console.error('Error tracking share:', error);
+            }
 
-    function shareOnLinkedIn() {
-        const linkedinUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(PAGE_URL) +
-            '&title=' + encodeURIComponent(SHARE_TEXT);
-        openShareWindow(linkedinUrl);
-        recordShare('linkedin');
-    }
+            // Open share dialog
+            const encodedUrl = encodeURIComponent(currentUrl);
+            const encodedTitle = encodeURIComponent(postTitle);
+            let shareLink = '';
 
-    function shareOnWhatsApp() {
-        const whatsappUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(SHARE_TEXT) + ' ' +
-            encodeURIComponent(PAGE_URL);
-        window.open(whatsappUrl, '_blank');
-        recordShare('whatsapp');
-    }
+            switch (platform) {
+                case 'facebook':
+                    shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                    break;
+                case 'linkedin':
+                    shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+                    break;
+                case 'twitter':
+                    shareLink = `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+                    break;
+                case 'whatsapp':
+                    shareLink = `https://wa.me/?text=${encodedTitle}%20${encodedUrl}`;
+                    break;
+            }
+
+            if (shareLink) {
+                window.open(shareLink, '_blank', 'width=600,height=400');
+            }
+        });
+    });
 </script>
-{% endif %}
