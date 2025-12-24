@@ -20,6 +20,14 @@ from accounts.models import CustomUserModel
 from forum.models import Question, Answer
 from django.utils import timezone
 from datetime import timedelta
+from django.http import JsonResponse
+
+def check_email_exists(request):
+    email = request.GET.get('email', None)
+    data = {
+        'is_taken': CustomUserModel.objects.filter(email__iexact=email).exists()
+    }
+    return JsonResponse(data)
 
 def signup_view(request):
     if request.method == "POST":

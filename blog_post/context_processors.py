@@ -25,10 +25,16 @@ def timezone_info(request):
 
 
 
-
 def follow_stats(request):
-    follow_data, created = Follow_section.objects.get_or_create(user=request.user)
+
+    if request.user.is_authenticated and getattr(request.user, 'is_verified', False):
+        follow_data, created = Follow_section.objects.get_or_create(user=request.user)
+        return {
+            'user_follow_stats': follow_data
+        }
+    
     return {
-        'user_follow_stats': follow_data
+        'user_follow_stats': None
     }
+
     

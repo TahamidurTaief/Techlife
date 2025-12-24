@@ -3,24 +3,28 @@
 
     <div class="flex flex-col sm:flex-row justify-between border-b border-gray-300" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <div class="flex flex-col sm:flex-row w-full sm:w-3/4">
-
-            <a href="{% url 'category_post' 'news' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
+            {% for category in top_categories %}
+            <a href="{% url 'category_post' category.slug %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
+          text-gray-800 border-b-2 border-transparent hover:border-blue-600 
+          transition duration-150 cursor-pointer min-w-0 block">
+    {{ category.name|upper }}  </a> {% endfor %}
+            <!-- <a href="{% url 'category_post' 'news' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
               text-gray-800 border-b-2 border-transparent hover:border-blue-600 
               transition duration-150 cursor-pointer min-w-0 block">
-        NEWS
-    </a>
+                    NEWS
+                </a> -->
 
-            <a href="{% url 'category_post' 'technology' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
+            <!-- <a href="{% url 'category_post' 'technology' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
               text-gray-800 border-b-2 border-transparent hover:border-blue-600 
               transition duration-150 cursor-pointer min-w-0 block">
-        TECHNOLOGY
-    </a>
+                TECHNOLOGY
+            </a> -->
 
-            <a href="{% url 'category_post' 'programming' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
+            <!-- <a href="{% url 'category_post' 'programming' %}" class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg 
               text-gray-800 border-b-2 border-transparent hover:border-blue-600 
               transition duration-150 cursor-pointer min-w-0 block">
-        PROGRAMMING
-    </a>
+                PROGRAMMING
+            </a> -->
 
         </div>
 
@@ -34,7 +38,7 @@
         <div class="flex flex-col lg:flex-row w-full lg:w-3/4 gap-6" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
 
             <div class="flex flex-col gap-4 w-full lg:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                {% for post in news__related_posts|slice:"1" %}
+                {% for post in first_blogs|slice:"1" %}
                 <div class="flex flex-col gap-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-full h-40 bg-gray-200 overflow-hidden relative group cursor-pointer rounded-t-md" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         {% if post.featured_image %}
@@ -49,7 +53,7 @@
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in news__related_posts|slice:"1:5" %}
+                    {% for post in first_blogs|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         <div class="w-16 h-12 flex-shrink-0 rounded-md bg-gray-200 overflow-hidden relative group">
                             {% if post.featured_image %}
@@ -66,14 +70,14 @@
                 </div>
 
 
-                <a href="{% url 'category_post' 'news' %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                <a href="{% url 'category_post' first_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         More
                 </a>
 
             </div>
 
             <div class="flex flex-col gap-4 w-full lg:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                {% for post in Teacnology_related_posts|slice:"1" %}
+                {% for post in second_blogs|slice:"1" %}
                 <div class="flex flex-col gap-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-full h-40 rounded-md bg-gray-200 overflow-hidden relative group cursor-pointer" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         {% if post.featured_image %}
@@ -88,7 +92,7 @@
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in Teacnology_related_posts|slice:"1:5" %}
+                    {% for post in second_blogs|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
                             {% if post.featured_image %}
@@ -105,13 +109,14 @@
 
                 </div>
 
-                <a href="{% url 'category_post' 'technology' %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                <a href="{% url 'category_post' second_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
+                    data-aos-duration="500">
                         More
                 </a>
             </div>
 
             <div class="flex flex-col gap-4 w-full lg:w-1/3 " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                {% for post in programming_related_posts|slice:"1" %}
+                {% for post in third_blogs|slice:"1" %}
                 <div class="flex flex-col gap-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-full h-40 rounded-md bg-gray-200 overflow-hidden relative group cursor-pointer" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         {% if post.featured_image %}
@@ -126,7 +131,7 @@
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in programming_related_posts|slice:"1:5" %}
+                    {% for post in third_blogs|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
                         <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
                             {% if post.featured_image %}
@@ -142,7 +147,7 @@
 
                 </div>
 
-                <a href="{% url 'category_post' 'programming' %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                <a href="{% url 'category_post' third_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         More
                 </a>
             </div>
