@@ -420,6 +420,9 @@
   .right-8 {
     right: calc(var(--spacing) * 8);
   }
+  .right-10 {
+    right: calc(var(--spacing) * 10);
+  }
   .-bottom-2 {
     bottom: calc(var(--spacing) * -2);
   }
@@ -1021,9 +1024,6 @@
   .w-36 {
     width: calc(var(--spacing) * 36);
   }
-  .w-44 {
-    width: calc(var(--spacing) * 44);
-  }
   .w-48 {
     width: calc(var(--spacing) * 48);
   }
@@ -1053,9 +1053,6 @@
   }
   .w-\[300px\] {
     width: 300px;
-  }
-  .w-\[320px\] {
-    width: 320px;
   }
   .w-auto {
     width: auto;
@@ -1165,10 +1162,6 @@
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .translate-y-0 {
-    --tw-translate-y: calc(var(--spacing) * 0);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
-  }
   .translate-y-1\/2 {
     --tw-translate-y: calc(1/2 * 100%);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -1204,6 +1197,9 @@
   }
   .animate-pulse {
     animation: var(--animate-pulse);
+  }
+  .animate-spin {
+    animation: var(--animate-spin);
   }
   .cursor-default {
     cursor: default;
@@ -1668,6 +1664,9 @@
   }
   .border-e-gray-200 {
     border-inline-end-color: var(--color-gray-200);
+  }
+  .border-t-transparent {
+    border-top-color: transparent;
   }
   .bg-black {
     background-color: var(--color-black);
@@ -2548,6 +2547,9 @@
   }
   .ring-gray-300 {
     --tw-ring-color: var(--color-gray-300);
+  }
+  .ring-red-200 {
+    --tw-ring-color: var(--color-red-200);
   }
   .ring-white {
     --tw-ring-color: var(--color-white);
@@ -3553,6 +3555,11 @@
       --tw-ring-color: var(--color-gray-200);
     }
   }
+  .focus\:ring-red-200 {
+    &:focus {
+      --tw-ring-color: var(--color-red-200);
+    }
+  }
   .focus\:ring-offset-2 {
     &:focus {
       --tw-ring-offset-width: 2px;
@@ -3598,6 +3605,16 @@
       --tw-scale-y: 95%;
       --tw-scale-z: 95%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+  .disabled\:bg-gray-400 {
+    &:disabled {
+      background-color: var(--color-gray-400);
     }
   }
   .sm\:right-4 {
