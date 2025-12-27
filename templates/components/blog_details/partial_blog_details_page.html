@@ -3,7 +3,6 @@
 
 
 <!-- Hidden data container for Django -->
-<!-- Hidden data container for Django -->
 <div id="share-data-container" class="hidden" data-post-id="{{ blog_detail.id }}" data-share-url="{% url 'share_post' %}" data-csrf-token="{{ csrf_token }}" data-post-title="{{ blog_detail.title }}" data-post-description="{{ blog_detail.short_description|truncatewords:30 }}">
 </div>
 
@@ -113,7 +112,7 @@
                                 {{ blog_detail.views|humanize_number }}
                             </span>
 
-                            <span class="flex flex-row gap-[5px] pt-1">
+                            <!-- <span class="flex flex-row gap-[5px] pt-1">
                                 <svg class="pt-[1px]" width="13" height="20" viewBox="0 0 12 14"
                                     xmlns="http://www.w3.org/2000/svg" fill="currentColor">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -121,7 +120,7 @@
                                     </path>
                                 </svg>
                                 <span class="font-semibold">{{ blog_detail.shares.count|humanize_number }}</span>
-                            </span>
+                            </span> -->
                             <span class="flex flex-row gap-[5px] pt-1">
                                 <i class="fa-solid fa-thumbs-up pt-[1px]"></i>
                                 <span class="font-semibold">{{ blog_detail.likes.count|humanize_number }}</span>
@@ -174,18 +173,7 @@
                                 <span class="text-gray-900 ml-1 font-bold">Techlife Blog</span>
                             </span>
                         </div>
-                        <!-- 
-                        <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500" class="flex items-center py-1 cursor-pointer">
-                            <div class="audio-controls flex items-center gap-2 group rounded-sm px-2 hover:border-blue-500 transition-all duration-500">
-                                <button id="main-audio-btn" class="flex items-center gap-1 border border-gray-300 px-2 rounded-xl" title="Listen">
-                                    <span
-                                        class="font-inter text-gray-500 text-[12px] group-hover:text-blue-500 transition-all duration-300">Listen</span>
-                                    <span id="icon-display"
-                                        class="text-gray-700 text-[16px] group-hover:text-blue-500 animate-float"><i
-                                            class="fa-solid fa-microphone"></i></span>
-                                </button>
-                            </div>
-                        </div> -->
+
                     </div>
 
                     <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-600 mt-2 space-y-2 sm:space-y-0">
@@ -227,27 +215,15 @@
                             <!-- Share Button -->
                             <!-- Share Button -->
                             <span id="shareBtn" class="inline-flex items-center gap-1 cursor-pointer hover:text-gray-800 text-gray-600">
-    <svg class="w-4 h-4" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
-        </path>
-    </svg>
-    <span class="text-sm">Share</span>
+                            <svg class="w-4 h-4" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
+                                </path>
+                            </svg>
+                            <span class="text-sm">Share</span>
                             </span>
 
 
-
-                            <!-- Save Button -->
-                            <!-- <span x-data="saveModalHandler({{ blog_detail.id }}, {{ user.is_authenticated|yesno:'true,false' }})">
-
-                                <span @click="checkAndOpen()"
-                                    class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
-                                    <span>Save</span>
-                            <svg width="14" height="20" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                                                <path
-                                                    d="M5.99996 9.43351L9.46496 11.0741L9.46496 2.0125L2.53496 2.0125L2.53496 11.0741L5.99996 9.43351ZM0.959961 13.5625L0.959961 0.4375L11.04 0.4375L11.04 13.5625L5.99996 11.1761L0.959961 13.5625Z" />
-                                            </svg>
-                            </span> -->
 
                             <!-- Modal + Toast -->
                             <template x-teleport="body">
@@ -676,14 +652,15 @@
     }
 
     // Share functionality
+    // Share functionality part inside your existing script
     shareOptions.forEach(option => {
         option.addEventListener('click', async(e) => {
             e.preventDefault();
             const platform = option.dataset.platform;
 
-            // Track share
+            // 1. Track share in Database
             try {
-                await fetch(shareUrl, {
+                const response = await fetch(shareUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -694,11 +671,18 @@
                         platform: platform
                     })
                 });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    // Ichche korle ekhane UI-te share count barano jay
+                    const countElem = document.getElementById('share-count-display');
+                    if (countElem) countElem.innerText = result.total_shares;
+                }
             } catch (error) {
                 console.error('Error tracking share:', error);
             }
 
-            // Open share dialog
+            // 2. Open Social Media Dialog
             const encodedUrl = encodeURIComponent(currentUrl);
             const encodedTitle = encodeURIComponent(postTitle);
             let shareLink = '';

@@ -207,16 +207,7 @@
       {% endfor %}
     </ul>
 
-    {% comment %}
-    <!-- Advertisement Section -->
-    <div class="w-full flex justify-center items-center rounded-lg">
-      <img
-        class="w-full max-w-[480px] h-[320px] object-cover rounded-xl flex justify-center items-center text-sm text-center text-gray-400 border border-gray-200"
-        src="#"
-        alt="Google add fixed size (480 * 320) px"
-      />
-    </div>
-    {% endcomment %}
+    
   </div>
 
   <!-- Right Section -->
@@ -393,14 +384,14 @@
 {% include 'components/home/blog_grid.html' %} {% include 'components/home/latest_news.html' %}
 
 <!-- Add Section -->
-<div
-  class="w-full flex justify-center items-center rounded-xl mt-20 mb-4 mx-auto"
->
-  <img
-    class="w-full max-w-[980px] h-[120px] object-cover rounded-xl flex justify-center items-center text-sm text-gray-400 border border-gray-300"
-    src="#"
-    alt="Google add fixed size (980 * 120) px"
-  />
+<div class="w-full flex justify-center items-center px-4 mt-10 md:mt-20 mb-4 mx-auto">
+  <div class="w-full max-w-[980px]">
+    <img
+      class="w-full h-auto min-h-[60px] md:h-[120px] object-cover rounded-xl flex justify-center items-center text-sm text-gray-400 border border-gray-300"
+      src="#"
+      alt="Google add fixed size (980 * 120) px"
+    />
+  </div>
 </div>
 
 {% include 'components/home/particular_three_category_1.html' %} {% include 'components/home/most_view.html' %} {% include 'components/home/marque.html' %}

@@ -7,7 +7,7 @@
             <button onclick="toggleMobileSearch()" class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <i class="fas fa-arrow-left text-lg"></i>
             </button>
-            <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" method="GET" class="flex-1 flex">
+            <form action="{% url 'redirect_search_results' %}" method="GET" class="flex-1 flex">
                 <input type="search" name="q" placeholder="Search News..." class="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" autofocus />
                 <button type="submit" class="px-4 py-3 bg-blue-500 text-white rounded-r-full hover:bg-blue-600 transition-colors">
                     <i class="fa fa-search"></i>
@@ -162,7 +162,7 @@
             <button id="close-sidebar" class="text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <img src="{% static 'image/logo-front.png' %}" alt="Logo" class="h-8" />
+            <a href="{% url 'homepage' %}"><img src="{% static 'image/logo-front.png' %}" alt="Logo" class="h-8" /></a>
             <div class="w-10"></div>
         </div>
 
@@ -190,66 +190,27 @@
                 {% endif %}
 
                 <!-- Navigation Links -->
-                <a href="{% url 'homepage' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'homepage' %}" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-home mr-3 w-5 text-center"></i> Home
                 </a>
 
-                <a href="{% url 'blogs' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'blogs' %}" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-home mr-3 w-5 text-center"></i> All Blogs
                 </a>
 
-                <a href="{% url 'popular_blogs' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'popular_blogs' %}" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-home mr-3 w-5 text-center"></i> Popular
                 </a>
 
-                <button onclick="showForumWarningModal(); closeMobileSidebar();" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-left">
-                    <i class="fas fa-question-circle mr-3 w-5 text-center"></i>
-                    Question
-                </button>
+                <a href="{% url 'questions_list' %}" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-left">
+                    <i class="fas fa-question-circle mr-3 w-5 text-center"></i> Question
+                </a>
 
-                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'create_blog' %}" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-edit mr-3 w-5 text-center"></i> Create Blog
                 </a>
 
-                <!-- Mobile Dropdowns -->
-                <div class="space-y-1">
-                    <!-- Country Dropdown -->
-                    <div>
-                        <button class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fas fa-globe mr-3 w-5 text-center"></i>
-                                Country
-                            </div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform duration-300"></i>
-                        </button>
-                        <div class="mobile-dropdown-content pl-6 mt-1 space-y-1 hidden bg-gray-50 rounded-lg py-2">
-                            <a href="" class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">
-                                <i class="fas fa-flag mr-2"></i> Bangladesh
-                            </a>
-                            <a href="" class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">
-                                <i class="fas fa-flag mr-2"></i> Asia
-                            </a>
-                            <a href="" class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">
-                                <i class="fas fa-flag mr-2"></i> World
-                            </a>
-                        </div>
-                    </div>
 
-                    <!-- More Categories Dropdown -->
-                    <div>
-                        <button class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
-                            <div class="flex items-center">
-                                <i class="fas fa-th-large mr-3 w-5 text-center"></i>
-                                More Categories
-                            </div>
-                            <i class="fas fa-chevron-down text-xs text-gray-500 transition-transform duration-300"></i>
-                        </button>
-                        <div class="mobile-dropdown-content pl-6 mt-1 space-y-1 hidden bg-gray-50 rounded-lg py-2">
-                            {% for category in popular_categories|slice:"4:" %}
-                            <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">{{ category.name }}</a> {% endfor%}
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Popular Categories -->
                 {% for category in popular_categories|slice:"4" %}
