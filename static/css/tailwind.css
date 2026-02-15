@@ -417,6 +417,9 @@
   .right-5 {
     right: calc(var(--spacing) * 5);
   }
+  .right-6 {
+    right: calc(var(--spacing) * 6);
+  }
   .right-8 {
     right: calc(var(--spacing) * 8);
   }
@@ -440,6 +443,9 @@
   }
   .bottom-5 {
     bottom: calc(var(--spacing) * 5);
+  }
+  .bottom-6 {
+    bottom: calc(var(--spacing) * 6);
   }
   .bottom-8 {
     bottom: calc(var(--spacing) * 8);
@@ -689,9 +695,6 @@
   }
   .-ml-2 {
     margin-left: calc(var(--spacing) * -2);
-  }
-  .-ml-5 {
-    margin-left: calc(var(--spacing) * -5);
   }
   .-ml-20 {
     margin-left: calc(var(--spacing) * -20);
@@ -1205,6 +1208,10 @@
   }
   .translate-y-3 {
     --tw-translate-y: calc(var(--spacing) * 3);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-y-20 {
+    --tw-translate-y: calc(var(--spacing) * 20);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .scale-90 {
@@ -1730,6 +1737,9 @@
   }
   .border-t-transparent {
     border-top-color: transparent;
+  }
+  .bg-\[var\(--logo-color\)\] {
+    background-color: var(--logo-color);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -2371,6 +2381,9 @@
   .text-\[\#1877F2\] {
     color: #1877F2;
   }
+  .text-black {
+    color: var(--color-black);
+  }
   .text-blue-50 {
     color: var(--color-blue-50);
   }
@@ -2737,6 +2750,14 @@
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         --tw-translate-x: calc(var(--spacing) * 1);
+        translate: var(--tw-translate-x) var(--tw-translate-y);
+      }
+    }
+  }
+  .group-hover\:-translate-y-0\.5 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        --tw-translate-y: calc(var(--spacing) * -0.5);
         translate: var(--tw-translate-x) var(--tw-translate-y);
       }
     }
@@ -3142,6 +3163,13 @@
       }
     }
   }
+  .hover\:bg-\[var\(--logo-color\)\] {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--logo-color);
+      }
+    }
+  }
   .hover\:bg-black {
     &:hover {
       @media (hover: hover) {
@@ -3173,6 +3201,13 @@
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--color-blue-100) 70%, transparent);
         }
+      }
+    }
+  }
+  .hover\:bg-blue-400 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-400);
       }
     }
   }
@@ -3656,6 +3691,14 @@
   .focus-visible\:outline-blue-600 {
     &:focus-visible {
       outline-color: var(--color-blue-600);
+    }
+  }
+  .active\:scale-90 {
+    &:active {
+      --tw-scale-x: 90%;
+      --tw-scale-y: 90%;
+      --tw-scale-z: 90%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
     }
   }
   .active\:scale-95 {
@@ -4228,6 +4271,16 @@
   .md\:top-16 {
     @media (width >= 48rem) {
       top: calc(var(--spacing) * 16);
+    }
+  }
+  .md\:right-8 {
+    @media (width >= 48rem) {
+      right: calc(var(--spacing) * 8);
+    }
+  }
+  .md\:bottom-28 {
+    @media (width >= 48rem) {
+      bottom: calc(var(--spacing) * 28);
     }
   }
   .md\:left-5 {

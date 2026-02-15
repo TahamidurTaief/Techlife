@@ -1,6 +1,7 @@
 from django.shortcuts import render , redirect , get_object_or_404
 from forum.models import Follow_section
 from blog_post.models import Category
+from contact.models import FooterSettings
 
 def all_category(request):
     popular_categories = Category.objects.all().order_by('created_at')
@@ -23,7 +24,10 @@ def timezone_info(request):
         "categories": Category.objects.all()
     }
 
-
+def footer_context(request):
+    return {
+        'footer': FooterSettings.objects.first()
+    }
 
 def follow_stats(request):
 

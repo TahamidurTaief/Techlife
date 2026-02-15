@@ -1,43 +1,59 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline
+from unfold.contrib.import_export.forms import ExportForm, ImportForm
+from import_export.admin import ImportExportModelAdmin
 from .models import Question, Answer, Follow_section
+from .resources import QuestionResource, AnswerResource, FollowSectionResource
 
-
-class AnswerInline(admin.TabularInline):
+# --- Inline for Answers within Question ---
+class AnswerInline(TabularInline): # Unfold TabularInline ব্যবহার করা হয়েছে
     model = Answer
     extra = 1
     fields = ('author', 'content', 'created_at')
     readonly_fields = ('created_at',)
-    show_change_link = True
 
-
+# --- Question Admin ---
 @admin.register(Question)
-class QuestionAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title',)}
+class QuestionAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = QuestionResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
     list_display = ('title', 'author', 'created_at')
-    search_fields = ('title', 'content', 'author__username')
+    search_fields = ('title', 'content', 'author__email', 'author__first_name')
     list_filter = ('created_at', 'author')
     readonly_fields = ('created_at',)
-    date_hierarchy = 'created_at'
     inlines = [AnswerInline]
-    ordering = ('-created_at',)
-    list_per_page = 20
+    prepopulated_fields = {'slug': ('title',)}
 
-    fieldsets = (
-        ('Question Info', {
-            'fields': ('title', 'slug', 'content', 'image')
-        }),
-        ('Author & Meta', {
-            'fields': ('author', 'created_at', )
-        }),
-    )
-
-
+# --- Answer Admin ---
 @admin.register(Answer)
-class AnswerAdmin(admin.ModelAdmin):
-    list_display = ('question', 'author', 'created_at')
-    search_fields = ('content', 'author__username', 'question__title')
+class AnswerAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = AnswerResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
+    list_display = ('question_short', 'author', 'created_at')
+    search_fields = ('content', 'author__email', 'question__title')
     list_filter = ('created_at', 'author')
-    readonly_fields = ('created_at',)
-    ordering = ('-created_at',)
+    
+    def question_short(self, obj):
+        return obj.question.title[:50]
+    question_short.short_description = "Question Title"
 
-admin.site.register(Follow_section)
+# --- Follow Section Admin ---
+@admin.register(Follow_section)
+class FollowSectionAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = FollowSectionResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
+    list_display = ('user', 'followers_count_display', 'following_count_display')
+    
+    def followers_count_display(self, obj):
+        return obj.followers_count()
+    followers_count_display.short_description = "Followers"
+
+    def following_count_display(self, obj):
+        return obj.following_count()
+    following_count_display.short_description = "Following"

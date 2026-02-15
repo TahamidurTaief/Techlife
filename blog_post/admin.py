@@ -11,10 +11,56 @@ from blog_post.models import (
     compnay_logo,
 )
 from django.utils.html import format_html
+from unfold.contrib.import_export.forms import ExportForm, ImportForm
+from import_export.admin import ImportExportModelAdmin
+from .resources import CategoryResource, SubCategoryResource, BlogPostResource, CompanyLogoResource
+from django.contrib import admin
+from django.utils.html import format_html
+from unfold.admin import ModelAdmin
+from unfold.contrib.import_export.forms import ExportForm, ImportForm
+from import_export.admin import ImportExportModelAdmin
+from .models import compnay_logo
 
+@admin.register(compnay_logo)
+class CompanyLogoAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = CompanyLogoResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
 
-admin.site.register(compnay_logo)
+    list_display = ("logo_preview", "name", "company_image_url_link")
+    search_fields = ("name",)
+    
+    fieldsets = (
+        ("Company Info", {
+            "fields": ("name",),
+        }),
+        ("Branding (Logo)", {
+            "fields": ("company_image", "company_image_url"),
+            "description": "Upload a logo file or provide an external image URL.",
+        }),
+    )
 
+    def logo_preview(self, obj):
+        if obj.company_image:
+            return format_html(
+                '<img src="{}" style="width:50px; height:50px; object-fit:contain; border-radius:4px; border:1px solid #ddd;">',
+                obj.company_image.url
+            )
+        elif obj.company_image_url:
+            return format_html(
+                '<img src="{}" style="width:50px; height:50px; object-fit:contain; border-radius:4px; border:1px solid #ddd;">',
+                obj.company_image_url
+            )
+        return "No Logo"
+    
+    logo_preview.short_description = "Logo Preview"
+
+    def company_image_url_link(self, obj):
+        if obj.company_image_url:
+            return format_html('<a href="{0}" target="_blank" style="color: #3b82f6;">View External Link</a>', obj.company_image_url)
+        return "None"
+    
+    company_image_url_link.short_description = "External URL"
 
 
 class SubCategoryInline(admin.TabularInline):
@@ -37,45 +83,105 @@ class BlogAdditionalImageInline(admin.TabularInline):
     classes = ["collapse"]
 
 
+# ============================================
 # CATEGORY ADMIN
+# ============================================
+
 @admin.register(Category)
-class CategoryAdmin(ModelAdmin):
+class CategoryAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = CategoryResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
     list_display = ("name", "slug", "created_at", "updated_at")
     search_fields = ("name",)
     ordering = ("-created_at",)
     list_filter = ("created_at",)
+    prepopulated_fields = {"slug": ("name",)}
     
     inlines = [SubCategoryInline]
+    
+    fieldsets = (
+        ("Basic Information", {
+            "fields": ("name", "slug", "font_awesome_icon", "description")
+        }),
+        ("Timestamps", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",),
+        }),
+    )
+    
+    readonly_fields = ("created_at", "updated_at")
 
 
-# --- SUB-CATEGORY ADMIN ---
+# ============================================
+# SUB-CATEGORY ADMIN
+# ============================================
+
 @admin.register(SubCategory)
-class SubCategoryAdmin(ModelAdmin):
+class SubCategoryAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = SubCategoryResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
     list_display = ("name", "category_name", "slug", "created_at")
     search_fields = ("name", "category__name")
     ordering = ("category__name", "name")
     list_filter = ("category", "created_at")
     autocomplete_fields = ("category",)
-
+    prepopulated_fields = {"slug": ("name",)}
+    
     def category_name(self, obj):
         return obj.category.name
     
     category_name.short_description = "Category"
+    
+    fieldsets = (
+        ("Basic Information", {
+            "fields": ("category", "name", "slug", "description")
+        }),
+        ("Timestamps", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",),
+        }),
+    )
+    
+    readonly_fields = ("created_at", "updated_at")
 
 
-# BLOG POST ADMIN (main section)
+# ============================================
+# BLOG POST ADMIN
+# ============================================
+
 @admin.register(BlogPost)
-class BlogPostAdmin(ModelAdmin):
-    list_display = ("image_preview", "title", "author", "category", "subcategory", "status", "created_at")
+class BlogPostAdmin(ModelAdmin, ImportExportModelAdmin):
+    resource_class = BlogPostResource
+    import_form_class = ImportForm
+    export_form_class = ExportForm
+    
+    list_display = (
+        "image_preview", "title", "author", "category", 
+        "subcategory", "status", "views", "created_at"
+    )
     list_filter = ("status", "category", "subcategory", "created_at")
     search_fields = ("title", "author__email", "category__name", "subcategory__name")
     ordering = ("-created_at",)
-    inlines = [ReviewInline, BlogAdditionalImageInline]
+    autocomplete_fields = ("author", "category", "subcategory")
+    filter_horizontal = ("tags",)
+    prepopulated_fields = {"slug": ("title",)}
+    
+    # Add your inlines here
+    inlines = [BlogAdditionalImageInline]
+    # If you have ReviewInline, add it: inlines = [ReviewInline, BlogAdditionalImageInline]
+    
     readonly_fields = ("content_hash", "image_hash", "created_at", "updated_at")
 
     fieldsets = (
         ("Basic Info", {
-            "fields": ("title", "subtitle", "slug", "category","subcategory", "tags", "author", "status", "views"),
+            "fields": (
+                "title", "subtitle", "slug", "category", 
+                "subcategory", "tags", "author", "status", "views"
+            ),
         }),
         ("Media", {
             "fields": ("featured_image", "featured_image_url"),
@@ -89,9 +195,8 @@ class BlogPostAdmin(ModelAdmin):
         }),
     )
 
-    
-
     def image_preview(self, obj):
+        """Display image preview in list view"""
         if obj.featured_image:
             return format_html(
                 '<img src="{}" style="width:120px;height:60px;object-fit:cover;border-radius:8px;">',
@@ -102,11 +207,10 @@ class BlogPostAdmin(ModelAdmin):
                 '<img src="{}" style="width:120px;height:60px;object-fit:cover;border-radius:8px;">',
                 obj.featured_image_url
             )
-        return "No Image"
+        return format_html('<span style="color: #999;">No Image</span>')
 
-
-    image_preview.allow_tags = True
     image_preview.short_description = "Preview"
+
 
 
 # ADDITIONAL IMAGES ADMIN

@@ -6,26 +6,31 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
 
             <div class="sm:col-span-2 lg:col-span-5">
-                <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd Logo" class="h-10 w-auto mb-5 rounded-md">
-                <p class="text-sm leading-relaxed text-gray-600 mb-6 font-light">
-                    Techlife is a curated newsletter that delivers the most engaging and important stories, connections, and summaries from the world of technology every day. We are dedicated to tech enthusiasts.
-                </p>
+                {% if footer.logo %}
+                <img src="{{ footer.logo.url }}" alt="Logo" class="h-10 w-auto mb-5 rounded-md"> {% else %}
+                <img src="{% static 'image/logo-front.png' %}" alt="Default Logo" class="h-10 w-auto mb-5 rounded-md"> {% endif %}
+                <!-- <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd Logo" class="h-10 w-auto mb-5 rounded-md"> -->
+                <p class="text-sm leading-relaxed text-gray-600 mb-6 font-light line-clamp-5">
+                    {{ footer.description|default:"Techlife is a curated newsletter dedicated to tech enthusiasts." }} </p>
 
                 <div class="flex space-x-4">
-                    <div class="flex space-x-4">
-                        <a href="" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-blue-600 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:border-blue-500 text-gray-700 hover:text-white" aria-label="Facebook">
-                            <i class="fa-brands fa-facebook-f text-lg"></i>
-                        </a>
-                        <a href="#" class="-ml-5 w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-black border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:border-gray-700 text-gray-700 hover:text-white" aria-label="Twitter">
-                            <i class="fa-brands fa-x-twitter text-lg"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-blue-500 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:border-blue-400 text-gray-700 hover:text-white" aria-label="LinkedIn">
-                            <i class="fa-brands fa-linkedin-in text-lg"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-green-600 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:border-green-500 text-gray-700 hover:text-white" aria-label="WhatsApp">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
-                        </a>
-                    </div>
+                    {% if footer.facebook_url %}
+                    <a href="{{ footer.facebook_url }}" target="_blank" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-blue-600 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 text-gray-700 hover:text-white">
+                        <i class="fa-brands fa-facebook-f text-lg"></i>
+                    </a>
+                    {% endif %} {% if footer.twitter_url %}
+                    <a href="{{ footer.twitter_url }}" target="_blank" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-black border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 text-gray-700 hover:text-white">
+                        <i class="fa-brands fa-x-twitter text-lg"></i>
+                    </a>
+                    {% endif %} {% if footer.linkedin_url %}
+                    <a href="{{ footer.linkedin_url }}" target="_blank" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-blue-500 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 text-gray-700 hover:text-white">
+                        <i class="fa-brands fa-linkedin-in text-lg"></i>
+                    </a>
+                    {% endif %} {% if footer.whatsapp_number %}
+                    <a href="https://wa.me/{{ footer.whatsapp_number }}" target="_blank" class="w-10 h-10 rounded-full bg-black/5 backdrop-blur-sm hover:bg-green-600 border border-black/10 flex items-center justify-center transition-all duration-300 hover:scale-105 text-gray-700 hover:text-white">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                    </a>
+                    {% endif %}
                 </div>
             </div>
 
@@ -49,11 +54,16 @@
                     <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400"></span>
                 </h3>
                 <ul class="space-y-3">
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200"><i class="fa-solid fa-tag text-xs text-blue-500"></i> Tech News</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200"><i class="fa-solid fa-tag text-xs text-blue-500"></i> Career Guides</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200"><i class="fa-solid fa-tag text-xs text-blue-500"></i> Gadgets</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200"><i class="fa-solid fa-tag text-xs text-blue-500"></i> Software</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200"><i class="fa-solid fa-tag text-xs text-blue-500"></i> AI & ML</a></li>
+
+
+
+                    {% for category in popular_categories|slice:"5" %}
+                    <li>
+                        <a href="{% url 'category_post' category.slug %}" class="text-sm text-gray-600 hover:text-gray-900 hover:translate-x-1 inline-flex items-center gap-2 transition-all duration-200">
+                            <i class="fa-solid fa-tag text-xs text-blue-500"></i> {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
                 </ul>
             </div>
 
@@ -63,7 +73,6 @@
                     <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-400"></span>
                 </h3>
 
-
                 <ul class="space-y-4 mt-6">
                     <li class="flex items-start space-x-3">
                         <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -71,9 +80,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-gray-500 mb-1 font-medium">Email</p>
-                            <a href="mailto:contact@techlife.com" class="text-sm text-gray-700 hover:text-gray-900 transition-colors break-all">
-                contact@techlife.com
-            </a>
+                            <a href="mailto:{{ footer.email }}" class="text-sm text-gray-700 hover:text-gray-900 transition-colors break-all">{{ footer.email }}</a>
                         </div>
                     </li>
 
@@ -83,9 +90,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-gray-500 mb-1 font-medium">Phone</p>
-                            <a href="tel:+8801700895489" class="text-sm text-gray-700 hover:text-gray-900 transition-colors break-all">
-                +8801700895489
-            </a>
+                            <a href="tel:{{ footer.phone }}" class="text-sm text-gray-700 hover:text-gray-900 transition-colors break-all">{{ footer.phone }}</a>
                         </div>
                     </li>
 
@@ -95,9 +100,7 @@
                         </div>
                         <div>
                             <p class="text-xs text-gray-500 mb-1 font-medium">Office Address</p>
-                            <p class="text-sm text-gray-700 leading-relaxed">
-                                Green Road, Dhaka
-                            </p>
+                            <p class="text-sm text-gray-700 leading-relaxed">{{ footer.address }}</p>
                         </div>
                     </li>
                 </ul>
@@ -113,7 +116,9 @@
                 </p>
 
                 <div>
-                    <p class="text-xs text-gray-500 text-center">Deploped by <a href="#" class="text-blue-600 font-bold">Intelligent Systems & Solution Limited</a></p>
+                    <p class="text-xs text-gray-500 text-center">Developed by
+                        <a href="{{ footer.developer_company_url }}" target="_blank" class="text-blue-600 font-bold">{{ footer.developer_company_name }}</a>
+                    </p>
                 </div>
 
                 <div class="flex space-x-6 text-xs">

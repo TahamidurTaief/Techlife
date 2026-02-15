@@ -119,60 +119,82 @@ class BlogPost(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     tags = models.ManyToManyField(Tag, blank=True, related_name="blog_posts")
-
     def save(self, *args, **kwargs):
-        # Generate slug
-        if not self.slug:
-            base_slug = slugify(self.title)
-            slug = base_slug
-            counter = 1
-            while BlogPost.objects.filter(slug=slug).exists():
-                slug = f"{base_slug}-{counter}"
-                counter += 1
-            self.slug = slug
+            """
+            Custom save method with import support
+            """
+            # Check if being imported (skip auto status logic during import)
+            skip_auto_status = kwargs.pop('skip_auto_status', False)
+            
+            # Check if this is a new instance
+            is_new = self.pk is None
+            
+            # Generate slug if not provided
+            if not self.slug:
+                base_slug = slugify(self.title)
+                slug = base_slug
+                counter = 1
+                while BlogPost.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                    slug = f"{base_slug}-{counter}"
+                    counter += 1
+                self.slug = slug
 
-        # Generate hash for text content
-        raw_content = (self.title + self.description).encode("utf-8")
-        self.content_hash = hashlib.md5(raw_content).hexdigest()
+            # Generate hash for text content
+            raw_content = (self.title + str(self.description)).encode("utf-8")
+            self.content_hash = hashlib.md5(raw_content).hexdigest()
 
-        # If duplicate content exists, prevent auto-publish
-        if (
-            BlogPost.objects.filter(content_hash=self.content_hash)
-            .exclude(pk=self.pk)
-            .exists()
-        ):
-            self.status = "pending"
-        else:
-            self.status = "published"
+            # Only check duplicates if NOT importing and is new post
+            if not skip_auto_status and is_new:
+                # If duplicate content exists, prevent auto-publish
+                if (
+                    BlogPost.objects.filter(content_hash=self.content_hash)
+                    .exclude(pk=self.pk)
+                    .exists()
+                ):
+                    self.status = "pending"
+                else:
+                    self.status = "published"
 
-        # Generate hash for image if uploaded
-        if self.featured_image:
-            img_bytes = self.featured_image.file.read()
-            self.image_hash = hashlib.md5(img_bytes).hexdigest()
+            # Generate hash for image if uploaded
+            if self.featured_image:
+                try:
+                    self.featured_image.file.seek(0)  # Reset pointer
+                    img_bytes = self.featured_image.file.read()
+                    self.image_hash = hashlib.md5(img_bytes).hexdigest()
+                    self.featured_image.file.seek(0)  # Reset again
+                    
+                    # Check duplicate image only for new posts (not during import)
+                    if not skip_auto_status and is_new:
+                        if (
+                            BlogPost.objects.filter(image_hash=self.image_hash)
+                            .exclude(pk=self.pk)
+                            .exists()
+                        ):
+                            self.status = "pending"
+                except Exception as e:
+                    print(f"Image hash generation error: {e}")
 
-            if (
-                BlogPost.objects.filter(image_hash=self.image_hash)
-                .exclude(pk=self.pk)
-                .exists()
-            ):
-                self.status = "pending"
-            else:
-                self.status = "published"
-
-        super().save(*args, **kwargs)
+            super().save(*args, **kwargs)
 
     @property
     def total_reactions(self):
+        """Get total number of reactions"""
         return self.reactions.count()
 
     def reaction_breakdown(self):
+        """Get breakdown of reactions by type"""
         return self.reactions.values("reaction_type").annotate(
             total=models.Count("reaction_type")
         )
 
     def __str__(self):
+        """String representation of the blog post"""
         return f"{self.title} created by {self.author}"
 
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Blog Post'
+        verbose_name_plural = 'Blog Posts'
 
 class Like(models.Model):
     post = models.ForeignKey(
@@ -233,7 +255,6 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.user.first_name} rated {self.rating}⭐ on {self.post.title}"
 
-
 # view count system (Ip tracking)
 class Post_view_ip(models.Model):
     post = models.ForeignKey(
@@ -250,9 +271,6 @@ class Post_view_ip(models.Model):
 
     def __str__(self):
         return f"{self.post.title} viewed by {self.user or self.ip_address}"
-
-
-
 
 
 class compnay_logo(models.Model):

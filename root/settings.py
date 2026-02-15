@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     # Third Party Apps
     "django_extensions",
-
+    "import_export",
     "accounts",
     "blog_post",
     "comments",
@@ -81,7 +81,10 @@ REST_FRAMEWORK = {
 
 
 UNFOLD = {
-    "SITE_HEADER": "TechLife Admin Dashboard",  # fallback
+    "SITE_HEADER": "TechLife Admin Dashboard", 
+    "RESOURCES": [
+        "import_export.resources.ModelResource",
+    ], # fallback
     "SITE_HEADER_TEXT": "TechLife Admin Dashboard",  # text to show next to logo
     "SITE_TITLE": "TechLife Control Panel",  # browser tab title
     "SITE_LOGO": "/static/image/logo-front.PNG",
@@ -118,6 +121,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "blog_post.context_processors.all_category",
                 "blog_post.context_processors.timezone_info",
+                "blog_post.context_processors.footer_context",
                 "forum.context_processors.popular_questions",
                 'blog_post.context_processors.follow_stats',
                 "forum.context_processors.global_follow_list",

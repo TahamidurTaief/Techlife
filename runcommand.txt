@@ -17,6 +17,7 @@ uv init
 
 
 # install venv
+uv venv
 
 # active venv
 source .venv/Scripts/activate
