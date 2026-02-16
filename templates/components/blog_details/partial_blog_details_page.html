@@ -161,9 +161,14 @@
                     </div>
 
                     <!-- Blog Image -->
+                    <!-- Blog Image -->
                     <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="relative mt-3">
-                        <img class="w-full h-auto object-cover rounded-md" src="{{ blog_detail.featured_image_url }}" alt="AI chip" />
+                        {% if blog_detail.featured_image %}
+                        <img class="w-full h-[380px] object-cover rounded-md" src="{{ blog_detail.featured_image.url }}" alt="{{ blog_detail.title }}" /> {% elif blog_detail.featured_image_url %}
+                        <img class="w-full h-[380px] object-cover rounded-md" src="{{ blog_detail.featured_image_url }}" alt="{{ blog_detail.title }}" /> {% else %}
+                        <img class="w-full h-[380px] object-cover rounded-md" src="{% static 'images/default-blog.jpg' %}" alt="Default Blog Image" /> {% endif %}
                     </div>
+
 
                     <!-- Author + Share + Save -->
                     <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="mt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b-[1px] border-e-gray-200 space-y-2 sm:space-y-0">
