@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "interactions",
     "notification",
     "earnings",
+    "imagekit",
     
     'rest_framework',
 

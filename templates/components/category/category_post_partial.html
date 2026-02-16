@@ -67,9 +67,8 @@
 
     {% if blogs %}
     <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-4 md:gap-6 pb-5 mobile-spacing mobile-grid">
-
-        <div class="md:col-span-2 lg:col-span-6 space-y-4">
-            {% for blog in blogs|slice:"1" %}
+        <div class="{% if blogs|length > 1 %}md:col-span-2 lg:col-span-6{% else %}md:col-span-3 lg:col-span-10{% endif %} space-y-4">
+            {% for blog in blogs|slice:":1" %}
             <div class="w-full h-64 md:h-80 bg-gray-100 overflow-hidden mobile-image">
                 {% if blog.featured_image %}
                 <img src="{{ blog.featured_image.url }}" alt="{{ blog.title|default:'Blog Post Image' }}" class="w-full h-full object-cover rounded-md"> {% elif blog.featured_image_url %}
@@ -86,25 +85,27 @@
             {% endfor %}
         </div>
 
+        {% if blogs|length > 1 %}
         <div class="md:col-span-1 lg:col-span-4 space-y-4 md:space-y-3">
             {% for blog in blogs|slice:"1:6" %}
             <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="block group mobile-touch-target">
-                <div class="flex items-center gap-3 md:space-x-3 pb-4 border-b border-gray-200">
-
-                    <p class="text-sm md:text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2 mobile-text">
-                        {{ blog.title }}
-                    </p>
-
-                    <div class="w-16 h-16 md:w-16 md:h-16 object-cover flex-shrink-0 rounded overflow-hidden bg-gray-100">
+                <div class="flex items-center gap-3 md:gap-4 pb-4 border-b border-gray-200">
+                    <div class="w-16 h-16 md:w-20 md:h-16 flex-shrink-0 rounded overflow-hidden bg-gray-100">
                         {% if blog.featured_image %}
                         <img src="{{ blog.featured_image.url }}" alt="{{ blog.title|default:'Headline Image' }}" class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"> {% elif blog.featured_image_url %}
                         <img src="{{ blog.featured_image_url }}" alt="{{ blog.title|default:'Headline Image' }}" class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"> {% else %}
                         <img src="https://placehold.co/100x80/d1d5db/333?text=NEWS" alt="{{ blog.title|default:'Placeholder Image' }}" class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"> {% endif %}
                     </div>
+                    <div class="flex-1">
+                        <p class="text-sm md:text-base font-semibold transition-colors duration-200 group-hover:text-blue-600 cursor-pointer line-clamp-2 mobile-text">
+                            {{ blog.title }}
+                        </p>
+                    </div>
                 </div>
             </a>
             {% endfor %}
         </div>
+        {% endif %}
 
         <div class="hidden lg:block lg:col-span-2 relative h-[450px] p-4 bg-gray-300 text-white rounded overflow-hidden">
             <div class="absolute inset-0 bg-gray-100 bg-opacity-30"></div>
@@ -145,35 +146,33 @@
     <div id="{{ featured_sub_cat.slug }}" class="mt-8 mb-3 py-6 border-y border-gray-200 flex justify-center items-center relative mobile-spacing">
         <h2 class="text-xl md:text-2xl font-bold text-center px-4">{{ featured_sub_cat.name }}</h2>
         <span class="text-blue-500">
-        <svg xmlns="http://www.w3.org/2000/svg" 
-             fill="none" viewBox="0 0 24 24" 
-             stroke-width="2" stroke="currentColor" 
-             class="w-6 h-6">
-            <path stroke-linecap="round" 
-                  stroke-linejoin="round" 
-                  d="M9 5l7 7-7 7" />
-        </svg>
-    </span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </span>
     </div>
-
-    <div class="p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mobile-spacing mobile-grid">
+    <!-- sub castegory post -->
+    <div class="p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for post in sub_blogs %}
-        <a hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="block group mobile-touch-target">
-            <div class="space-y-2">
-                <div class="w-full aspect-video overflow-hidden rounded-md bg-gray-100 cursor-pointer">
-                    {% if post.featured_image %}
-                    <img src="{{ post.featured_image.url }}" alt="{{ post.title|default:'Blog Post Image' }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105"> {% elif post.featured_image_url %}
-                    <img src="{{ post.featured_image_url }}" alt="{{ post.title|default:'Blog Post Image' }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105"> {% else %}
-                    <img src="https://placehold.co/400x250/d1d5db/333?text=NEWS" alt="{{ post.title|default:'Placeholder Image' }}" class="w-full h-full object-cover"> {% endif %}
-                </div>
+        <a hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="p-3 flex flex-col h-full group bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
 
-                <h3 class="text-base md:text-lg font-bold line-clamp-2 transition-colors duration-200 group-hover:text-blue-700 cursor-pointer mobile-text">
+            <div class="aspect-video overflow-hidden  flex-shrink-0 rounded-md">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class=" rounded-md w-full h-full object-cover transition duration-500 "> {% elif post.featured_image_url %}
+                <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class=" rounded-md w-full h-full object-cover transition duration-500 "> {% else %}
+                <img src="https://placehold.co/400x250/d1d5db/333?text=NEWS" alt="Placeholder" class=" rounded-md w-full h-full object-cover"> {% endif %}
+            </div>
+            <div class=" flex flex-col flex-grow space-y-2 mb-2">
+                <h3 class="mt-2 cursor-pointer font-bold line-clamp-2 leading-tight transition-colors duration-200 group-hover:text-blue-700">
                     {{ post.title }}
                 </h3>
-                <p class="text-sm text-gray-700 line-clamp-3 md:line-clamp-4 mobile-text">
-                    {{ post.description|default:post.description|safe|truncatewords:40 }}
+
+                <p class="text-sm text-gray-600 text-justify line-clamp-3 flex-grow">
+                    {{ post.description|default:""|striptags|truncatewords:20 }}
                 </p>
             </div>
+
         </a>
         {% endfor %}
     </div>
