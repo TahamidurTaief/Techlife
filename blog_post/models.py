@@ -8,7 +8,8 @@ from accounts.models import CustomUserModel
 from tags.models import Tag
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
-
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill, Adjust
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -83,6 +84,13 @@ class BlogPost(models.Model):
     # description = models.TextField()
     description = RichTextUploadingField()
     featured_image = models.ImageField(upload_to="blog_images/", null=True, blank=True)
+    featured_image_thumbnail = ImageSpecField(
+            source='featured_image',
+        processors=[ResizeToFill(300, 200),Adjust(sharpness=1.5)],
+        format='WEBP',
+        options={'quality': 90}
+        )
+
     featured_image_url = models.URLField(max_length=500, null=True, blank=True)
 
     content_hash = models.CharField(

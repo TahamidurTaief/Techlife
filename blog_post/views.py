@@ -520,13 +520,14 @@ def update_blog_stat(request, slug, stat_type):
     )
 
 
+
+
 def create_blog(request):
     categories = Category.objects.all()
     subcategories = SubCategory.objects.all()
     context = {
         "categories": categories,
-        "subcategories":subcategories,
-        "action" : 'post_create'
+        "subcategories": subcategories,
     }
 
     if request.method == 'POST':
@@ -535,95 +536,54 @@ def create_blog(request):
         category_id = request.POST.get('category')
         subcategory_id = request.POST.get('subcategory')
         
+        # Images
         featured_image_file = request.FILES.get('featured_image')
         featured_image_url = request.POST.get('featured_image_url')
-        
-        additional_image_files = request.FILES.getlist('additional_image')
-        additional_image_url_list = request.POST.get('additional_image_url_list')
-
         tags_list_input = request.POST.get('tags_list')
 
-        # Basic validation
         if not (title and description and category_id):
-            # messages.error(request, "Please fill in all required fields.")
-            if request.headers.get("HX-Request"):
-                return render(request, "components/blogs/partial_create_blog_content.html", context)
-            return redirect(reverse('create_blog'))
+            messages.error(request, "Please fill in all required fields.")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
 
         try:
             category = get_object_or_404(Category, pk=category_id)
             subcategory = None
-            
             if subcategory_id: 
-                subcategory = get_object_or_404(SubCategory, pk=subcategory_id, category=category)
-        except:
-            # messages.error(request, "Invalid category selected.")
-            return redirect(reverse('create_blog'))
+                subcategory = SubCategory.objects.filter(pk=subcategory_id, category=category).first()
 
-        # database save operations
-        try:
-            # Create the BlogPost object
             new_blog = BlogPost.objects.create(
                 author=request.user,
                 category=category,
                 subcategory=subcategory,
                 title=title,
                 description=description,
-                
-                # Directly map form data to BlogPost fields
                 featured_image=featured_image_file if featured_image_file else None,
-                featured_image_url=featured_image_url if featured_image_url and not featured_image_file else None
+                featured_image_url=featured_image_url if not featured_image_file else None
             )
 
-            #  tag section
             if tags_list_input:
-                # Split the comma-separated string, strip whitespace, and filter out empty strings
                 tag_names = [tag.strip().lower() for tag in tags_list_input.split(',') if tag.strip()]
-                
-                # Prepare a list to store Tag objects
-                tag_objects = []
-                
-                for name in tag_names:
-                    # Use get_or_create to find an existing tag or create a new one
-                    tag, created = Tag.objects.get_or_create(name=name)
-                    tag_objects.append(tag)
-                
-                # Add all collected Tag objects to the blog post's many-to-many field
+                tag_objects = [Tag.objects.get_or_create(name=name)[0] for name in tag_names]
                 new_blog.tags.set(tag_objects)
 
-            # handle Additional Image Files
-            for file in additional_image_files:
-                BlogAdditionalImage.objects.create(
-                    blog=new_blog, 
-                    additional_image=file  
-                )
+            messages.success(request, "Blog post created successfully!")
 
-
-            if additional_image_url_list:
-                urls = [url.strip() for url in additional_image_url_list.split(',') if url.strip()]
-                for url in urls:
-                    BlogAdditionalImage.objects.create(
-                        blog=new_blog, 
-                        additional_image_url=url # model field er shathe match korbe
-                    )
-
-      
             if request.headers.get("HX-Request"):
-                 return render(request, "components/blogs/partial_create_blog_success.html", {'blog': new_blog})
-
-            return redirect(reverse('home')) 
+                response = HttpResponse(status=204)
+                response["HX-Redirect"] = reverse('homepage') 
+                return response
+            
+            return redirect(reverse('homepage'))
 
         except Exception as e:
-            messages.error(request, "An internal error occurred while creating the post/images.")
-            return redirect(reverse('create_blog'))
-
-
+            print(f"Error: {e}") 
+            messages.error(request, "An internal error occurred.")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
 
     if request.headers.get("HX-Request"):
         return render(request, "components/blogs/partial_create_blog_content.html", context)
 
     return render(request, "base.html", context)
-
 
 
 

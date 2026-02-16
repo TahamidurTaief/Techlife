@@ -183,44 +183,43 @@
 </style>
 
 <div class="max-w-7xl login-container mx-auto">
+
+
     <div class="login-card border border-gray-300 font-inter shadow-sm">
-        <form class="login-form scrollbar-hide" id="loginForm" method="POST" enctype="multipart/form-data">
+        <form class="login-form scrollbar-hide" id="loginForm" hx-post="{% url 'create_blog' %}" hx-encoding="multipart/form-data" hx-target="body" hx-push-url="true">
             {% csrf_token %}
-            <!-- header -->
+
             <div class="mb-8 pb-4 border-b border-gray-200 flex items-center justify-center space-x-4">
                 <div class="w-11 h-11 flex items-center justify-center flex-shrink-0">
-                    <img src="{% static 'image/company_logo.png' %}" alt="Company Logo" class="ml-14 rounded-full" />
+                    <img src="{% static 'image/company_logo.webp' %}" alt="Company Logo" class="ml-14 rounded-full" />
                 </div>
-                <h1 class="text-3xl font-semibold font-inter ">Create New Blogs</h1>
+                <h1 class="text-3xl font-semibold font-inter ">Create New Blog</h1>
             </div>
 
-
-            {% comment %} category {% endcomment %}
-            <div class=" form-group" id="subcategory_wrapper">
+            <div class="form-group" id="category_wrapper">
                 <div class="input-wrapper">
                     <select id="category_select" name="category" required class="w-full">
                         <option value="" disabled selected>Select Category</option>
-                            {% for category in categories %}
+                        {% for category in categories %}
                             <option value="{{ category.pk }}">{{ category.name }}</option>
-                            {% endfor %}
-                        </select>
+                        {% endfor %}
+                    </select>
                     <label for="category_select">Select Category</label>
                 </div>
             </div>
-            {% comment %} sub category {% endcomment %}
-            <div class=" form-group" id="subcategory_wrapper">
+
+            <div class="form-group" id="subcategory_wrapper">
                 <div class="input-wrapper">
                     <select id="subcategory_select" name="subcategory" class="w-full">
                         <option value="" disabled selected>Select Sub-Category</option>
-                            {% for subcategory in subcategories %}
+                        {% for subcategory in subcategories %}
                             <option value="{{ subcategory.pk }}">{{ subcategory.name }}</option>
-                            {% endfor %}
-                        </select>
+                        {% endfor %}
+                    </select>
                     <label for="subcategory_select">Sub-Category</label>
                 </div>
             </div>
 
-            <!-- title -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <input type="text" name="title" id="post_title" required autocomplete="off" />
@@ -228,7 +227,6 @@
                 </div>
             </div>
 
-            <!-- description -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <textarea name="description" id="post_description" class="description" required></textarea>
@@ -236,52 +234,30 @@
                 </div>
             </div>
 
-            <!-- featured image -->
             <div class="form-group">
                 <div class="input-wrapper">
-                    <span class="text-gray-500 font-medium text-sm block mb-1">Featured Image (Max 1)</span>
-                    <input type="file" name="featured_image" id="featured_image" />
+                    <span class="text-gray-500 font-medium text-sm block mb-1">Featured Image</span>
+                    <input type="file" name="featured_image" id="featured_image" accept="image/*" />
                 </div>
             </div>
 
-            <!-- featured image url -->
             <div class="form-group">
                 <div class="input-wrapper">
                     <span class="text-gray-400 font-medium text-sm block mb-1">Featured Image Link (Optional)</span>
-                    <input type="text" name="featured_image_url" id="featured_image_url" placeholder="E.g., https://example.com/image.jpg" />
+                    <input type="url" name="featured_image_url" id="featured_image_url" placeholder="E.g., https://example.com/image.jpg" />
                 </div>
             </div>
 
-            <!-- additional image  -->
             <div class="form-group">
                 <div class="input-wrapper">
-                    <span class="text-gray-400 font-medium text-sm block mb-1">Additional Images (Multiple Files)</span>
-                    <input type="file" name="additional_image" multiple id="additional_image_files" />
+                    <span class="text-gray-400 font-medium text-sm block mb-1">Tags (Comma separated)</span>
+                    <input name="tags_list" id="tags_list" placeholder="fashion, travel, tech" type="text" />
                 </div>
             </div>
 
-            <!-- addtional image url -->
-            <div class="form-group">
-                <div class="input-wrapper">
-                    <span class="text-gray-400 font-medium text-sm block mb-1">Additional Images URL (Comma separated, optional)</span>
-                    <input name="additional_image_url_list" id="additional_image_url_list" placeholder="Add multiple image links separated by commas (optional)" type="text" />
-                </div>
-            </div>
-            <!-- TAgs -->
-            <div class="form-group">
-                <div class="input-wrapper">
-                    <span class="text-gray-400 font-medium text-sm block mb-1">Tags (Comma separated, optional)</span>
-                    <input name="tags_list" id="tags_list" placeholder="Add tags like 'fashion', 'DIY', 'travel' separated by commas (optional)" type="text" />
-                </div>
-            </div>
-
-            <!-- submit and cancle button-->
-            <div class="sticky bottom-0 bg-white pt-4 pb-2 border-t border-gray-100 -mr-3 flex-shrink-0">
-                <div class="flex justify-end space-x-3 mt-6">
-                    <button href="{% url 'homepage' %}" type="button" class="px-6 py-2 border cursor-pointer border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Cancel</button>
-
-                    <button hx-post="{% url 'create_blog' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" type="submit" class="px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Submit</button>
-                </div>
+            <div class="sticky bottom-0 bg-white pt-4 pb-2 border-t border-gray-100 flex justify-end space-x-3 mt-6">
+                <a href="{% url 'homepage' %}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition">Cancel</a>
+                <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Submit</button>
             </div>
         </form>
     </div>
@@ -290,45 +266,5 @@
 
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const select = document.getElementById('category_select');
-        const label = select.nextElementSibling; // Get the label element
 
-        // 1. Initial check on load for select field
-        if (select.value) {
-            // Apply floating effect immediately if a default value exists
-            label.style.transform = 'translateY(-36px) translateX(4px) scale(0.85)';
-            label.style.color = '#60a5fa'; // Blue-400
-            label.style.background = '#ffffff';
-            label.style.padding = '0 8px';
-        }
-
-        // 2. Add event listener for user interaction (for select field)
-        select.addEventListener('change', function() {
-            // This is primarily handled by CSS selectors.
-        });
-
-        // Loop through all required inputs/textareas to ensure floating label works on focus/validity
-        document.querySelectorAll('.input-wrapper input:not([type="file"]):not([placeholder]), .input-wrapper textarea').forEach((input) => {
-            // For required fields without placeholders (Title/Description)
-            if (input.value) {
-                input.classList.add('valid');
-            }
-            input.addEventListener('blur', () => {
-                if (input.value) {
-                    input.classList.add('valid');
-                } else {
-                    input.classList.remove('valid');
-                }
-            });
-        });
-
-        // Simple form submission handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log('Form Submitted!');
-            // You would typically send the data to a server here using fetch.
-        });
-    });
-</script>
+<script src="{% static 'js/create_blog.js' %}"></script>
