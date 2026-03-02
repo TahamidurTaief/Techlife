@@ -53,10 +53,10 @@ INSTALLED_APPS = [
     
     'rest_framework',
 
-    
+    "google_add",
     "contact",
     "forum",
-
+    "site_settings",
     "django_browser_reload",
     "save_post",
     'django_tailwind_cli',
@@ -66,6 +66,12 @@ INSTALLED_APPS = [
 
 CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
 
+CKEDITOR_CONFIGS = {
+    'default': {
+        'allowedContent': True,
+        'extraAllowedContent': 'script[*]; iframe[*]',
+    }
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -126,6 +132,10 @@ TEMPLATES = [
                 "forum.context_processors.popular_questions",
                 'blog_post.context_processors.follow_stats',
                 "forum.context_processors.global_follow_list",
+                "google_add.context_processors.google_adds",
+                "site_settings.context_processors.site_settings",
+
+
 
 
             ],

@@ -9,7 +9,7 @@ def all_category(request):
         "popular_categories": popular_categories,
     }
     return(context) 
-
+    
 from datetime import datetime
 
 def timezone_info(request):

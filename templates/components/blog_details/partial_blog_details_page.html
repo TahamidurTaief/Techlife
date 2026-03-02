@@ -439,6 +439,14 @@
 
 <!-- Sidebar -->
 <aside class="w-full lg:w-1/4 mt-8 lg:mt-0">
+
+
+
+    {% if ad_8 %}
+    <div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0 mb-6">
+        {{ ad_8.ad_code|safe }}
+    </div>
+    {% endif %}
     <div class="mb-8">
         <div>
             <h2 class="text-xl font-bold text-gray-900 mb-3 font-inter">Related News</h2>
@@ -491,7 +499,7 @@
 </div>
 
 <!-- print funtion -->
-<script src="{% static 'js/print_function.js' %}"></script>
+<script src="{% static 'js/print_function.js' %}" defer></script>
 
 
 <!-- reply button -->
