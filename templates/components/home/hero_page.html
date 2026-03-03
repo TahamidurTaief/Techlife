@@ -43,7 +43,7 @@
               <p
                 class="text-sm sm:text-sm md:text-md text-gray-100 line-clamp-2 sm:line-clamp-3 max-w-2xl"
               >
-                {{ blog.description|truncatewords:20 }}
+                {{ blog.description|safe|truncatewords:20 }}
               </p>
 
               <!-- Author and Date -->
