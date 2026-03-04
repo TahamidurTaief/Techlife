@@ -12,10 +12,16 @@ SECRET_KEY = "django-insecure-#tblx)k33leost0v7$9m!9iel*ah86s=h5%qmp9knpwc-c+t7q
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "Asia/Dhaka"   
+USE_I18N = True
+USE_TZ = True
+
+
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
-# Application definition
 
 INSTALLED_APPS = [
 
@@ -51,7 +57,7 @@ INSTALLED_APPS = [
     "imagekit",
     
     'rest_framework',
-
+    "maintenance",
     "google_add",
     "contact",
     "forum",
@@ -112,6 +118,8 @@ MIDDLEWARE = [
     "blog_post.middleware.Redirect404Middleware", 
 
     "django_htmx.middleware.HtmxMiddleware",
+    # site maintenance con
+    "maintenance.middleware.MaintenanceMiddleware",
 ]
 
 ROOT_URLCONF = "root.urls"
@@ -134,6 +142,7 @@ TEMPLATES = [
                 "forum.context_processors.global_follow_list",
                 "google_add.context_processors.google_adds",
                 "site_settings.context_processors.site_settings",
+                "maintenance.context_processors.maintenance", 
 
 
 

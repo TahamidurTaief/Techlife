@@ -1,0 +1,423 @@
+{% if maintenance_active %}
+<style>
+    .mnt-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.25rem;
+        animation: mnt-fade 0.3s ease both;
+    }
+    
+    @keyframes mnt-fade {
+        from {
+            opacity: 0
+        }
+        to {
+            opacity: 1
+        }
+    }
+    
+    .mnt-card {
+        animation: mnt-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: 0.07s;
+    }
+    
+    @keyframes mnt-up {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    @keyframes mnt-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .mnt-countdown {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .mnt-cd-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        min-width: 54px;
+    }
+    
+    .mnt-cd-num {
+        font-size: 1.9rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+    
+    .mnt-cd-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    
+    .mnt-cd-sep {
+        font-size: 1.5rem;
+        font-weight: 300;
+        line-height: 1;
+        margin-bottom: 14px;
+        opacity: 0.3;
+    }
+    
+    .mnt-cd-expired {
+        font-size: 0.8rem;
+        font-weight: 500;
+        opacity: 0.55;
+        text-align: center;
+    }
+</style>
+
+{% if maintenance_type == "site" %}
+<style>
+    .mnt-overlay {
+        background: rgba(10, 10, 14, 0.75);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .mnt-site-card {
+        background: #111118;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 400px;
+        padding: 2.5rem 2.25rem 2.25rem;
+        text-align: center;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+        color: #fff;
+    }
+    
+    .mnt-site-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .mnt-site-icon svg {
+        width: 30px;
+        height: 30px;
+        color: rgba(255, 255, 255, 0.65);
+        animation: mnt-spin 8s linear infinite;
+    }
+    
+    .mnt-site-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #fff;
+        margin-bottom: 0.55rem;
+    }
+    
+    .mnt-site-desc {
+        font-size: 0.85rem;
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.45);
+        max-width: 28ch;
+        margin: 0 auto 1.75rem;
+    }
+    
+    .mnt-site-timer-wrap {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 1.5rem;
+    }
+    
+    .mnt-site-timer-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 0.9rem;
+    }
+    
+    .mnt-site-card .mnt-cd-num {
+        color: #ffffff;
+    }
+    
+    .mnt-site-card .mnt-cd-label {
+        color: rgba(255, 255, 255, 0.35);
+    }
+    
+    .mnt-site-card .mnt-cd-sep {
+        color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .mnt-site-card .mnt-cd-expired {
+        color: rgba(255, 255, 255, 0.45);
+    }
+</style>
+
+<div class="mnt-overlay" role="dialog" aria-modal="true">
+    <div class="mnt-card mnt-site-card">
+        <div class="mnt-site-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+        <path d="M19.622 10.395l-1.097-2.65L20 6l-2-2-1.735 1.483-2.707-1.113L12.935 2h-1.954l-.632 2.401-2.645 1.115L6 4 4 6l1.453 1.789-1.08 2.657L2 11v2l2.416.655L5.49 16.31 4 18l2 2 1.791-1.46 2.606 1.072L11 22h2l.604-2.387 2.651-1.098C16.697 19.48 18 20 18 20l2-2-1.484-1.75 1.098-2.652L22 13v-2l-2.378-.605Z"/>
+      </svg>
+        </div>
+        <h2 class="mnt-site-title">Site is under maintenance</h2>
+        <p class="mnt-site-desc">We're working hard to improve the experience. Stay tuned!</p>
+        {% if maintenance_until_ms %}
+        <div class="mnt-site-timer-wrap">
+            <p class="mnt-site-timer-label">Back online in</p>
+            <div class="mnt-countdown" id="mnt-s-countdown">
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-h">00</span><span class="mnt-cd-label">Hours</span></div>
+                <span class="mnt-cd-sep">:</span>
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-m">00</span><span class="mnt-cd-label">Mins</span></div>
+                <span class="mnt-cd-sep">:</span>
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-s">00</span><span class="mnt-cd-label">Secs</span></div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% elif maintenance_type == "forum" %}
+<style>
+    .mnt-overlay {
+        background: rgba(9, 9, 11, 0.5);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+    }
+    
+    .mnt-forum-card {
+        background: #ffffff;
+        border: 1px solid #e4e4e7;
+        border-radius: 18px;
+        width: 100%;
+        max-width: 390px;
+        padding: 2.25rem 2rem 1.75rem;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mnt-forum-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background: #f4f4f5;
+        border: 1px solid #e4e4e7;
+        border-radius: 14px;
+        margin-bottom: 1.4rem;
+    }
+    
+    .mnt-forum-icon svg {
+        width: 28px;
+        height: 28px;
+        color: #3f3f46;
+        animation: mnt-spin 8s linear infinite;
+    }
+    
+    .mnt-forum-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: #09090b;
+        margin-bottom: 0.5rem;
+    }
+    
+    .mnt-forum-desc {
+        font-size: 0.84rem;
+        line-height: 1.65;
+        color: #71717a;
+        max-width: 28ch;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .mnt-forum-timer-wrap {
+        border-top: 1px solid #f4f4f5;
+        padding-top: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .mnt-forum-timer-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #a1a1aa;
+        margin-bottom: 0.85rem;
+    }
+    
+    .mnt-forum-card .mnt-cd-num {
+        color: #09090b;
+    }
+    
+    .mnt-forum-card .mnt-cd-label {
+        color: #a1a1aa;
+    }
+    
+    .mnt-forum-card .mnt-cd-sep {
+        color: #d4d4d8;
+    }
+    
+    .mnt-forum-card .mnt-cd-expired {
+        color: #a1a1aa;
+    }
+    
+    .mnt-forum-footer {
+        border-top: 1px solid #f4f4f5;
+        padding-top: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+    
+    .mnt-forum-note {
+        font-size: 11px;
+        color: #a1a1aa;
+        text-align: left;
+        line-height: 1.5;
+    }
+    
+    .mnt-forum-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #18181b;
+        text-decoration: none;
+        background: #f4f4f5;
+        border: 1px solid #e4e4e7;
+        padding: 6px 14px;
+        border-radius: 8px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background 0.15s;
+    }
+    
+    .mnt-forum-btn:hover {
+        background: #e4e4e7;
+    }
+    
+    .mnt-forum-btn svg {
+        width: 11px;
+        height: 11px;
+        color: #71717a;
+    }
+</style>
+
+<div class="mnt-overlay" role="dialog" aria-modal="true">
+    <div class="mnt-card mnt-forum-card">
+        <div class="mnt-forum-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+        <path d="M19.622 10.395l-1.097-2.65L20 6l-2-2-1.735 1.483-2.707-1.113L12.935 2h-1.954l-.632 2.401-2.645 1.115L6 4 4 6l1.453 1.789-1.08 2.657L2 11v2l2.416.655L5.49 16.31 4 18l2 2 1.791-1.46 2.606 1.072L11 22h2l.604-2.387 2.651-1.098C16.697 19.48 18 20 18 20l2-2-1.484-1.75 1.098-2.652L22 13v-2l-2.378-.605Z"/>
+      </svg>
+        </div>
+        <h2 class="mnt-forum-title">Forum is under maintenance</h2>
+        <p class="mnt-forum-desc">We're improving the forum. Rest of the site is fully accessible.</p>
+        {% if maintenance_until_ms %}
+        <div class="mnt-forum-timer-wrap">
+            <p class="mnt-forum-timer-label">Back online in</p>
+            <div class="mnt-countdown" id="mnt-f-countdown">
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-h">00</span><span class="mnt-cd-label">Hours</span></div>
+                <span class="mnt-cd-sep">:</span>
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-m">00</span><span class="mnt-cd-label">Mins</span></div>
+                <span class="mnt-cd-sep">:</span>
+                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-s">00</span><span class="mnt-cd-label">Secs</span></div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="mnt-forum-footer">
+            <span class="mnt-forum-note">Rest of the site<br>is fully accessible.</span>
+            <a href="/" class="mnt-forum-btn">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2.5L4 6l4 3.5"/>
+        </svg> Homepage
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endif %} {# ── DEBUG — browser console এ দেখাবে, fix হলে এই block টা delete করো ── #}
+<script>
+    console.group("[Maintenance Debug]");
+    console.log("maintenance_type    :", "{{ maintenance_type }}");
+    console.log("maintenance_until_ms:", "{{ maintenance_until_ms }}");
+    console.log("maintenance_until_raw:", "{{ maintenance_until_raw }}");
+    console.log("server_now_ms       :", "{{ server_now_ms }}");
+    console.log("deadline as Date    :", new Date(Number("{{ maintenance_until_ms }}")));
+    console.log("diff (ms)           :", Number("{{ maintenance_until_ms }}") - Date.now());
+    console.groupEnd();
+</script>
+
+{% if maintenance_until_ms %}
+<script>
+    (function() {
+        var deadline = {
+            {
+                maintenance_until_ms
+            }
+        };
+
+        function pad(n) {
+            return n < 10 ? "0" + n : "" + n;
+        }
+
+        { %
+            if maintenance_type == "site" %
+        }
+        var hEl = document.getElementById("mnt-s-h");
+        var mEl = document.getElementById("mnt-s-m");
+        var sEl = document.getElementById("mnt-s-s");
+        var wrap = document.getElementById("mnt-s-countdown"); { %
+            else %
+        }
+        var hEl = document.getElementById("mnt-f-h");
+        var mEl = document.getElementById("mnt-f-m");
+        var sEl = document.getElementById("mnt-f-s");
+        var wrap = document.getElementById("mnt-f-countdown"); { % endif %
+        }
+
+        function tick() {
+            var diff = deadline - Date.now();
+            if (diff <= 0) {
+                wrap.innerHTML = '<p class="mnt-cd-expired">Finishing up \u2014 back very soon.</p>';
+                return;
+            }
+            var total = Math.floor(diff / 1000);
+            hEl.textContent = pad(Math.floor(total / 3600));
+            mEl.textContent = pad(Math.floor((total % 3600) / 60));
+            sEl.textContent = pad(total % 60);
+        }
+
+        tick();
+        var t = setInterval(function() {
+            tick();
+            if (deadline - Date.now() <= 0) clearInterval(t);
+        }, 1000);
+    })();
+</script>
+{% endif %} {% endif %}

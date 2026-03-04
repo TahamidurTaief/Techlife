@@ -27,8 +27,6 @@ def questions(request, slug):
         ).distinct()
        
 
-
-
     # filter for sort by
     sort_by = request.GET.get('sort', 'best')
 

@@ -98,6 +98,7 @@
     </script>
     {% endif %}
 
+    <link rel="icon" type="image/webp" href="{% static 'image/company_logo.webp' %}">
 
     <style>
         .category-header-bg {
@@ -148,7 +149,7 @@
 </head>
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
-
+    {% include "maintenance/maintenance_modal.html" %}
     <!-- loader -->
     <!-- <div id="loader-wrapper">
         <div class="loader"></div>

@@ -3,7 +3,7 @@ from forum.views import toggle_follow,forum_user_profile_details ,forum_all_user
 
 
 urlpatterns = [
-    path("all_question/",questions_list, name="questions_list"),
+    path("questions/",questions_list, name="questions_list"),
     path("questions/<slug:slug>/",questions, name="questions"),
     path("question/<slug:slug>/answer/",post_answer,name="post_answer"),
 
