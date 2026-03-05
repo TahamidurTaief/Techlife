@@ -173,7 +173,7 @@ def home(request):
         "-created_at"
     )[:5]
 
-    top_users = CustomUserModel.objects.filter(is_verified=True) \
+    top_users = CustomUserModel.objects.filter(is_verified=True,is_superuser=False) \
     .annotate(post_count=Count('authored_posts')) \
     .order_by('-post_count')[:4]
 
