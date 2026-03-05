@@ -100,7 +100,7 @@ UNFOLD = {
     "SITE_HEADER_TEXT": "TechLife Admin Dashboard",  # text to show next to logo
     "SITE_TITLE": "TechLife Control Panel",  # browser tab title
     "SITE_LOGO": "/static/image/logo-front.PNG",
-    # "SITE_FAVICON": "/static/image/company_logo.PNG",
+"SITE_FAVICON": "/static/image/company_logo.ico",
     "SHOW_APP_NAME": True,
 }
 
@@ -204,6 +204,11 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+WHITENOISE_MIMETYPES = {
+    '.ico': 'image/x-icon'
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

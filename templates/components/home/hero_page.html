@@ -4,7 +4,7 @@
 
 <div class="max-w-7xl mx-auto hero_section -mt-[50px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6 w-full px-3 pt-5 lg:pt-4 mb-10">
     <!-- Left Section Carousel and Blogs and Add -->
-    <div class="w-full md:col-span-2 lg:col-span-2 xl:col-span-3 flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+    <div class="w-full md:col-span-2 lg:col-span-2 xl:col-span-3 flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <!-- Enhanced Blog Carousel -->
         <div class="blog-carousel relative rounded-2xl shadow-sm overflow-hidden group mb-4" x-data="blogCarousel()">
             <div class="carousel-container relative h-48 sm:h-64 md:h-80 lg:h-96" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
@@ -129,7 +129,7 @@
 </div>
 
 <!-- Middle Section -->
-<div class="w-full md:col-span-1 xl:col-span-2 px-3 py-2 border border-gray-200 rounded-lg flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+<div class="w-full md:col-span-1 xl:col-span-2 px-3 py-2 border border-gray-200 rounded-lg flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
     {% if latest_blog %}
     <a hx-get="{% url 'blog_details' latest_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex flex-col cursor-pointer">
         <div class="flex w-full mb-6 rounded-md flex-col gap-1 group relative overflow-hidden">
@@ -213,14 +213,14 @@
   <div class="w-full justify-start overflow-hidden md:col-span-2 lg:col-span-1 flex flex-col gap-y-2 lg:gap-y-1"
     data-aos="fade-up"
     data-aos-anchor-placement="top-bottom"
-    data-aos-duration="500">
+    >
     <!-- Top question -->
 
     <div
       class="mb-2"
       data-aos="fade-up"
       data-aos-anchor-placement="top-bottom"
-      data-aos-duration="500"
+      
     >
       <i class="fa-solid fa-trophy"></i>
       <span class="text-lg font-bold text-center text-gray-950"
@@ -233,14 +233,14 @@
       class="space-y-1"
       data-aos="fade-up"
       data-aos-anchor-placement="top-bottom"
-      data-aos-duration="500"
+      
     >
       {% for user in top_users|slice:"4" %}
       <li
         class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer"
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
-        data-aos-duration="500"
+       
       >
         {% if not user.profile_picture %}
         <div
@@ -271,13 +271,11 @@
       class="mt-5"
       data-aos="fade-up"
       data-aos-anchor-placement="top-bottom"
-      data-aos-duration="500"
     >
       <div
         class="p-3"
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
-        data-aos-duration="500"
       >
         <i class="fa-solid fa-trophy"></i>
         <span class="text-lg font-bold text-center text-gray-950"
@@ -290,7 +288,6 @@
         class="space-y-1"
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
-        data-aos-duration="500"
       >
         {% for user in top_users|slice:"3" %}
 
@@ -299,7 +296,6 @@
           class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer"
           data-aos="fade-up"
           data-aos-anchor-placement="top-bottom"
-          data-aos-duration="500"
         >
           {% if not user.profile_picture %}
           <div
@@ -342,7 +338,6 @@
         class="p-1 mt-4"
         data-aos="fade-up"
         data-aos-anchor-placement="top-bottom"
-        data-aos-duration="500"
       >
         <i class="fa-solid fa-tag"></i>
         <span class="text-lg font-bold mb-2 text-gray-950">Popular Tags</span>

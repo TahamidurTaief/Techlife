@@ -78,10 +78,10 @@
 
     <!-- Google AdSense Script -->
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
     <!-- favicon section -->
-    <link rel="icon" type="image/x-icon" href="{% static 'image/company_logo.webp' %}">
-    <link rel="icon" type="image/webp" href="{% static 'image/company_logo.webp' %}">
-    <link rel="apple-touch-icon" href="{% static 'image/company_logo.webp' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'image/company_logo.ico' %}?v=2">
+    <link rel="shortcut icon" href="{% static 'image/company_logo.ico' %}?v=2">
 
 
     <!-- Google Analytics -->
@@ -98,7 +98,7 @@
     </script>
     {% endif %}
 
-    <link rel="icon" type="image/webp" href="{% static 'image/company_logo.webp' %}">
+
 
     <style>
         .category-header-bg {
@@ -149,6 +149,9 @@
 </head>
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
+
+
+    <!-- under maintenance modal -->
     {% include "maintenance/maintenance_modal.html" %}
     <!-- loader -->
     <!-- <div id="loader-wrapper">
@@ -166,7 +169,6 @@
         {% endfor %} {% endif %}
     </div>
     {% include 'include/navbar.html' %} {% include 'include/notification.html' %}
-
 
 
     <!-- Main Content -->

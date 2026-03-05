@@ -34,7 +34,7 @@ class MaintenanceSettingsAdmin(ModelAdmin):
                 "fields": (
                     "site_under_maintenance",
                     "forum_under_maintenance",
-                    "maintenance_until",
+                    # "maintenance_until",
                 ),
             },
         ),
@@ -44,7 +44,7 @@ class MaintenanceSettingsAdmin(ModelAdmin):
         "panel_label",
         "site_badge",
         "forum_badge",
-        "maintenance_until",
+        # "maintenance_until",
         "last_updated",
     )
 

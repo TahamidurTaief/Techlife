@@ -45,12 +45,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" /> {% comment %} use for markdown editor {% endcomment %} {% comment %}
-    <!-- SimpleMDE CSS -->
-    <link rel="stylesheet" h ref="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-
-    <!-- SimpleMDE JS -->
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script> {% endcomment %}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <!-- CKEditor 5 Classic Build -->
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
@@ -65,7 +60,7 @@
 
 
     <!-- HTMX & Alpine.js -->
-    <script src="https://unpkg.com/htmx.org@1.9.12" xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12" xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd" crossorigin="anonymous" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.0/dist/cdn.min.js" defer></script>
 
@@ -75,13 +70,15 @@
 
 
 
-    <!-- Font Awesome Free CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> {% block extra_head %} {% endblock extra_head %}
+
+    <!-- favicon section -->
+    <link rel="icon" type="image/x-icon" href="{% static 'image/company_logo.ico' %}?v=2">
+    <link rel="shortcut icon" href="{% static 'image/company_logo.ico' %}?v=2">
 
 
     <!-- for question modal -->

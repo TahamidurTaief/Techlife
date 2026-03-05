@@ -91,111 +91,143 @@
 {% if maintenance_type == "site" %}
 <style>
     .mnt-overlay {
-        background: rgba(10, 10, 14, 0.75);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        background: rgba(9, 9, 11, 0.5);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
     }
     
-    .mnt-site-card {
-        background: #111118;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 20px;
+    .mnt-forum-card {
+        background: #ffffff;
+        border: 1px solid #e4e4e7;
+        border-radius: 18px;
         width: 100%;
-        max-width: 400px;
-        padding: 2.5rem 2.25rem 2.25rem;
+        max-width: 390px;
+        padding: 2.25rem 2rem 1.75rem;
         text-align: center;
-        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
-        color: #fff;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
     
-    .mnt-site-icon {
+    .mnt-forum-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 64px;
-        height: 64px;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        margin-bottom: 1.5rem;
+        width: 60px;
+        height: 60px;
+        background: #f4f4f5;
+        border: 1px solid #e4e4e7;
+        border-radius: 14px;
+        margin-bottom: 1.4rem;
     }
     
-    .mnt-site-icon svg {
-        width: 30px;
-        height: 30px;
-        color: rgba(255, 255, 255, 0.65);
+    .mnt-forum-icon svg {
+        width: 28px;
+        height: 28px;
+        color: #3f3f46;
         animation: mnt-spin 8s linear infinite;
     }
     
-    .mnt-site-title {
-        font-size: 1.35rem;
+    .mnt-forum-title {
+        font-size: 1.2rem;
         font-weight: 700;
         letter-spacing: -0.02em;
-        color: #fff;
-        margin-bottom: 0.55rem;
+        color: #09090b;
+        margin-bottom: 0.5rem;
     }
     
-    .mnt-site-desc {
-        font-size: 0.85rem;
+    .mnt-forum-desc {
+        font-size: 0.84rem;
         line-height: 1.65;
-        color: rgba(255, 255, 255, 0.45);
+        color: #71717a;
         max-width: 28ch;
-        margin: 0 auto 1.75rem;
+        margin: 0 auto 1.5rem;
     }
     
-    .mnt-site-timer-wrap {
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-top: 1.5rem;
+    .mnt-forum-timer-wrap {
+        border-top: 1px solid #f4f4f5;
+        padding-top: 1.25rem;
+        margin-bottom: 1.25rem;
     }
     
-    .mnt-site-timer-label {
+    .mnt-forum-timer-label {
         font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.3);
-        margin-bottom: 0.9rem;
+        color: #a1a1aa;
+        margin-bottom: 0.85rem;
     }
     
-    .mnt-site-card .mnt-cd-num {
-        color: #ffffff;
+    .mnt-forum-card .mnt-cd-num {
+        color: #09090b;
     }
     
-    .mnt-site-card .mnt-cd-label {
-        color: rgba(255, 255, 255, 0.35);
+    .mnt-forum-card .mnt-cd-label {
+        color: #a1a1aa;
     }
     
-    .mnt-site-card .mnt-cd-sep {
-        color: rgba(255, 255, 255, 0.2);
+    .mnt-forum-card .mnt-cd-sep {
+        color: #d4d4d8;
     }
     
-    .mnt-site-card .mnt-cd-expired {
-        color: rgba(255, 255, 255, 0.45);
+    .mnt-forum-card .mnt-cd-expired {
+        color: #a1a1aa;
+    }
+    
+    .mnt-forum-footer {
+        border-top: 1px solid #f4f4f5;
+        padding-top: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+    
+    .mnt-forum-note {
+        font-size: 11px;
+        color: #a1a1aa;
+        text-align: left;
+        line-height: 1.5;
+    }
+    
+    .mnt-forum-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #18181b;
+        text-decoration: none;
+        background: #f4f4f5;
+        border: 1px solid #e4e4e7;
+        padding: 6px 14px;
+        border-radius: 8px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background 0.15s;
+    }
+    
+    .mnt-forum-btn:hover {
+        background: #e4e4e7;
+    }
+    
+    .mnt-forum-btn svg {
+        width: 11px;
+        height: 11px;
+        color: #71717a;
     }
 </style>
 
 <div class="mnt-overlay" role="dialog" aria-modal="true">
-    <div class="mnt-card mnt-site-card">
-        <div class="mnt-site-icon">
+    <div class="mnt-card mnt-forum-card">
+        <div class="mnt-forum-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
         <path d="M19.622 10.395l-1.097-2.65L20 6l-2-2-1.735 1.483-2.707-1.113L12.935 2h-1.954l-.632 2.401-2.645 1.115L6 4 4 6l1.453 1.789-1.08 2.657L2 11v2l2.416.655L5.49 16.31 4 18l2 2 1.791-1.46 2.606 1.072L11 22h2l.604-2.387 2.651-1.098C16.697 19.48 18 20 18 20l2-2-1.484-1.75 1.098-2.652L22 13v-2l-2.378-.605Z"/>
       </svg>
         </div>
-        <h2 class="mnt-site-title">Site is under maintenance</h2>
-        <p class="mnt-site-desc">We're working hard to improve the experience. Stay tuned!</p>
-        {% if maintenance_until_ms %}
-        <div class="mnt-site-timer-wrap">
-            <p class="mnt-site-timer-label">Back online in</p>
-            <div class="mnt-countdown" id="mnt-s-countdown">
-                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-h">00</span><span class="mnt-cd-label">Hours</span></div>
-                <span class="mnt-cd-sep">:</span>
-                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-m">00</span><span class="mnt-cd-label">Mins</span></div>
-                <span class="mnt-cd-sep">:</span>
-                <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-s-s">00</span><span class="mnt-cd-label">Secs</span></div>
-            </div>
-        </div>
-        {% endif %}
+        <h2 class="mnt-forum-title">Site is under maintenance</h2>
+        <p class="mnt-forum-desc">We're improving the forum. Rest of the site is fully accessible.</p>
+
     </div>
 </div>
 
@@ -341,13 +373,13 @@
         {% if maintenance_until_ms %}
         <div class="mnt-forum-timer-wrap">
             <p class="mnt-forum-timer-label">Back online in</p>
-            <div class="mnt-countdown" id="mnt-f-countdown">
+            <!-- <div class="mnt-countdown" id="mnt-f-countdown">
                 <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-h">00</span><span class="mnt-cd-label">Hours</span></div>
                 <span class="mnt-cd-sep">:</span>
                 <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-m">00</span><span class="mnt-cd-label">Mins</span></div>
                 <span class="mnt-cd-sep">:</span>
                 <div class="mnt-cd-block"><span class="mnt-cd-num" id="mnt-f-s">00</span><span class="mnt-cd-label">Secs</span></div>
-            </div>
+            </div> -->
         </div>
         {% endif %}
         <div class="mnt-forum-footer">
