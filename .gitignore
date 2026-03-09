@@ -122,8 +122,8 @@ Thumbs.db
 *.orig
 
 # Django migrations (optional - uncomment if you want to ignore migrations)
-*/migrations/*.py
-!*/migrations/__init__.py
+
+
 
 
 
