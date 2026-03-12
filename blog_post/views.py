@@ -517,6 +517,22 @@ def update_blog_stat(request, slug, stat_type):
 
 
 
+import re
+import hashlib
+import logging
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.urls import reverse
+from blog_post.groq_service import check_adult_content, check_copyright, get_quality_score
+from .models import BlogPost, Category, SubCategory, Tag
+
+logger = logging.getLogger(__name__)
+
+
+def _strip_html(text: str) -> str:
+    clean = re.sub(r'<[^>]+>', '', str(text))
+    return ' '.join(clean.split()).strip()
+
 
 def create_blog(request):
     categories = Category.objects.all()
@@ -527,62 +543,121 @@ def create_blog(request):
     }
 
     if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        category_id = request.POST.get('category')
-        subcategory_id = request.POST.get('subcategory')
-        
-        # Images
+        title               = request.POST.get('title', '').strip()
+        description         = request.POST.get('description', '').strip()
+        category_id         = request.POST.get('category')
+        subcategory_id      = request.POST.get('subcategory')
         featured_image_file = request.FILES.get('featured_image')
-        featured_image_url = request.POST.get('featured_image_url')
-        tags_list_input = request.POST.get('tags_list')
+        featured_image_url  = request.POST.get('featured_image_url', '').strip()
+        tags_list_input     = request.POST.get('tags_list', '')
 
+        # ── 1. Basic validation ───────────────────────────────────────────
         if not (title and description and category_id):
             messages.error(request, "Please fill in all required fields.")
             return render(request, "components/blogs/partial_create_blog_content.html", context)
 
+        # ── 2. Title duplicate check ──────────────────────────────────────
+        if BlogPost.objects.filter(title__iexact=title).exists():
+            messages.error(request, "This title already exists in our database.")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+        # ── 3. Description duplicate check (HTML stripped + hash) ─────────
+        clean_description = _strip_html(description)
+        description_hash  = hashlib.md5(clean_description.encode("utf-8")).hexdigest()
+
+        if BlogPost.objects.filter(description_hash=description_hash).exists():
+            messages.error(request, "This content already exists in our database.")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+        # ── 4. Combined content hash check ───────────────────────────────
+        content_hash = hashlib.md5(
+            (title + clean_description).encode("utf-8")
+        ).hexdigest()
+
+        if BlogPost.objects.filter(content_hash=content_hash).exists():
+            messages.error(request, "Your title and content combination already exists.")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+        # ── 5. Image duplicate check ──────────────────────────────────────
+        image_hash = None
+        if featured_image_file:
+            try:
+                featured_image_file.seek(0)
+                img_bytes  = featured_image_file.read()
+                image_hash = hashlib.md5(img_bytes).hexdigest()
+                featured_image_file.seek(0)
+
+                if BlogPost.objects.filter(image_hash=image_hash).exists():
+                    messages.error(request, "This image already exists in our database.")
+                    return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+            except Exception as e:
+                logger.error(f"Image hash error in view: {e}")
+
+        # ── 6. Adult content check (Groq) ─────────────────────────────────
+        is_adult = check_adult_content(title, description)
+        if is_adult:
+            messages.error(request, "Your post violates our content policy (adult or harmful content detected).")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+        # ── 7. Copyright / plagiarism check (Groq) ────────────────────────
+        is_copied = check_copyright(title, description)
+        if is_copied:
+            messages.error(request, "This content appears to be copied from another source (copyright issue).")
+            return render(request, "components/blogs/partial_create_blog_content.html", context)
+
+        # ── 8. Quality score (Groq) ───────────────────────────────────────
+        quality_score = get_quality_score(title, description)
+
+        if quality_score >= 70:
+            post_status = "published"
+        else:
+            post_status = "pending"
+
+        # ── 9. Save the post ──────────────────────────────────────────────
         try:
-            category = get_object_or_404(Category, pk=category_id)
+            category    = get_object_or_404(Category, pk=category_id)
             subcategory = None
-            if subcategory_id: 
-                subcategory = SubCategory.objects.filter(pk=subcategory_id, category=category).first()
+            if subcategory_id:
+                subcategory = SubCategory.objects.filter(
+                    pk=subcategory_id, category=category
+                ).first()
 
             new_blog = BlogPost.objects.create(
-                author=request.user,
-                category=category,
-                subcategory=subcategory,
-                title=title,
-                description=description,
-                featured_image=featured_image_file if featured_image_file else None,
-                featured_image_url=featured_image_url if not featured_image_file else None
+                author             = request.user,
+                category           = category,
+                subcategory        = subcategory,
+                title              = title,
+                description        = description,
+                featured_image     = featured_image_file if featured_image_file else None,
+                featured_image_url = featured_image_url if not featured_image_file else None,
+                status             = post_status,
+                content_quality    = quality_score,
             )
 
             if tags_list_input:
-                tag_names = [tag.strip().lower() for tag in tags_list_input.split(',') if tag.strip()]
+                tag_names   = [t.strip().lower() for t in tags_list_input.split(',') if t.strip()]
                 tag_objects = [Tag.objects.get_or_create(name=name)[0] for name in tag_names]
                 new_blog.tags.set(tag_objects)
 
-            messages.success(request, "Blog post created successfully!")
+            # ── 10. User-facing message ───────────────────────────────────
+            if post_status == "published":
+                messages.success(request, "Your blog post has been published successfully!")
+            else:
+                messages.warning(
+                    request,
+                    f"Your post is under review. Quality score: {quality_score}/100. "
+                    "It will be reviewed by our team shortly."
+                )
 
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse('homepage') 
-                return response
-            
-            return redirect(reverse('homepage'))
+            return redirect('create_blog')
 
         except Exception as e:
-            print(f"Error: {e}") 
-            messages.error(request, "An internal error occurred.")
+            logger.error(f"Blog creation error: {e}")
+            messages.error(request, "An internal error occurred. Please try again.")
             return render(request, "components/blogs/partial_create_blog_content.html", context)
 
-    if request.headers.get("HX-Request"):
-        return render(request, "components/blogs/partial_create_blog_content.html", context)
-
-    return render(request, "base.html", context)
-
-
-
+    return render(request, "components/blogs/partial_create_blog_content.html", context)
 # Blog filter by category
 def category_post(request, slug):
     

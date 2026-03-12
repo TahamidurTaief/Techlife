@@ -180,7 +180,7 @@ class BlogPostAdmin(ModelAdmin, ImportExportModelAdmin):
         ("Basic Info", {
             "fields": (
                 "title", "subtitle", "slug", "category", 
-                "subcategory", "tags", "author", "status", "views"
+                "subcategory", "tags", "author", "status", "views","content_quality"
             ),
         }),
         ("Media", {

@@ -161,13 +161,186 @@
 
 
     <!-- success message for create message -->
-    <div id="toast-container" class="fixed top-5 left-5 z-50">
+    {% if messages %}
+    <div id="notification-wrapper" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 min-w-[320px] max-w-[400px]">
+        {% for message in messages %}
+        <div class="notification-toast flex items-start gap-3 px-4 py-4 rounded-xl shadow-xl border backdrop-blur-sm
+        {% if message.tags == 'error' %}
+            bg-red-50 border-red-200
+        {% elif message.tags == 'warning' %}
+            bg-amber-50 border-amber-200
+        {% else %}
+            bg-emerald-50 border-emerald-200
+        {% endif %}" data-type="{{ message.tags }}" style="animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+
+            <div class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center
+            {% if message.tags == 'error' %}bg-red-100
+            {% elif message.tags == 'warning' %}bg-amber-100
+            {% else %}bg-emerald-100{% endif %}">
+
+                {% if message.tags == 'error' %}
+                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            </svg> {% elif message.tags == 'warning' %}
+                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg> {% else %}
+                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg> {% endif %}
+            </div>
+
+            <div class="flex-1 pt-0.5">
+                <p class="text-sm font-semibold
+                {% if message.tags == 'error' %}text-red-800
+                {% elif message.tags == 'warning' %}text-amber-800
+                {% else %}text-emerald-800{% endif %}">
+                    {% if message.tags == 'error' %}Action Blocked {% elif message.tags == 'warning' %}Under Review {% else %}Success{% endif %}
+                </p>
+                <p class="text-sm mt-0.5
+                {% if message.tags == 'error' %}text-red-600
+                {% elif message.tags == 'warning' %}text-amber-600
+                {% else %}text-emerald-600{% endif %}">
+                    {{ message }}
+                </p>
+            </div>
+
+            <button onclick="closeToast(this.closest('.notification-toast'))" class="flex-shrink-0 ml-1 mt-0.5 rounded-full p-1 transition hover:bg-black/5
+            {% if message.tags == 'error' %}text-red-400 hover:text-red-600
+            {% elif message.tags == 'warning' %}text-amber-400 hover:text-amber-600
+            {% else %}text-emerald-400 hover:text-emerald-600{% endif %}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        </div>
+
+        <div class="progress-bar h-1 rounded-full -mt-3 mx-1
+        {% if message.tags == 'error' %}bg-red-300
+        {% elif message.tags == 'warning' %}bg-amber-300
+        {% else %}bg-emerald-300{% endif %}" style="animation: shrink 5s linear forwards;">
+        </div>
+
+        {% endfor %}
+    </div>
+
+    <style>
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px) scale(0.95);
+            }
+        }
+        
+        @keyframes shrink {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            function playSound(type) {
+                try {
+                    const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    if (type === 'error') {
+                        // Low, descending tone — feels like a block
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(320, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.25);
+                        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.3);
+
+                    } else if (type === 'warning') {
+                        // Two-tone ping — neutral, attention-seeking
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(440, ctx.currentTime);
+                        osc.frequency.setValueAtTime(380, ctx.currentTime + 0.15);
+                        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.4);
+
+                    } else {
+                        // Rising, clean tone — satisfying success
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(480, ctx.currentTime);
+                        osc.frequency.exponentialRampToValueAtTime(720, ctx.currentTime + 0.2);
+                        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                        osc.start(ctx.currentTime);
+                        osc.stop(ctx.currentTime + 0.35);
+                    }
+                } catch (e) {}
+            }
+
+            window.closeToast = function(toast) {
+                if (!toast) return;
+                toast.style.animation = 'slideOutRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+                const bar = toast.nextElementSibling;
+                if (bar && bar.classList.contains('progress-bar')) {
+                    bar.style.animation = 'none';
+                    bar.style.opacity = '0';
+                }
+                setTimeout(() => {
+                    toast.remove();
+                    if (bar) bar.remove();
+                    const wrapper = document.getElementById('notification-wrapper');
+                    if (wrapper && wrapper.children.length === 0) wrapper.remove();
+                }, 300);
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const toasts = document.querySelectorAll('.notification-toast');
+                toasts.forEach(function(toast) {
+                    const type = toast.dataset.type || 'success';
+                    playSound(type);
+
+                    // Auto dismiss after 5s
+                    setTimeout(function() {
+                        closeToast(toast);
+                    }, 5000);
+                });
+            });
+        })();
+    </script>
+    {% endif %}
+    <!-- <div id="toast-container" class="fixed top-5 left-5 z-50">
         {% if messages %} {% for message in messages %}
         <div class="toast-message bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg mb-3 transition-opacity duration-500">
             {{ message }}
         </div>
         {% endfor %} {% endif %}
-    </div>
+    </div> -->
     {% include 'include/navbar.html' %} {% include 'include/notification.html' %}
 
 

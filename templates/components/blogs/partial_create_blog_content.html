@@ -1,4 +1,4 @@
-{% load static %}
+ {% extends 'base.html' %} {% load static %} {% block title %}Create Blogs - TechLife{% endblock title %} {% block content %}
 
 
 <style>
@@ -182,6 +182,8 @@
     }
 </style>
 
+
+
 <div class="max-w-7xl login-container mx-auto">
 
 
@@ -199,11 +201,11 @@
             <div class="form-group" id="category_wrapper">
                 <div class="input-wrapper">
                     <select id="category_select" name="category" required class="w-full">
-                        <option value="" disabled selected>Select Category</option>
-                        {% for category in categories %}
-                            <option value="{{ category.pk }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
+                            <option value="" disabled selected>Select Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.pk }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
                     <label for="category_select">Select Category</label>
                 </div>
             </div>
@@ -211,11 +213,11 @@
             <div class="form-group" id="subcategory_wrapper">
                 <div class="input-wrapper">
                     <select id="subcategory_select" name="subcategory" class="w-full">
-                        <option value="" disabled selected>Select Sub-Category</option>
-                        {% for subcategory in subcategories %}
-                            <option value="{{ subcategory.pk }}">{{ subcategory.name }}</option>
-                        {% endfor %}
-                    </select>
+                            <option value="" disabled selected>Select Sub-Category</option>
+                            {% for subcategory in subcategories %}
+                                <option value="{{ subcategory.pk }}">{{ subcategory.name }}</option>
+                            {% endfor %}
+                        </select>
                     <label for="subcategory_select">Sub-Category</label>
                 </div>
             </div>
@@ -268,3 +270,5 @@
 
 
 <script src="{% static 'js/create_blog.js' %}"></script>
+<!-- custom message -->
+{% endblock content %}
