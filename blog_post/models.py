@@ -12,7 +12,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=500, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     font_awesome_icon = models.CharField(default="fa-solid fa-layer-group", max_length=100, null=True, blank=True, verbose_name="Fontawesome icon", help_text="e.g: fa-solid fa-layer-group", error_messages="Enter valid class of fontawesome icon")
     # description = models.TextField(blank=True, null=True)
@@ -45,7 +45,7 @@ class SubCategory(models.Model):
         related_name='subcategories',
         verbose_name="Parent Category"
     )
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
 
@@ -78,9 +78,9 @@ class BlogPost(models.Model):
         ("rejected", "Rejected"),
     )
 
-    title = models.CharField(max_length=200)
-    subtitle = models.CharField(max_length=200, blank=True, null=True)
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
+    title = models.CharField(max_length=500)
+    subtitle = models.CharField(max_length=500, blank=True, null=True)
+    slug = models.SlugField(max_length=500, unique=True, blank=True)
     # description = models.TextField()
     description = RichTextUploadingField()
     featured_image = models.ImageField(upload_to="blog_images/", null=True, blank=True)
@@ -115,7 +115,7 @@ class BlogPost(models.Model):
     
     author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='authored_posts')
 
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     views = models.PositiveIntegerField(default=0)
 
