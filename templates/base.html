@@ -7,8 +7,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+
     <!-- Primary Meta Tags -->
-    <title>{% block title %}{{ SITE_TITLE }}{% endblock title %}</title>
+    <title>
+        {% block title %}{{ SITE_TITLE }}{% endblock title %}
+    </title>
     <meta name="description" content="{% block meta_description %}{{ META_DESCRIPTION }}{% endblock meta_description %}" />
 
     <!-- Open Graph / Facebook -->
@@ -27,37 +30,64 @@
 
     <!-- HTMX CSRF -->
     {% csrf_token %}
-    <meta name="csrf-token" content="{{ csrf_token }}" />
+    <meta name="csrf-token" content="{{ csrf_token }}" /> {% comment %} emoji picker {% endcomment %}
+    <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script> -->
 
-    <!-- Tailwind CSS (local build) -->
+    <!-- Tailwind CSS -->
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
 
-    <!-- Font Awesome (single load) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Latest Font Awesome CDN -->
 
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
 
-    <!-- Favicon -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- HTMX & Alpine.js -->
+
+    {% comment %} AOS animation {% endcomment %}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Unicons -->
+    <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" /> {% comment %} icon {% endcomment %} -->
+    <!-- Google Adsense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
+    <!-- DaisyUI Play CDN -->
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" /> -->
+
+    <!-- Poppins Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- font Awesome -->
+ {% block extra_head %} {% endblock extra_head %}
+
+    <!-- Google AdSense Script -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+    <!-- favicon section -->
     <link rel="icon" type="image/x-icon" href="{% static 'image/company_logo.ico' %}?v=2">
     <link rel="shortcut icon" href="{% static 'image/company_logo.ico' %}?v=2">
+
 
     <!-- Google Analytics -->
     {% if GOOGLE_ANALYTICS_ID %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}" defer></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
         gtag('js', new Date());
         gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
     </script>
     {% endif %}
+
+
 
     <style>
         .category-header-bg {
@@ -65,56 +95,145 @@
         }
     </style>
 
-    {% block extra_head %}{% endblock extra_head %}
+    <!-- loader -->
+    <!-- <style>
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loader-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style> -->
+
 </head>
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
 
-    <!-- Under Maintenance Modal -->
+
+    <!-- under maintenance modal -->
     {% include "maintenance/maintenance_modal.html" %}
+    <!-- loader -->
+    <!-- <div id="loader-wrapper">
+        <div class="loader"></div>
+    </div> -->
 
-    <!-- Toast Messages -->
+
+
+    <!-- success message for create message -->
     <div id="toast-container" class="fixed top-5 left-5 z-50">
-        {% if messages %}
-            {% for message in messages %}
-            <div class="toast-message bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg mb-3 transition-opacity duration-500">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
+        {% if messages %} {% for message in messages %}
+        <div class="toast-message bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg mb-3 transition-opacity duration-500">
+            {{ message }}
+        </div>
+        {% endfor %} {% endif %}
     </div>
+    {% include 'include/navbar.html' %} {% include 'include/notification.html' %}
 
-    {% include 'include/navbar.html' %}
-    {% include 'include/notification.html' %}
 
     <!-- Main Content -->
-    <main id="container" class="mt-9 mx-auto flex-grow min-h-[calc(100vh-128px)] py-6 bg-white">
+    <main id="container" class=" mt-9 mx-auto flex-grow min-h-[calc(100vh-128px)] py-6 bg-white">
+
         {% block content %}
-            {% if action == 'post_create' %} {% include 'components/blogs/partial_create_blog_content.html' %}
-            {% elif action == 'home_page' %} {% include 'components/home/home_page.html' %}
-            {% elif action == 'all_blogs' %} {% include 'components/blogs/partial_all_blog_page.html' %}
-            {% elif action == 'contact_page' %} {% include 'partial_contact_us_page.html' %}
-            {% elif action == 'category_post' %} {% include 'components/category/category_post_partial.html' %}
-            {% elif action == 'popular_blogs' %} {% include 'components/popular/popular_post_partial.html' %}
-            {% elif action == 'all_article' %} {% include 'components/category/all_article_partial.html' %}
-            {% elif action == 'popular_category_post' %} {% include 'components/popular/popular_category_post_partial.html' %}
-            {% elif action == 'blog_details' %} {% include 'components/blog_details/partial_blog_details_page.html' %}
-            {% elif action == 'right_side_update_in_blog_details' %} {% include 'components/blog_details/blog_right_side_partial.html' %}
-            {% endif %}
-        {% endblock content %}
+        <!-- Page content here -->
+        {% if action == 'post_create' %} {% include 'components/blogs/partial_create_blog_content.html' %} {% elif action == 'home_page' %} {% include 'components/home/home_page.html' %} {% elif action == 'all_blogs' %} {% include 'components/blogs/partial_all_blog_page.html'
+        %} {% elif action == 'contact_page' %} {% include 'partial_contact_us_page.html' %} {% elif action == 'category_post' %} {% include 'components/category/category_post_partial.html' %} {% elif action == 'popular_blogs' %} {% include 'components/popular/popular_post_partial.html'
+        %} {% elif action == 'all_article' %} {% include 'components/category/all_article_partial.html' %} {% elif action == 'popular_category_post' %} {% include 'components/popular/popular_category_post_partial.html' %} {% elif action == 'blog_details'
+        %} {% include 'components/blog_details/partial_blog_details_page.html' %} {% elif action == 'right_side_update_in_blog_details' %} {% include 'components/blog_details/blog_right_side_partial.html' %} {% endif %} {% endblock content %}
+
     </main>
 
     {% include 'include/footer.html' %}
 
-    <!-- Scroll to Top Button -->
-    <button id="scrollToTop"
-        class="cursor-pointer fixed bottom-6 right-6 md:bottom-28 md:right-8 z-[9999] translate-y-20 opacity-0 invisible bg-blue-400 text-white p-3 rounded-full hover:bg-blue-600 active:scale-90 transition-all duration-500 group"
-        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+
+    <!-- <script src="https://unpkg.com/lucide@latest"></script> -->
+    <script>
+        lucide.createIcons();
+    </script>
+
+
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        document.body.addEventListener('htmx:afterSwap', (event) => {
+            if (window.Alpine) {
+                window.Alpine.initTree(event.target);
+            }
+        });
+    </script>
+
+    <script>
+        document.body.addEventListener('htmx:afterSwap', (event) => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
+
+
+
+    <!-- Script js -->
+    <script src="{% static 'js/script.js' %}" defer></script>
+    <script src="{% static 'js/share_modal.js' %}" defer></script>
+    <script src="{% static 'js/success_message_for_create.js' %}" defer></script>
+
+    <script>
+        AOS.init();
+    </script>
+
+
+
+    <!-- loader -->
+    <script>
+        window.addEventListener("load", function() {
+            const loader = document.getElementById("loader-wrapper");
+            loader.classList.add("loader-hidden");
+        });
+    </script>
+
+
+    <!-- scroll top -->
+
+    <button id="scrollToTop" class="cursor-pointer fixed bottom-6 right-6 md:bottom-28 md:right-8 z-[9999] translate-y-20 opacity-0 invisible bg-blue-400 text-white p-3 rounded-full hover:bg-blue-600 active:scale-90 transition-all duration-500 group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
         aria-label="Scroll to top">
-        <svg class="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
-        </svg>
-    </button>
+    <svg class="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+</button>
 
     <style>
         .show-scroll-btn {
@@ -124,34 +243,14 @@
         }
     </style>
 
-    <!-- HTMX (single load) -->
-    <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
-
-    <!-- Alpine.js -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- AOS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <!-- Static JS -->
-    <script src="{% static 'js/script.js' %}" defer></script>
-    <script src="{% static 'js/share_modal.js' %}" defer></script>
-    <script src="{% static 'js/success_message_for_create.js' %}" defer></script>
-
     <script>
-        // AOS Init
-        AOS.init();
-
-        // Alpine + HTMX
-        document.body.addEventListener('htmx:afterSwap', (event) => {
-            if (window.Alpine) {
-                window.Alpine.initTree(event.target);
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // Scroll to top button
         const scrollBtn = document.getElementById('scrollToTop');
+
+        // Check korar jonno (Browser console-e dekhbe error thake kina)
+        if (!scrollBtn) {
+            console.error("Scroll button element-ti pawa jayni!");
+        }
+
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
                 scrollBtn.classList.add('show-scroll-btn');
@@ -161,5 +260,15 @@
         });
     </script>
 
+
+
 </body>
+
+
+
+
+
+
+</body>
+
 </html>
