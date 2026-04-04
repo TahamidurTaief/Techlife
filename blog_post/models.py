@@ -83,7 +83,7 @@ class BlogPost(models.Model):
     slug = models.SlugField(max_length=500, unique=True, blank=True)
     # description = models.TextField()
     description = RichTextUploadingField()
-    featured_image = models.ImageField(upload_to="blog_images/", null=True, blank=True)
+    featured_image = models.ImageField(upload_to="blog_images/", null=True, blank=True, max_length=500)
     featured_image_thumbnail = ImageSpecField(
             source='featured_image',
         processors=[ResizeToFill(550,380),Adjust(sharpness=1)],
