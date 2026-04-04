@@ -14,7 +14,7 @@ from imagekit.processors import ResizeToFill, Adjust
 class Category(models.Model):
     name = models.CharField(max_length=500, unique=True)
     slug = models.SlugField(unique=True, blank=True)
-    font_awesome_icon = models.CharField(default="fa-solid fa-layer-group", max_length=100, null=True, blank=True, verbose_name="Fontawesome icon", help_text="e.g: fa-solid fa-layer-group", error_messages="Enter valid class of fontawesome icon")
+    font_awesome_icon = models.CharField(default="fa-solid fa-layer-group", max_length=500, null=True, blank=True, verbose_name="Fontawesome icon", help_text="e.g: fa-solid fa-layer-group", error_messages="Enter valid class of fontawesome icon")
     # description = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
