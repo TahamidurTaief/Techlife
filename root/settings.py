@@ -147,10 +147,6 @@ TEMPLATES = [
                 "google_add.context_processors.google_adds",
                 "site_settings.context_processors.site_settings",
                 "maintenance.context_processors.maintenance", 
-
-
-
-
             ],
         },
     },
@@ -158,6 +154,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "root.wsgi.application"
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://techlife.com.bd",
+    "https://www.techlife.com.bd",
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
