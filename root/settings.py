@@ -23,7 +23,10 @@ USE_TZ = True
 
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://techlife.com.bd",
+    "https://www.techlife.com.bd",
+]
 
 
 
