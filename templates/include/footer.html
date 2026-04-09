@@ -7,8 +7,8 @@
 
             <div class="sm:col-span-2 lg:col-span-5">
                 {% if footer.logo %}
-                <img src="{{ footer.logo.url }}" alt="Logo" class="h-10 w-auto mb-5 rounded-md"> {% else %}
-                <img src="{% static 'image/logo-front.png' %}" alt="Default Logo" class="h-10 w-auto mb-5 rounded-md"> {% endif %}
+                <img src="{{ footer.logo.url }}" alt="Logo" class="h-10 w-auto mb-5 rounded-md" style="aspect-ratio: auto;" width="192" height="40" loading="lazy" decoding="async"> {% else %}
+                <img src="{% static 'image/logo-front.png' %}" alt="TechLife BD" class="h-10 w-auto mb-5 rounded-md" style="aspect-ratio: auto;" width="192" height="40" loading="lazy" decoding="async"> {% endif %}
                 <!-- <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd Logo" class="h-10 w-auto mb-5 rounded-md"> -->
                 <p class="text-sm leading-relaxed text-gray-600 mb-6 font-light line-clamp-5">
                     {{ footer.description|default:"Techlife is a curated newsletter dedicated to tech enthusiasts." }} </p>

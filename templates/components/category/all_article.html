@@ -4,7 +4,7 @@
     <div class="collapse collapse-arrow rounded-box mb-3">
         <div class="relative w-full">
             <!-- Left Scroll Button -->
-            <button id="leftBtn" class="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10">&#10094;</button>
+            <button id="leftBtn" class="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10" aria-label="Scroll categories left">&#10094;</button>
 
             <!-- Scrollable container -->
             <ul x-data="{ active: 'all' }" id="catScroll" class="flex flex-nowrap space-x-3 overflow-x-auto scrollbar-hide px-10 py-2 scroll-smooth whitespace-nowrap" x-cloak>
@@ -18,7 +18,7 @@
             </ul>
 
             <!-- Right Scroll Button -->
-            <button id="rightBtn" class="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10">&#10095;</button>
+            <button id="rightBtn" class="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10" aria-label="Scroll categories right">&#10095;</button>
         </div>
     </div>
 </div>
@@ -30,10 +30,12 @@
     <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="bg-white rounded-lg overflow-hidden hover:drop-shadow-lg duration-200 pb-2 mb-6 cursor-pointer border border-gray-200">
         <!-- Image section -->
         <div class="relative p-2 pt-3">
+            <div class="w-full overflow-hidden rounded-sm" style="aspect-ratio: 16/9; overflow: hidden;">
             {% if blog.featured_image %}
-            <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" /> {% elif blog.featured_image_url %}
-            <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" /> {% else %}
-            <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" /> {% endif %}
+            <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" /> {% elif blog.featured_image_url %}
+            <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" /> {% else %}
+            <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" /> {% endif %}
+            </div>
         </div>
 
         <!-- Category name and date -->

@@ -28,6 +28,9 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
+WHITENOISE_MAX_AGE = 31536000  # 1 year cache for static files
+WHITENOISE_AUTOREFRESH = False
+
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",

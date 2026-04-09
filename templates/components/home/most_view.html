@@ -15,12 +15,12 @@
 
                 {% for most_view in most_viewed_blogs|slice:"2:7" %}
                 <div class="flex space-x-2 items-start overflow-hidden group relative" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    <div class="flex-shrink-0 w-20 h-[70px] overflow-hidden group relative rounded-md bg-gray-300">
+                        <div class="flex-shrink-0 w-20 h-[70px] overflow-hidden group relative rounded-md bg-gray-300" style="aspect-ratio: 16/9; overflow: hidden;">
                         {% if most_view.featured_image %}
-                        <img src="{{ most_view.featured_image.url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"> {% elif most_view.featured_image_url %}
-                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"> {% endif %}
+                        <img src="{{ most_view.featured_image.url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                            group-hover:-translate-y-1 group-hover:scale-[1.02]" width="80" height="70" loading="lazy" decoding="async"> {% elif most_view.featured_image_url %}
+                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                            group-hover:-translate-y-1 group-hover:scale-[1.02]" width="80" height="70" loading="lazy" decoding="async"> {% endif %}
                     </div>
                     <a href="{% url 'blog_details' most_view.slug %}" class="cursor-pointer text-gray-800 text-sm font-medium hover:text-blue-600 transition duration-150 leading-relaxed line-clamp-2">
                         {{ most_view.title }}
@@ -35,12 +35,12 @@
         {% for most_blogs in most_viewed_blogs|slice:"1" %}
         <div class="lg:col-span-1 md:col-span-2 space-y-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
 
-            <div class="h-64 md:h-[270px] rounded-md w-full overflow-hidden relative group cursor-pointer bg-gray-300" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+            <div class="h-64 md:h-[270px] rounded-md w-full overflow-hidden relative group cursor-pointer bg-gray-300" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500" style="aspect-ratio: 16/9; overflow: hidden;">
                 {% if most_blogs.featured_image %}
-                <img src="{{ most_blogs.featured_image.url }}" alt="{{ most_blogs.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02] rounded-sm" loading="lazy" decoding="async"> {% elif most_blogs.featured_image_url %}
-                <img src="{{ most_blogs.featured_image_url }}" alt="{{ most_blogs.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02] rounded-sm" loading="lazy" decoding="async"> {% endif %}
+                <img src="{{ most_blogs.featured_image.url }}" alt="{{ most_blogs.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02] rounded-sm" width="800" height="450" loading="lazy" decoding="async"> {% elif most_blogs.featured_image_url %}
+                <img src="{{ most_blogs.featured_image_url }}" alt="{{ most_blogs.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02] rounded-sm" width="800" height="450" loading="lazy" decoding="async"> {% endif %}
             </div>
 
             <h3 class="text-xl font-bold text-gray-800 leading-tight" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
@@ -59,12 +59,12 @@
             <div class="space-y-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% for most_view in most_viewed_blogs|slice:"7:12" %}
                 <div class="flex space-x-3 items-start flex-row-reverse overflow-hidden group relative" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    <div class="flex-shrink-0 w-20 h-[70px] rounded-md bg-gray-300 overflow-hidden relative" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                        <div class="flex-shrink-0 w-20 h-[70px] rounded-md bg-gray-300 overflow-hidden relative" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500" style="aspect-ratio: 16/9; overflow: hidden;">
                         {% if most_view.featured_image %}
-                        <img src="{{ most_view.featured_image.url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"> {% elif most_view.featured_image_url %}
-                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"> {% endif %}
+                        <img src="{{ most_view.featured_image.url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                            group-hover:-translate-y-1 group-hover:scale-[1.02]" width="80" height="70" loading="lazy" decoding="async"> {% elif most_view.featured_image_url %}
+                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}" class="w-full h-full object-cover object-center transform transition-transform duration-300 ease-out 
+                            group-hover:-translate-y-1 group-hover:scale-[1.02]" width="80" height="70" loading="lazy" decoding="async"> {% endif %}
                     </div>
                     <a href="{% url 'blog_details' most_view.slug %}" class="text-gray-700 text-sm font-medium hover:text-blue-600 transition duration-150 leading-relaxed line-clamp-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         {{ most_view.title }}

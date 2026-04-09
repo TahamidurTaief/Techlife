@@ -4,12 +4,12 @@
     <!-- Mobile Search Container -->
     <div id="mobile-search-container" class="lg:hidden fixed top-0 left-0 right-0 bg-white p-4 shadow-lg hidden transition-all duration-300 z-[60]">
         <div class="flex items-center space-x-2">
-            <button onclick="toggleMobileSearch()" class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <button onclick="toggleMobileSearch()" class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Toggle search">
                 <i class="fas fa-arrow-left text-lg"></i>
             </button>
             <form action="{% url 'redirect_search_results' %}" method="GET" class="flex-1 flex">
                 <input type="search" name="q" placeholder="Search News..." class="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" autofocus />
-                <button type="submit" class="px-4 py-3 bg-blue-500 text-white rounded-r-full hover:bg-blue-600 transition-colors">
+                <button type="submit" class="px-4 py-3 bg-blue-500 text-white rounded-r-full hover:bg-blue-600 transition-colors" aria-label="Search">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
@@ -20,7 +20,7 @@
     <div class="flex items-center justify-between max-w-7xl mx-auto py-3 px-4 border-b border-gray-100">
         <!-- Left: Menu Toggle -->
         <div class="flex items-center space-x-4 w-1/3 justify-start lg:w-auto">
-            <button id="menu-toggle" class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
+            <button id="menu-toggle" class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors" aria-label="Open navigation menu">
                 <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
@@ -40,7 +40,7 @@
         </div>
 
         <a href="{% url 'homepage' %}" class="flex-grow flex justify-center items-center">
-            <img src="{% static 'image/logo-front.png' %}" alt="Logo" class="h-10" />
+            <img src="{% static 'image/logo-front.png' %}" alt="TechLife BD" class="h-10 w-auto" style="aspect-ratio: auto;" width="192" height="40" loading="lazy" decoding="async" />
         </a>
 
         <!-- Right: Actions -->
@@ -51,11 +51,11 @@
             <!-- User Auth - Hide on Mobile -->
             {% if request.user.is_authenticated and request.user.is_verified %}
             <a class="lg:flex hidden w-10 h-10 sm:w-12 sm:h-12 cursor-pointer transition-transform  " href="{% url 'user_dashboard' %}">
-                <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-full h-full rounded-full border-2 border-blue-500 object-cover" />
+                <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-full h-full rounded-full border-2 border-blue-500 object-cover" width="40" height="40" loading="lazy" decoding="async" />
             </a> {% else %}
             <a href="{% url 'login' %}" class="lg:flex hidden items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-all duration-300 hover:shadow-md font-semibold">Login</a> {% endif %}
             <!-- Mobile Search Icon -->
-            <button onclick="toggleMobileSearch()" class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
+            <button onclick="toggleMobileSearch()" class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors" aria-label="Toggle search">
                 <i class="fa fa-search text-lg"></i>
             </button>
         </div>
@@ -146,7 +146,7 @@
                 <form action="{% url 'redirect_search_results' %}" method="GET" class="relative">
                     <input type="search" name="q" placeholder="Search blogs..." class="w-64 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-full 
                   focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-                    <button type="submit" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-blue-600 transition-colors">
+                    <button type="submit" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-blue-600 transition-colors" aria-label="Search">
         <i class="fa fa-search"></i>
     </button>
                 </form>
@@ -160,10 +160,10 @@
     <!-- Mobile Sidebar -->
     <div id="mobile-sidebar" class="fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[60] lg:hidden">
         <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-white">
-            <button id="close-sidebar" class="text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
+            <button id="close-sidebar" class="text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors" aria-label="Close sidebar">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <a href="{% url 'homepage' %}"><img src="{% static 'image/logo-front.png' %}" alt="Logo" class="h-8" /></a>
+            <a href="{% url 'homepage' %}"><img src="{% static 'image/logo-front.png' %}" alt="TechLife BD" class="h-8 w-auto" style="aspect-ratio: auto;" width="192" height="40" loading="lazy" decoding="async" /></a>
             <div class="w-10"></div>
         </div>
 
@@ -173,7 +173,7 @@
                 {% if request.user.is_authenticated and request.user.is_verified %}
                 <div class="border-b border-gray-200 pb-4 mb-2">
                     <a href="{% url 'user_dashboard' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover" />
+                        <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover" width="48" height="48" loading="lazy" decoding="async" />
                         <div class="flex flex-col">
                             <span class="font-semibold text-gray-700">{% if user.first_name|length > 10 or user.last_name|length > 10 %}
                                 {{ user.first_name }} {% else %} {{ user.first_name }} {{ user.last_name }}

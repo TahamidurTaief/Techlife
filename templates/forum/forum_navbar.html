@@ -4,7 +4,7 @@
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <!-- Sidebar Toggle (Mobile) -->
-            <button id="toggleSidebar" class="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button id="toggleSidebar" class="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" aria-label="Toggle navigation menu">
                 <svg id="openIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="3" y1="12" x2="21" y2="12" />
                     <line x1="3" y1="6" x2="21" y2="6" />
@@ -20,7 +20,7 @@
             <!-- Logo -->
             <div class="flex items-center flex-shrink-0">
                 <a href="{% url 'homepage' %}" class="block">
-                    <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd" class="h-7 sm:h-8 w-auto" />
+                    <img src="{% static 'image/logo-front.png' %}" alt="TechLife BD" class="h-7 sm:h-8 w-auto" style="aspect-ratio: auto;" width="192" height="40" loading="lazy" decoding="async" />
                 </a>
             </div>
 
@@ -51,7 +51,7 @@
                 <div class="relative group">
                     <a href="{% url 'user_dashboard' %}" class="block">
                         <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 border-2 border-gray-300 overflow-hidden hover:border-blue-500 transition-all">
-                            <img class="w-full h-full object-cover" src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}" />
+                            <img class="w-full h-full object-cover" src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}" width="40" height="40" loading="lazy" decoding="async" />
                         </div>
                     </a>
                 </div>

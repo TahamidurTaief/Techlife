@@ -18,13 +18,15 @@
     <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="bg-white rounded-lg overflow-hidden hover:drop-shadow-lg duration-200 pb-2 mb-6 cursor-pointer border border-gray-200">
         <!-- Image section -->
         <div class="relative p-2 pt-3">
+            <div class="w-full overflow-hidden rounded-sm" style="aspect-ratio: 16/9; overflow: hidden;">
             {% if blog.featured_image %}
-            <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
+            <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" />
             {% elif blog.featured_image_url %}
-            <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
+            <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" />
             {% else %}
-            <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
+            <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover object-center rounded-sm" width="800" height="450" loading="lazy" decoding="async" />
             {% endif %}
+            </div>
         </div>
 
         <!-- Category name and date -->

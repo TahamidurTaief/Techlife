@@ -9,14 +9,14 @@
 
         <ul class="flex flex-col gap-y-2">
             {% for question in right_side_questions|slice:"8" %}
-            <a href="{% url 'questions' slug=question.slug %}" hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="block">
-                <li class="flex items-center gap-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group cursor-pointer">
+            <li>
+                <a href="{% url 'questions' slug=question.slug %}" hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="flex items-center gap-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group cursor-pointer">
 
                     <!-- Thumbnail -->
                     <div class="w-20 h-16 flex-shrink-0 overflow-hidden rounded-md">
                         {% if question.image %}
-                        <img src="{{ question.image.url }}" alt="{{ question.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" /> {% else %}
-                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ question.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" /> {% endif %}
+                        <img src="{{ question.image.url }}" alt="{{ question.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" width="80" height="64" loading="lazy" decoding="async" /> {% else %}
+                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ question.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" width="80" height="64" loading="lazy" decoding="async" /> {% endif %}
                     </div>
 
                     <!-- Text -->
@@ -29,9 +29,9 @@
                         </p>
                     </div>
 
-                </li>
+                </a>
                 <hr class="border-gray-100" />
-            </a>
+            </li>
             {% endfor %}
         </ul>
 

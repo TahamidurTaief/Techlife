@@ -64,7 +64,7 @@
                 <input type="search" name="q" value="{{ query|default:'' }}" placeholder="Search answers..." class="w-full pl-11 pr-14 md:pr-24 py-2.5 rounded-full border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 shadow-sm transition-all"
                 />
 
-                <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 flex items-center justify-center px-4 md:px-6 bg-gray-800 hover:bg-black text-white rounded-full transition-all active:scale-95 shadow-sm">
+                <button type="submit" class="absolute right-1.5 top-1.5 bottom-1.5 flex items-center justify-center px-4 md:px-6 bg-gray-800 hover:bg-black text-white rounded-full transition-all active:scale-95 shadow-sm" aria-label="Search">
                 <span class="md:hidden">
                     <svg fill="none" stroke="currentColor" stroke-width="2.5" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -91,7 +91,7 @@
 
         <div class="bg-white w-full pt-0.5 pb-2 rounded-lg min-w-0">
             <div class="flex items-start gap-2 md:gap-3">
-                <img src="{{ answer.author.profile_picture.url }}" class="w-7 h-7 rounded-full object-cover border flex-shrink-0" />
+                <img src="{{ answer.author.profile_picture.url }}" class="w-7 h-7 rounded-full object-cover border flex-shrink-0" width="28" height="28" loading="lazy" decoding="async" />
 
                 <div class="flex flex-col leading-tight w-full min-w-0">
                     <div class="flex flex-col md:flex-row md:items-center justify-between w-full">
