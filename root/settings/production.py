@@ -40,3 +40,5 @@ CACHES = {
         "OPTIONS": {"MAX_ENTRIES": 1000},
     }
 }
+
+SERVE_MEDIA_FILES = True
