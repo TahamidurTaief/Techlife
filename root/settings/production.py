@@ -41,4 +41,5 @@ CACHES = {
     }
 }
 
-SERVE_MEDIA_FILES = True
+# Enable media file serving for production
+SERVE_MEDIA_FILES = config("SERVE_MEDIA_FILES", default=True, cast=bool)

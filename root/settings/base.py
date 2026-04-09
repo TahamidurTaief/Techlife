@@ -157,6 +157,12 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 WHITENOISE_MIMETYPES = {
     ".ico": "image/x-icon",
+    ".webp": "image/webp",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".gif": "image/gif",
+    ".svg": "image/svg+xml",
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
