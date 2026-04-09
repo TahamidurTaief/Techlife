@@ -5,10 +5,6 @@ from django.utils import timezone
 from .manager import CustomUserManager
 import random
 from django.conf import settings
-import io
-import os
-from django.core.files.base import ContentFile
-from PIL import Image
 
 class CustomUserModel(AbstractUser):
     email = models.EmailField(unique=True)
@@ -28,24 +24,6 @@ class CustomUserModel(AbstractUser):
     username = None
 
     objects = CustomUserManager()
-
-    def save(self, *args, **kwargs):
-        if self.profile_picture and hasattr(self.profile_picture, "file"):
-            try:
-                img = Image.open(self.profile_picture)
-                if img.format != "WEBP":
-                    output = io.BytesIO()
-                    img = img.convert("RGB")
-                    img.save(output, format="WEBP", quality=82, method=6)
-                    output.seek(0)
-                    original_name = os.path.splitext(self.profile_picture.name)[0]
-                    self.profile_picture = ContentFile(
-                        output.read(),
-                        name=f"{os.path.basename(original_name)}.webp",
-                    )
-            except Exception:
-                pass
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email

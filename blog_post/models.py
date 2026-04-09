@@ -2,10 +2,6 @@ from django.db import models
 from django.utils.text import slugify
 from accounts.models import CustomUserModel
 import hashlib
-import io
-import os
-from django.core.files.base import ContentFile
-from PIL import Image
 from django.db import models
 from django.utils.text import slugify
 from accounts.models import CustomUserModel
@@ -137,23 +133,6 @@ class BlogPost(models.Model):
             """
             Custom save method with import support
             """
-            # Convert image to WebP before saving
-            if self.featured_image and hasattr(self.featured_image, "file"):
-                try:
-                    img = Image.open(self.featured_image)
-                    if img.format != "WEBP":
-                        output = io.BytesIO()
-                        img = img.convert("RGB")
-                        img.save(output, format="WEBP", quality=75, method=6)
-                        output.seek(0)
-                        original_name = os.path.splitext(self.featured_image.name)[0]
-                        self.featured_image = ContentFile(
-                            output.read(),
-                            name=f"{os.path.basename(original_name)}.webp",
-                        )
-                except Exception:
-                    pass
-
             # Check if being imported (skip auto status logic during import)
             skip_auto_status = kwargs.pop('skip_auto_status', False)
             
@@ -255,24 +234,6 @@ class BlogAdditionalImage(models.Model):
     )
     additional_image_url = models.URLField(max_length=500, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if self.additional_image and hasattr(self.additional_image, "file"):
-            try:
-                img = Image.open(self.additional_image)
-                if img.format != "WEBP":
-                    output = io.BytesIO()
-                    img = img.convert("RGB")
-                    img.save(output, format="WEBP", quality=75, method=6)
-                    output.seek(0)
-                    original_name = os.path.splitext(self.additional_image.name)[0]
-                    self.additional_image = ContentFile(
-                        output.read(),
-                        name=f"{os.path.basename(original_name)}.webp",
-                    )
-            except Exception:
-                pass
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"Image for {self.blog.title}"
 
@@ -328,24 +289,6 @@ class compnay_logo(models.Model):
         upload_to="company/image", null=True, blank=True
     )
     company_image_url = models.URLField(max_length=500, null=True, blank=True)
-
-    def save(self, *args, **kwargs):
-        if self.company_image and hasattr(self.company_image, "file"):
-            try:
-                img = Image.open(self.company_image)
-                if img.format != "WEBP":
-                    output = io.BytesIO()
-                    img = img.convert("RGB")
-                    img.save(output, format="WEBP", quality=82, method=6)
-                    output.seek(0)
-                    original_name = os.path.splitext(self.company_image.name)[0]
-                    self.company_image = ContentFile(
-                        output.read(),
-                        name=f"{os.path.basename(original_name)}.webp",
-                    )
-            except Exception:
-                pass
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

@@ -1,9 +1,6 @@
 from django.db import models
 from accounts.models import CustomUserModel
-import io
-import os
-from django.core.files.base import ContentFile
-from PIL import Image
+
 class contact_or_support(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name="contact_user", null=True, blank=True)
     name = models.CharField(max_length=100)
@@ -41,24 +38,6 @@ class FooterSettings(models.Model):
     class Meta:
         verbose_name = "Footer Setting"
         verbose_name_plural = "Footer Settings"
-
-    def save(self, *args, **kwargs):
-        if self.logo and hasattr(self.logo, "file"):
-            try:
-                img = Image.open(self.logo)
-                if img.format != "WEBP":
-                    output = io.BytesIO()
-                    img = img.convert("RGB")
-                    img.save(output, format="WEBP", quality=82, method=6)
-                    output.seek(0)
-                    original_name = os.path.splitext(self.logo.name)[0]
-                    self.logo = ContentFile(
-                        output.read(),
-                        name=f"{os.path.basename(original_name)}.webp",
-                    )
-            except Exception:
-                pass
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return "Global Footer Configuration"
