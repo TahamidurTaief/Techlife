@@ -144,7 +144,7 @@ class BlogPost(models.Model):
                     if img.format != "WEBP":
                         output = io.BytesIO()
                         img = img.convert("RGB")
-                        img.save(output, format="WEBP", quality=82, method=6)
+                        img.save(output, format="WEBP", quality=75, method=6)
                         output.seek(0)
                         original_name = os.path.splitext(self.featured_image.name)[0]
                         self.featured_image = ContentFile(
@@ -262,7 +262,7 @@ class BlogAdditionalImage(models.Model):
                 if img.format != "WEBP":
                     output = io.BytesIO()
                     img = img.convert("RGB")
-                    img.save(output, format="WEBP", quality=82, method=6)
+                    img.save(output, format="WEBP", quality=75, method=6)
                     output.seek(0)
                     original_name = os.path.splitext(self.additional_image.name)[0]
                     self.additional_image = ContentFile(

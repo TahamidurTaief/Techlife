@@ -58,7 +58,7 @@
 
                             <!-- See More Button -->
                             <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-white text-sm font-medium transition-all duration-300 hover:scale-105 group/btn w-fit">
-                                <span>See More</span>
+                                <span>Read more about {{ blog.title|truncatechars:40 }}</span>
                                 <i class="fas fa-arrow-right text-xs group-hover/btn:translate-x-1 transition-transform duration-300"></i>
                             </a>
                         </div>

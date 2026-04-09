@@ -17,7 +17,7 @@ class Command(BaseCommand):
                 if not post.featured_image.name.endswith(".webp"):
                     img = Image.open(post.featured_image.path)
                     output = io.BytesIO()
-                    img.convert("RGB").save(output, "WEBP", quality=82)
+                    img.convert("RGB").save(output, "WEBP", quality=75)
                     output.seek(0)
                     new_name = os.path.splitext(post.featured_image.name)[0] + ".webp"
                     post.featured_image.save(
