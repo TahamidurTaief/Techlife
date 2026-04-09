@@ -108,9 +108,6 @@ package-lock.json
 package.json
 
 
-media
-./media
-./media/*
 
 # Operating System files
 .DS_Store
