@@ -69,7 +69,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "root.urls"
 WSGI_APPLICATION = "root.wsgi.application"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
