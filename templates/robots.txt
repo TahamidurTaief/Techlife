@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /account/
+Disallow: /blogs/create_blog/
+Disallow: /api/
+Disallow: /ckeditor/
+Sitemap: https://techlife.com.bd/sitemap.xml

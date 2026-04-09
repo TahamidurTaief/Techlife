@@ -18,7 +18,7 @@
                     <li @click="active = '{{ cat.name }}'" :class="active === '{{ cat.name }}' 
             ? 'bg-blue-400 text-white border-blue-500 shadow-md' 
             : 'bg-white text-gray-700 border-gray-300 shadow-md'" class="rounded-lg px-3 py-1 cursor-pointer border inline-flex items-center gap-2 transition-all duration-200 hover:bg-gray-200">
-                        <a hx-get="{% url 'category_post' cat.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"><span class="text-md">{{ cat.name }}</span></a>
+                        <a href="{% url 'category_post' cat.slug %}" hx-get="{% url 'category_post' cat.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"><span class="text-md">{{ cat.name }}</span></a>
                     </li>
                     {% endfor %}
                 </ul>

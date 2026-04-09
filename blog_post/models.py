@@ -84,6 +84,8 @@ class BlogPost(models.Model):
 
     title = models.CharField(max_length=500)
     subtitle = models.CharField(max_length=500, blank=True, null=True)
+    meta_title = models.CharField(max_length=60, blank=True)
+    meta_description = models.CharField(max_length=160, blank=True)
     slug = models.SlugField(max_length=500, unique=True, blank=True)
     # description = models.TextField()
     description = RichTextUploadingField()

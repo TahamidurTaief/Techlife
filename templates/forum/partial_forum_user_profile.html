@@ -224,7 +224,7 @@
                         </div>
 
                         <div class="flex-1 ">
-                            <a hx-get="{% url 'questions' slug=question.slug %} " hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="font-inter text-[18px] font-semibold text-gray-900 mb-2 hover:text-blue-800 cursor-pointer line-clamp-2 ">
+                            <a href="{% url 'questions' slug=question.slug %} " hx-get="{% url 'questions' slug=question.slug %} " hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="font-inter text-[18px] font-semibold text-gray-900 mb-2 hover:text-blue-800 cursor-pointer line-clamp-2 ">
                                 {{ question.title }}
                             </a>
                             <p class="font-inter text-gray-600 mb-4 text-[12px] line-clamp-3 ">

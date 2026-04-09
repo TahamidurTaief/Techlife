@@ -37,16 +37,16 @@
         </div>
 
         <div x-show="open" x-transition class="absolute top-full left-14 md:left-12 mt-1 w-36 bg-white border rounded-xl shadow-xl z-20" x-cloak>
-            <a hx-get="{% url 'questions' slug=particular_question.slug %}?sort=best" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-t-xl">
+            <a href="{% url 'questions' slug=particular_question.slug %}?sort=best" hx-get="{% url 'questions' slug=particular_question.slug %}?sort=best" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-t-xl">
                 <span>Best</span>
             </a>
-            <a hx-get="{% url 'questions' slug=particular_question.slug %}?sort=old" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+            <a href="{% url 'questions' slug=particular_question.slug %}?sort=old" hx-get="{% url 'questions' slug=particular_question.slug %}?sort=old" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
                 <span>Old</span>
             </a>
-            <a hx-get="{% url 'questions' slug=particular_question.slug %}?sort=top" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+            <a href="{% url 'questions' slug=particular_question.slug %}?sort=top" hx-get="{% url 'questions' slug=particular_question.slug %}?sort=top" hx-target="#blog_post_form" hx-swap="innerHTML" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
                 <span>Top</span>
             </a>
-            <a hx-get="{% url 'questions' slug=particular_question.slug %}?sort=recently" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-b-xl">
+            <a href="{% url 'questions' slug=particular_question.slug %}?sort=recently" hx-get="{% url 'questions' slug=particular_question.slug %}?sort=recently" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 rounded-b-xl">
                 <span>Recently</span>
             </a>
         </div>
@@ -121,7 +121,7 @@
         <nav class="flex items-center gap-0.5 md:gap-1 p-1 bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-sm ring-1 ring-black/5 scale-90 md:scale-100" aria-label="Pagination">
 
             {% if paginator_answer.has_previous %}
-            <a hx-get="?page={{ paginator_answer.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
+            <a href="?page={{ paginator_answer.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-get="?page={{ paginator_answer.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
                 <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 19l-7-7 7-7"/></svg>
             </a>
             {% else %}
@@ -137,7 +137,7 @@
             </div>
 
             {% if paginator_answer.has_next %}
-            <a hx-get="?page={{ paginator_answer.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
+            <a href="?page={{ paginator_answer.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-get="?page={{ paginator_answer.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" class="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl text-gray-500 hover:bg-gray-100 transition-all cursor-pointer">
                 <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/></svg>
             </a>
             {% else %}

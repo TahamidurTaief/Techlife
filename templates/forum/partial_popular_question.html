@@ -97,7 +97,7 @@
                         <img src="{{ question.author.profile_picture.url }}" class="w-10 h-10 md:w-12 md:h-12 rounded-full flex-shrink-0" alt="avatar" />
 
                         <div class="flex-1 min-w-0">
-                            <a hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="text-base md:text-lg font-semibold text-gray-800 line-clamp-2 hover:text-blue-500 cursor-pointer leading-tight">
+                            <a href="{% url 'questions' slug=question.slug %}" hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="text-base md:text-lg font-semibold text-gray-800 line-clamp-2 hover:text-blue-500 cursor-pointer leading-tight">
                     {{ question.title }}
                 </a>
 

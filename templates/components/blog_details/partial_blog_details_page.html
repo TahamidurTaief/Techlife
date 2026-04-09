@@ -197,12 +197,12 @@
                         <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" class="flex flex-wrap items-center space-x-5 text-gray-600 font-semibold text-[13px] pr-2">
                             <!-- like section -->
                             {% if user_has_liked %}
-                            <a hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-center space-x-1 cursor-pointer text-blue-600">
+                            <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-center space-x-1 cursor-pointer text-blue-600">
 
                                 <i class="fa-solid fa-thumbs-up"></i>
                                 <span>liked</span> </a>
                             {% else %} {% if request.user.is_verified %}
-                            <a hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-center space-x-1 cursor-pointer hover:text-blue-500">
+                            <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-center space-x-1 cursor-pointer hover:text-blue-500">
 
                                 <i class="fa-solid fa-thumbs-up"></i>
                                 <span>Like</span>
@@ -465,7 +465,7 @@
         </div>
 
         {% for news in related_news|slice:":8" %}
-        <a hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-300 pb-3 group last:border-b-0">
+        <a href="{% url 'blog_details' news.slug %}" hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b border-gray-300 pb-3 group last:border-b-0">
             <div class="w-20 h-16 min-w-20 flex-shrink-0 overflow-hidden rounded-md transform transition-transform duration-300 group-hover:scale-105">
                 {% if news.featured_image %}
                 <img class="w-full h-full object-cover" src="{{ news.featured_image_thumbnail.url }}" alt="{{ news.title }}" /> {% elif news.featured_image_url %}

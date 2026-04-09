@@ -14,7 +14,7 @@
         {% for main_blog in technology_posts|slice:"1" %}
         <div class="bg-white rounded-lg overflow-hidden duration-200 pb-2 mb-6" data-aos="fade-up" data-aos-duration="500">
 
-            <a hx-get="{% url 'blog_details' main_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="group overflow-hidden relative p-2 pt-3 rounded-t-lg block cursor-pointer">
+            <a href="{% url 'blog_details' main_blog.slug %}" hx-get="{% url 'blog_details' main_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="group overflow-hidden relative p-2 pt-3 rounded-t-lg block cursor-pointer">
             {% if main_blog.featured_image %}
                 <img src="{{ main_blog.featured_image.url }}" alt="{{ main_blog.title }}" class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"/>
             {% elif main_blog.featured_image_url %}
@@ -27,7 +27,7 @@
             <div class="mt-4 px-3">
                 {% for blog in technology_posts|slice:":4" %}
                 <div class="mb-3 group" data-aos="fade-up" data-aos-duration="500">
-                    <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-1 font-semibold text-gray-800 text-md hover:text-blue-500 duration-300 font-inter cursor-pointer">
+                    <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-1 font-semibold text-gray-800 text-md hover:text-blue-500 duration-300 font-inter cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500 flex-shrink-0">
                         <path d="m6 17 5-5-5-5"/>
                         <path d="m13 17 5-5-5-5"/>
@@ -55,7 +55,7 @@
         {% for main_blog in tips_posts|slice:"1" %}
         <div class="bg-white rounded-lg overflow-hidden duration-200 pb-2 mb-6" data-aos="fade-up" data-aos-duration="500">
 
-            <a hx-get="{% url 'blog_details' main_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="group overflow-hidden relative p-2 pt-3 rounded-t-lg block cursor-pointer">
+            <a href="{% url 'blog_details' main_blog.slug %}" hx-get="{% url 'blog_details' main_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="group overflow-hidden relative p-2 pt-3 rounded-t-lg block cursor-pointer">
             {% if main_blog.featured_image %}
                 <img src="{{ main_blog.featured_image.url }}" alt="{{ main_blog.title }}" class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.02]" loading="lazy" decoding="async"loading="lazy" decoding="async"/>
             {% elif main_blog.featured_image_url %}
@@ -68,7 +68,7 @@
             <div class="mt-4 px-3">
                 {% for blog in tips_posts|slice:":4" %}
                 <div class="mb-3 group" data-aos="fade-up" data-aos-duration="500">
-                    <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-1 font-semibold text-gray-800 text-md hover:text-blue-500 duration-300 font-inter cursor-pointer">
+                    <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-1 font-semibold text-gray-800 text-md hover:text-blue-500 duration-300 font-inter cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500 flex-shrink-0 transition-transform duration-300">
                         <path d="m6 17 5-5-5-5"/>
                         <path d="m13 17 5-5-5-5"/>

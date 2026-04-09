@@ -155,6 +155,7 @@ def blog_details_view(request, slug):
 
     context = {
         "blog_detail": blog_detail,
+        "post": blog_detail,
         "related_news":related_news,
         "word_count":word_count,
         "most_viewed_blogs":most_viewed_blogs,

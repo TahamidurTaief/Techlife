@@ -9,7 +9,7 @@
 
         <ul class="flex flex-col gap-y-2">
             {% for question in right_side_questions|slice:"8" %}
-            <a hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="block">
+            <a href="{% url 'questions' slug=question.slug %}" hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="block">
                 <li class="flex items-center gap-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group cursor-pointer">
 
                     <!-- Thumbnail -->

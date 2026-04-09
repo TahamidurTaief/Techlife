@@ -111,7 +111,7 @@
         <!-- Sidebar list -->
         <div class="col-span-1 md:col-span-5 lg:col-span-4 min-w-0 space-y-4 md:space-y-3">
             {% for blog in blogs|slice:"1:6" %}
-            <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="block group mobile-touch-target">
+            <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="block group mobile-touch-target">
                 <div class="flex items-center gap-3 md:gap-4 pb-4 border-b border-gray-200">
                     <div class="w-16 h-16 md:w-20 md:h-16 flex-shrink-0 rounded overflow-hidden bg-gray-100">
                         {% if blog.featured_image %}
@@ -183,7 +183,7 @@
 
     <div class="p-4 md:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for post in sub_blogs %}
-        <a hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="p-3 flex flex-col h-full group bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+        <a href="{% url 'blog_details' post.slug %}" hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="p-3 flex flex-col h-full group bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
             <div class="aspect-video overflow-hidden flex-shrink-0 rounded-md">
                 {% if post.featured_image %}
                 <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="rounded-md w-full h-full object-cover transition duration-500" loading="lazy" decoding="async"> {% elif post.featured_image_url %}

@@ -17,27 +17,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 
-    <!-- Primary Meta Tags -->
-    <title>
-        {% block title %}{{ SITE_TITLE }}{% endblock title %}
-    </title>
-    <meta name="description" content="{% block meta_description %}{{ META_DESCRIPTION }}{% endblock meta_description %}" />
+        <!-- Primary Meta Tags -->
+        <title>{% block title %}{{ SITE_TITLE }}{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{{ META_DESCRIPTION }}{% endblock %}">
+        <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-    <meta property="og:title" content="{% block og_title %}{% block title_for_socials %}{{ self.title }}{% endblock %}{% endblock %}" />
-    <meta property="og:description" content="{% block og_description %}{% block description_for_socials %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
-    <meta property="og:image" content="{% block og_image %}{% static 'images/default_og_image.png' %}{% endblock og_image %}" />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:title" content="{% block og_title %}{{ SITE_TITLE }}{% endblock %}">
+        <meta property="og:description" content="{% block og_description %}{{ META_DESCRIPTION }}{% endblock %}">
+        <meta property="og:image" content="{% block og_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
+        <meta property="og:url" content="{{ request.build_absolute_uri }}">
+        <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+        <meta property="og:site_name" content="{{ SITE_TITLE }}">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="{{ request.build_absolute_uri }}" />
-    <meta property="twitter:title" content="{% block twitter_title %}{% block title_for_socials_twitter %}{{ self.og_title }}{% endblock %}{% endblock %}" />
-    <meta property="twitter:description" content="{% block twitter_description %}{% block description_for_socials_twitter %}{{ self.og_description }}{% endblock %}{% endblock %}" />
-    <meta property="twitter:image" content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}{% endblock %}{% endblock %}" />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{% block twitter_title %}{{ SITE_TITLE }}{% endblock %}">
+        <meta name="twitter:description" content="{% block twitter_description %}{{ META_DESCRIPTION }}{% endblock %}">
+        <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
 
-    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+        {% block structured_data %}
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "{{ SITE_TITLE }}",
+            "url": "https://techlife.com.bd",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://techlife.com.bd/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
+        {% endblock structured_data %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">

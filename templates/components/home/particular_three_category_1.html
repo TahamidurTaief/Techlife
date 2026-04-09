@@ -53,8 +53,8 @@
                 </div>
 
 
-                <a href="{% url 'category_post' first_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        More
+                <a href="{% url 'category_post' first_category.slug %}" aria-label="See all {{ first_category.name }} articles" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                    More {{ first_category.name }}
                 </a>
 
             </div>
@@ -92,9 +92,9 @@
 
                 </div>
 
-                <a href="{% url 'category_post' second_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
+                <a href="{% url 'category_post' second_category.slug %}" aria-label="See all {{ second_category.name }} articles" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
                     data-aos-duration="500">
-                        More
+                        More {{ second_category.name }}
                 </a>
             </div>
 
@@ -130,8 +130,8 @@
 
                 </div>
 
-                <a href="{% url 'category_post' third_category.slug %}" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        More
+                <a href="{% url 'category_post' third_category.slug %}" aria-label="See all {{ third_category.name }} articles" class="text-center mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                    More {{ third_category.name }}
                 </a>
             </div>
 

@@ -78,7 +78,7 @@
 
                     <a href="{% url 'questions_list' %}" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Question</a>
 
-                    <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Create
+                    <a href="{% url 'create_blog' %}" hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Create
                         Blog</a>
                 </div>
 
@@ -121,7 +121,7 @@
                 <div class="flex items-center space-x-1 flex-1 min-w-0">
                     <div class="flex items-center space-x-1 overflow-hidden">
                         {% for category in popular_categories|slice:"3" %}
-                        <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap flex-shrink-0">{{ category.name }}</a>                        {% endfor %}
+                        <a href="{% url 'category_post' category.slug %}" hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap flex-shrink-0">{{ category.name }}</a>                        {% endfor %}
                     </div>
 
                     <!-- More Categories Dropdown -->
@@ -134,7 +134,7 @@
                         <div class="absolute right-0 top-full mt-1 w-80 bg-white border border-gray-400 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <div class="p-4 grid grid-cols-2">
                                 {% for category in popular_categories|slice:"3:" %}
-                                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="cursor-pointer block px-1 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>                                {% endfor %}
+                                <a href="{% url 'category_post' category.slug %}" hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="cursor-pointer block px-1 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                 {% endfor %}
 
                 <!-- Additional Links -->
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'contact_page' %}" hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-envelope mr-3 w-5 text-center"></i> Contact
                 </a>
 

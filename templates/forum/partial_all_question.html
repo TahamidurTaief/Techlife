@@ -30,16 +30,16 @@
                         </div>
 
                         <div x-show="open" x-transition class="absolute left-0 mt-2 w-36 bg-white border rounded-2xl shadow-lg z-20" x-cloak>
-                            <a hx-get="?sort=latest{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'latest' or not request.GET.sort %}bg-gray-100 rounded-t-2xl{% endif %}">
+                            <a href="?sort=latest{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-get="?sort=latest{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'latest' or not request.GET.sort %}bg-gray-100 rounded-t-2xl{% endif %}">
                                 <span>Latest</span>
                             </a>
-                            <a hx-get="?sort=new{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'new' %}bg-gray-100{% endif %}">
+                            <a href="?sort=new{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-get="?sort=new{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'new' %}bg-gray-100{% endif %}">
                                 <span>New</span>
                             </a>
-                            <a hx-get="?sort=top{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'top' %}bg-gray-100{% endif %}">
+                            <a href="?sort=top{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-get="?sort=top{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'top' %}bg-gray-100{% endif %}">
                                 <span>Top</span>
                             </a>
-                            <a hx-get="?sort=best{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'best' %}bg-gray-100 rounded-b-2xl{% endif %}">
+                            <a href="?sort=best{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-get="?sort=best{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" @click="open = false" class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2 {% if request.GET.sort == 'best' %}bg-gray-100 rounded-b-2xl{% endif %}">
                                 <span>Best</span>
                             </a>
                         </div>
@@ -90,7 +90,7 @@
                         <img src="{{ question.author.profile_picture.url }}" class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover shrink-0" alt="avatar" />
 
                         <div class="flex-1 min-w-0">
-                            <a hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="text-base md:text-lg font-semibold text-gray-800 line-clamp-2 hover:text-blue-500 cursor-pointer transition-colors block">
+                            <a href="{% url 'questions' slug=question.slug %}" hx-get="{% url 'questions' slug=question.slug %}" hx-target="#blog_post_form" hx-swap="innerHTML" hx-push-url="true" class="text-base md:text-lg font-semibold text-gray-800 line-clamp-2 hover:text-blue-500 cursor-pointer transition-colors block">
                 {{ question.title }}
             </a>
 
@@ -162,7 +162,7 @@
                 <nav class="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md border border-gray-200/60 rounded-2xl shadow-sm ring-1 ring-black/5" aria-label="Pagination">
 
                     {% if questions.has_previous %}
-                    <a hx-get="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                    <a href="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-get="?page={{ questions.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
                         title="Previous">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M15 19l-7-7 7-7"/></svg>
                     </a>
@@ -179,7 +179,7 @@
                     </div>
 
                     {% if questions.has_next %}
-                    <a hx-get="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
+                    <a href="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-get="?page={{ questions.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.sort %}&sort={{ request.GET.sort }}{% endif %}" hx-target="#blog_post_form" hx-push-url="true" hx-swap="innerHTML" class="flex items-center justify-center w-10 h-10 rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200 cursor-pointer"
                         title="Next">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5l7 7-7 7"/></svg>
                     </a>
