@@ -13,8 +13,7 @@ DATABASES = {
         "PASSWORD": config("DB_PASSWORD"),
         "HOST": config("DB_HOST"),
         "PORT": config("DB_PORT", default="5432"),
-        "CONN_MAX_AGE": 60,
-        "OPTIONS": {"sslmode": "require"},
+        "CONN_MAX_AGE": 60, 
     }
 }
 
