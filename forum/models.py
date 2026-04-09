@@ -1,6 +1,10 @@
 from django.db import models
 from accounts.models import CustomUserModel
 from django.utils.text import slugify
+import io
+import os
+from django.core.files.base import ContentFile
+from PIL import Image
 from ckeditor_uploader.fields import RichTextUploadingField
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill, Adjust
@@ -29,6 +33,22 @@ class Question(models.Model):
 
     
     def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, "file"):
+            try:
+                img = Image.open(self.image)
+                if img.format != "WEBP":
+                    output = io.BytesIO()
+                    img = img.convert("RGB")
+                    img.save(output, format="WEBP", quality=82, method=6)
+                    output.seek(0)
+                    original_name = os.path.splitext(self.image.name)[0]
+                    self.image = ContentFile(
+                        output.read(),
+                        name=f"{os.path.basename(original_name)}.webp",
+                    )
+            except Exception:
+                pass
+
         if not self.slug:
             self.slug = slugify(self.title)
 
@@ -55,6 +75,24 @@ class Answer(models.Model):
         ordering = ['-created_at']
         verbose_name = "Answer"
         verbose_name_plural = "Answers"
+
+    def save(self, *args, **kwargs):
+        if self.image and hasattr(self.image, "file"):
+            try:
+                img = Image.open(self.image)
+                if img.format != "WEBP":
+                    output = io.BytesIO()
+                    img = img.convert("RGB")
+                    img.save(output, format="WEBP", quality=82, method=6)
+                    output.seek(0)
+                    original_name = os.path.splitext(self.image.name)[0]
+                    self.image = ContentFile(
+                        output.read(),
+                        name=f"{os.path.basename(original_name)}.webp",
+                    )
+            except Exception:
+                pass
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Answer by {self.author} on '{self.question.title}'"

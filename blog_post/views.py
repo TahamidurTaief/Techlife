@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.db.models import Count
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers
 from django.db.models import Q
 from .models import BlogPost, Category, Review, SubCategory
 from .models import BlogPost, BlogAdditionalImage, Category, Tag
@@ -40,6 +42,32 @@ def get_client_ip(request):
     if x_forwarded_for:
         return x_forwarded_for.split(',')[0].strip()
     return request.META.get('REMOTE_ADDR')
+
+
+BLOG_LIST_ONLY_FIELDS = (
+    "id",
+    "title",
+    "subtitle",
+    "slug",
+    "featured_image",
+    "featured_image_url",
+    "created_at",
+    "status",
+    "views",
+    "author__username",
+    "category__name",
+    "category__slug",
+    "category__font_awesome_icon",
+)
+
+
+def published_posts_queryset():
+    return (
+        BlogPost.objects.select_related("author", "category")
+        .prefetch_related("tags")
+        .only(*BLOG_LIST_ONLY_FIELDS)
+        .filter(status="published")
+    )
 
 
 
@@ -144,9 +172,11 @@ def blog_details_view(request, slug):
 
 
 
+@cache_page(60 * 5)
 def home(request):
-   
-    blogs = BlogPost.objects.filter(status="published")[:6]
+    published_posts = published_posts_queryset()
+
+    blogs = published_posts.order_by("-created_at")[:6]
 
     top_categories = Category.objects.annotate(
         post_count=Count('blogpost') 
@@ -156,22 +186,18 @@ def home(request):
     second_category = top_categories[1] if top_categories.count() > 1 else None
     third_category = top_categories[2] if top_categories.count() > 2 else None
 
-    first_blogs = BlogPost.objects.filter(category=first_category, status='published').order_by('-created_at')
-    second_blogs = BlogPost.objects.filter(category=second_category, status='published').order_by('-created_at')
-    third_blogs = BlogPost.objects.filter(category=third_category, status='published').order_by('-created_at')
+    first_blogs = published_posts.filter(category=first_category).order_by("-created_at")
+    second_blogs = published_posts.filter(category=second_category).order_by("-created_at")
+    third_blogs = published_posts.filter(category=third_category).order_by("-created_at")
 
 
 
-    latest_blog = (
-        BlogPost.objects.filter(status="published").order_by("-created_at").first()
-    )
+    latest_blog = published_posts.order_by("-created_at").first()
     
     all_category = Category.objects.all()
 
     # top 5 published blogs for carousel
-    carousel_blogs = BlogPost.objects.filter(status="published").order_by(
-        "-created_at"
-    )[:5]
+    carousel_blogs = published_posts.order_by("-created_at")[:5]
 
     top_users = CustomUserModel.objects.filter(is_verified=True,is_superuser=False) \
     .annotate(post_count=Count('authored_posts')) \
@@ -180,38 +206,27 @@ def home(request):
     # category wise 4 ta kore blogs nibo
     tech_cat = Category.objects.filter(slug='technology').first()
 
-    technology_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='technology'
+    technology_posts = published_posts.filter(
+        category__slug="technology"
     ).order_by("-created_at")[:4]
 
 
     news_cat = Category.objects.filter(slug='news').first()
-    news_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='news'
+    news_posts = published_posts.filter(
+        category__slug="news"
     ).order_by("-created_at")[:4]
     
 
     tips_cat = Category.objects.filter(slug='tips-tricks').first()
-    tips_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='tips-tricks'
+    tips_posts = published_posts.filter(
+        category__slug="tips-tricks"
     ).order_by("-created_at")[:4]
 
     # only latest blogs 
-    Only_latest_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at")[:1]
-    ) 
+    Only_latest_blogs = published_posts.order_by("-created_at")[:1]
     
     # latest and popular blogs
-    latest_popular_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at", "-views", "-likes")[:8]
-    ) 
+    latest_popular_blogs = published_posts.order_by("-created_at", "-views", "-likes")[:8]
     
     
     
@@ -232,11 +247,7 @@ def home(request):
 
     for category in popular_categories:
        
-        latest_post = (
-            BlogPost.objects
-            .filter(category=category, status='published')
-            .order_by('-created_at')[:1] 
-        )
+        latest_post = published_posts.filter(category=category).order_by("-created_at")[:1]
         
         if latest_post:
             post = latest_post[0]
@@ -257,27 +268,24 @@ def home(request):
         
     
     # news related post
-    news__related_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='news'
-    ).order_by("-views","-likes","-created_at")
+    news__related_posts = published_posts.filter(
+        category__slug="news"
+    ).order_by("-views", "-likes", "-created_at")
     
     # technology related post
-    Teacnology_related_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='technology'
-    ).order_by("-views","-likes","-created_at")
+    Teacnology_related_posts = published_posts.filter(
+        category__slug="technology"
+    ).order_by("-views", "-likes", "-created_at")
 
     # programming related post
-    programming_related_posts = BlogPost.objects.filter(
-        status="published", 
-        category__slug='programming'
-    ).order_by("-views","-likes","-created_at")
+    programming_related_posts = published_posts.filter(
+        category__slug="programming"
+    ).order_by("-views", "-likes", "-created_at")
 
 
 
     # Most viewed
-    most_viewed_blogs = BlogPost.objects.filter(status="published").order_by("-views")
+    most_viewed_blogs = published_posts.order_by("-views")
 
 
     #company logo
@@ -363,24 +371,15 @@ def redirect_search_results(request):
     return redirect('homepage')
 
 def all_blog_post_view(request):
+    published_posts = published_posts_queryset()
 
-    blogs = BlogPost.objects.filter(status="published").select_related(
-        "category", "author"
-    ).order_by('-created_at')
+    blogs = published_posts.order_by("-created_at")
     categories = Category.objects.all()
     
 
     # Sidebar content
-    sidebar_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at")[:10]
-    )
-    popular_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-views", "-likes")[:5]
-    )
+    sidebar_blogs = published_posts.order_by("-created_at")[:10]
+    popular_blogs = published_posts.order_by("-views", "-likes")[:5]
     
     paginator = Paginator(blogs, 8)  
     
@@ -408,14 +407,10 @@ def all_blog_post_view(request):
 
 def popular_blog_post(request):
     popular_blogs_list = (
-        BlogPost.objects.filter(
-            status="published",
-            views__gte=1000,
-        )
-        .select_related("category", "author")
-        .order_by( "-id") 
+        published_posts_queryset()
+        .filter(views__gte=1000)
+        .order_by("-id")
         .distinct()
-        
     )
     blogs_per_page = 8 
     
@@ -438,23 +433,14 @@ def popular_blog_post(request):
     return render(request, "components/popular/popular_post.html", context)
 
 def all_article(request):
-    blogs = BlogPost.objects.filter(status="published").select_related(
-        "category", "author"
-    )
+    published_posts = published_posts_queryset()
+    blogs = published_posts
     categories = Category.objects.all()
     
 
     # Sidebar content
-    sidebar_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at")[:10]
-    )
-    popular_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-views", "-likes")[:5]
-    )
+    sidebar_blogs = published_posts.order_by("-created_at")[:10]
+    popular_blogs = published_posts.order_by("-views", "-likes")[:5]
 
     context = {
         "blogs": blogs,
@@ -584,6 +570,8 @@ def create_blog(request):
 
 
 # Blog filter by category
+@cache_page(60 * 2)
+@vary_on_headers("HX-Request")
 def category_post(request, slug):
     
     category = get_object_or_404(
@@ -591,33 +579,23 @@ def category_post(request, slug):
         slug=slug
     )
 
-    blogs = (
-        BlogPost.objects.filter(category=category, status="published")
-        .select_related("category")
-        .prefetch_related("shares")
-    )
+    published_posts = published_posts_queryset()
+    blogs = published_posts.filter(category=category).prefetch_related("shares")
     
     subcategory_blogs_map = {}
     
     for subcategory in category.subcategories.all():
         sub_blogs = (
-            BlogPost.objects.filter(subcategory=subcategory, status="published")
-            .select_related("category", "subcategory")
+            published_posts
+            .filter(subcategory=subcategory)
+            .select_related("subcategory")
             .prefetch_related("shares")
         )
         if sub_blogs.exists():
             subcategory_blogs_map[subcategory] = sub_blogs
 
-    sidebar_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at")[:10]
-    )
-    popular_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-views", "-likes")[:5]
-    )
+    sidebar_blogs = published_posts.order_by("-created_at")[:10]
+    popular_blogs = published_posts.order_by("-views", "-likes")[:5]
 
     context = {
         "category": category,
@@ -766,7 +744,7 @@ def record_share(request, post_slug):
 def tag_posts(request, tag_slug):
     tag = get_object_or_404(Tag, slug=tag_slug)
 
-    blogs = BlogPost.objects.filter(tags=tag, status='published').order_by('-created_at')
+    blogs = published_posts_queryset().filter(tags=tag).order_by("-created_at")
 
 
     paginator = Paginator(blogs, 8) 

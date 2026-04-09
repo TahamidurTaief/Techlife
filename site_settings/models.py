@@ -8,6 +8,18 @@ class SiteSettings(models.Model):
         null=True,
         help_text="Google Analytics Measurement ID (e.g., G-XXXXXXXXXX)"
     )
+    gtm_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Google Tag Manager ID (e.g., GTM-XXXXXXX)"
+    )
+    meta_pixel_id = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Meta Pixel ID (e.g., 1234567890)"
+    )
     
     # SEO
     site_title = models.CharField(

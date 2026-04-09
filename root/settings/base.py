@@ -1,0 +1,178 @@
+from pathlib import Path
+from decouple import config
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+SECRET_KEY = config("SECRET_KEY")
+
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "Asia/Dhaka"
+USE_I18N = True
+USE_TZ = True
+
+CONN_MAX_AGE = 60
+
+INSTALLED_APPS = [
+    "ckeditor",
+    "ckeditor_uploader",
+    "unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.inlines",
+    "unfold.contrib.import_export",
+    "unfold.contrib.guardian",
+    "unfold.contrib.simple_history",
+    "unfold.contrib.location_field",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.humanize",
+    "django.contrib.sitemaps",
+    "django_extensions",
+    "import_export",
+    "accounts",
+    "blog_post",
+    "comments",
+    "tags",
+    "interactions",
+    "notification",
+    "earnings",
+    "imagekit",
+    "rest_framework",
+    "maintenance",
+    "google_add",
+    "contact",
+    "forum",
+    "site_settings",
+    "save_post",
+    "django_tailwind_cli",
+]
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "blog_post.middleware.Redirect404Middleware",
+    "django_htmx.middleware.HtmxMiddleware",
+    "maintenance.middleware.MaintenanceMiddleware",
+]
+
+ROOT_URLCONF = "root.urls"
+WSGI_APPLICATION = "root.wsgi.application"
+
+ALLOWED_HOSTS = []
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://techlife.com.bd",
+    "https://www.techlife.com.bd",
+]
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": ["templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "blog_post.context_processors.all_category",
+                "blog_post.context_processors.timezone_info",
+                "blog_post.context_processors.footer_context",
+                "forum.context_processors.popular_questions",
+                "blog_post.context_processors.follow_stats",
+                "forum.context_processors.global_follow_list",
+                "google_add.context_processors.google_adds",
+                "site_settings.context_processors.site_settings",
+                "maintenance.context_processors.maintenance",
+            ],
+        },
+    },
+]
+
+CKEDITOR_UPLOAD_PATH = "uploads/ckeditor/"
+
+CKEDITOR_CONFIGS = {
+    "default": {
+        "allowedContent": True,
+        "extraAllowedContent": "script[*]; iframe[*]",
+    }
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
+}
+
+UNFOLD = {
+    "SITE_HEADER": "TechLife Admin Dashboard",
+    "RESOURCES": [
+        "import_export.resources.ModelResource",
+    ],
+    "SITE_HEADER_TEXT": "TechLife Admin Dashboard",
+    "SITE_TITLE": "TechLife Control Panel",
+    "SITE_LOGO": "/static/image/logo-front.PNG",
+    "SITE_FAVICON": "/static/image/company_logo.ico",
+    "SHOW_APP_NAME": True,
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+WHITENOISE_MIMETYPES = {
+    ".ico": "image/x-icon",
+}
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "accounts.CustomUserModel"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
