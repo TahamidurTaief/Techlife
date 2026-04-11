@@ -1,10 +1,15 @@
-{% extends 'base.html' %} {% load static %} {% block title %} Popular Blogs || TechLife {% endblock title %} {% block content %}
-
-<div>
-
+<!-- ============================================================ -->
+<!-- FILE: popular_post.html                                      -->
+<!-- ============================================================ -->
+{% extends 'base.html' %} {% load static %}
+{% block title %}Popular Blogs — TechLife BD{% endblock title %}
+{% block meta_description %}Discover the most viewed and popular technology articles on TechLife BD.{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-3 py-4">
+    <div class="flex items-center gap-2 mb-4">
+        <span class="w-1 h-5 rounded bg-[#1e3a6e] inline-block"></span>
+        <h1 class="font-bold text-[15px] text-gray-800 tracking-tight">Popular Articles</h1>
+    </div>
     {% include "components/popular/popular_post_partial.html" %}
-
 </div>
-
-
 {% endblock content %}

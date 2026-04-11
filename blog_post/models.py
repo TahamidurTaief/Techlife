@@ -8,8 +8,8 @@ from accounts.models import CustomUserModel
 from tags.models import Tag
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill, Adjust
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFill, Adjust, ResizeToFit
 
 class Category(models.Model):
     name = models.CharField(max_length=500, unique=True)
@@ -85,7 +85,15 @@ class BlogPost(models.Model):
     slug = models.SlugField(max_length=500, unique=True, blank=True)
     # description = models.TextField()
     description = RichTextUploadingField()
-    featured_image = models.ImageField(upload_to="blog_images/", null=True, blank=True, max_length=500)
+    featured_image = ProcessedImageField(
+        upload_to="blog_images/",
+        processors=[ResizeToFit(1200, 800)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
+        max_length=500,
+    )
     featured_image_thumbnail = ImageSpecField(
             source='featured_image',
         processors=[ResizeToFill(550,380),Adjust(sharpness=1)],
@@ -229,8 +237,13 @@ class BlogAdditionalImage(models.Model):
     blog = models.ForeignKey(
         BlogPost, on_delete=models.CASCADE, related_name="additional_images"
     )
-    additional_image = models.ImageField(
-        upload_to="blog_images/additional/", null=True, blank=True
+    additional_image = ProcessedImageField(
+        upload_to="blog_images/additional/",
+        processors=[ResizeToFit(1200, 800)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
     )
     additional_image_url = models.URLField(max_length=500, null=True, blank=True)
 
@@ -285,8 +298,13 @@ class Post_view_ip(models.Model):
 
 class compnay_logo(models.Model):
     name = models.CharField(max_length=200, blank=True, null=True)
-    company_image = models.ImageField(
-        upload_to="company/image", null=True, blank=True
+    company_image = ProcessedImageField(
+        upload_to="company/image",
+        processors=[ResizeToFit(800, 800)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
     )
     company_image_url = models.URLField(max_length=500, null=True, blank=True)
 

@@ -1,5 +1,7 @@
 from django.db import models
 from accounts.models import CustomUserModel
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFit
 
 class contact_or_support(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name="contact_user", null=True, blank=True)
@@ -16,7 +18,13 @@ class contact_or_support(models.Model):
 
 class FooterSettings(models.Model):
     # Logo & About
-    logo = models.ImageField(upload_to='footer/', help_text="Upload the Techlife-bd Logo")
+    logo = ProcessedImageField(
+        upload_to="footer/",
+        processors=[ResizeToFit(400, 400)],
+        format="WEBP",
+        options={"quality": 80},
+        help_text="Upload the Techlife-bd Logo",
+    )
     description = models.TextField(help_text="The short 'About Us' text in the footer")
     
     # Contact Info

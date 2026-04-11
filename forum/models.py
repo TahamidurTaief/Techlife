@@ -2,15 +2,22 @@ from django.db import models
 from accounts.models import CustomUserModel
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill, Adjust
+from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.processors import ResizeToFill, Adjust, ResizeToFit
 
 class Question(models.Model):
     author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='questions',default=1)
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=500,blank=True,null=True,unique=True,db_index=True,)
     content = RichTextUploadingField(blank=True, null=True)
-    image = models.ImageField(upload_to='question_images/', null=True, blank=True)
+    image = ProcessedImageField(
+        upload_to="question_images/",
+        processors=[ResizeToFit(1200, 800)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
+    )
     image_thumbnail = ImageSpecField(
             source='image',
         processors=[ResizeToFill(550,380),Adjust(sharpness=1)],
@@ -48,7 +55,14 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
     author = models.ForeignKey(CustomUserModel,on_delete=models.CASCADE,related_name='answers')
     content = models.TextField()
-    image = models.ImageField(upload_to='answers_images/', null=True, blank=True)
+    image = ProcessedImageField(
+        upload_to="answers_images/",
+        processors=[ResizeToFit(1200, 800)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

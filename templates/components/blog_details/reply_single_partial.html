@@ -1,11 +1,16 @@
 {% load static %}
-<div class="flex gap-3 ml-12 bg-gray-50 border border-gray-100 rounded-xl p-3 shadow-sm">
-    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" class="w-8 h-8 rounded-full" />
-    <div class="flex-1">
-        <div class="flex justify-between items-center mb-1">
-            <h3 class="font-semibold text-gray-800">{{ reply.user.first_name }}</h3>
-            <span class="text-xs text-gray-500">{{ reply.created_at|date:"d M Y, h:i A" }}</span>
+
+<div class="flex gap-2 ml-10">
+    {% if reply.user.profile_picture %}
+    <img src="{{ reply.user.profile_picture.url }}" alt="{{ reply.user.first_name }}" class="w-7 h-7 rounded-full border flex-shrink-0 object-cover" />
+    {% else %}
+    <div class="w-7 h-7 rounded-full bg-[#1e3a6e]/80 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">{{ reply.user.first_name|slice:":1" }}</div>
+    {% endif %}
+    <div class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2">
+        <div class="flex items-center justify-between mb-0.5">
+            <h3 class="font-semibold text-gray-800 text-[12px]">{{ reply.user.first_name }}</h3>
+            <span class="text-[10px] text-gray-400">{{ reply.created_at|timesince }} ago</span>
         </div>
-        <p class="text-gray-700 text-sm">{{ reply.content }}</p>
+        <p class="text-gray-700 text-[12px] leading-relaxed">{{ reply.content }}</p>
     </div>
 </div>

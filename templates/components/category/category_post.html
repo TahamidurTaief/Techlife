@@ -1,1 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block content %} {% block title %}{{ category.name }} - TechLife{% endblock title %} {% include 'components/category/category_post_partial.html' %} {% endblock content %}
+<!-- ============================================================ -->
+<!-- FILE: category_post.html                                     -->
+<!-- ============================================================ -->
+{% extends 'base.html' %} {% load static %}
+{% block title %}{{ category.name }} — TechLife BD{% endblock title %}
+{% block meta_description %}Browse all {{ category.name }} articles on TechLife BD.{% endblock %}
+{% block content %}
+{% include 'components/category/category_post_partial.html' %}
+{% endblock content %}

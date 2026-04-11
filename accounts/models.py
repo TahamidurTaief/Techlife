@@ -5,6 +5,8 @@ from django.utils import timezone
 from .manager import CustomUserManager
 import random
 from django.conf import settings
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 class CustomUserModel(AbstractUser):
     email = models.EmailField(unique=True)
@@ -15,7 +17,15 @@ class CustomUserModel(AbstractUser):
     postcode = models.CharField(blank=True, max_length=20)
     country = models.CharField(blank=True, max_length=20)
     mobile = models.CharField(null=True, blank=True, max_length=15)
-    profile_picture = models.ImageField(null=True, blank=True, upload_to="user_profile", default="user_profile/default_user_profile.png")
+    profile_picture = ProcessedImageField(
+        upload_to="user_profile",
+        processors=[ResizeToFill(400, 400)],
+        format="WEBP",
+        options={"quality": 80},
+        blank=True,
+        null=True,
+        default="user_profile/default_user_profile.png",
+    )
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

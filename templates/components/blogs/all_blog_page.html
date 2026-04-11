@@ -1,14 +1,16 @@
-{% extends 'base.html' %} {% load static %} {% block title %}All Blogs - TechLife{% endblock title %} {% block content %}
+{% extends 'base.html' %} {% load static %}
 
-<div class="mx-auto">
+{% block title %}All Blogs — TechLife BD{% endblock title %}
 
+{% block meta_description %}Browse all technology articles, tips, tricks and news on TechLife BD — Bangladesh's leading tech blog.{% endblock meta_description %}
 
+{% block content %}
+<div class="max-w-7xl mx-auto px-3 py-4">
+    <!-- Page Header -->
+    <div class="flex items-center gap-2 mb-4">
+        <span class="w-1 h-5 rounded bg-[#1e3a6e] inline-block"></span>
+        <h1 class="font-bold text-[15px] text-gray-800 tracking-tight">All Articles</h1>
+    </div>
     {% include "components/blogs/blog_post_page.html" %}
-
 </div>
-
-
-
-
-
 {% endblock content %}

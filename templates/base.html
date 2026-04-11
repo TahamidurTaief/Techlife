@@ -298,10 +298,22 @@
     </script>
 
     <script>
+        let lastHtmxTrigger = null;
+
+        document.body.addEventListener('htmx:beforeRequest', (event) => {
+            lastHtmxTrigger = event.detail?.elt || null;
+        });
+
         document.body.addEventListener('htmx:afterSwap', (event) => {
             if (window.Alpine) window.Alpine.initTree(event.target);
         });
-        document.body.addEventListener('htmx:afterSwap', () => {
+        document.body.addEventListener('htmx:afterSwap', (event) => {
+            const triggerEl = event.detail?.requestConfig?.elt || lastHtmxTrigger;
+            lastHtmxTrigger = null;
+
+            if (triggerEl && triggerEl.closest('[data-no-scroll]')) {
+                return;
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
