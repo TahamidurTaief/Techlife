@@ -3,7 +3,9 @@ venv
 .venv
 
 ./env
-
+staticfiles
+./staticfiles
+staticfiles/*
 
 .django_tailwind_cli
 media
