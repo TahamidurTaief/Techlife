@@ -1,62 +1,60 @@
 {% load static %}
 <!-- hero section -->
 {% include 'components/home/hero_page.html' %}
+
 <!-- Ad 1 - After Hero -->
 {% if ad_1 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_1.ad_code|safe }}
 </div>
 {% endif %}
 
-<!-- blog section -->
+<!-- blog grid section -->
 {% include 'components/home/blog_grid.html' %}
+
 <!-- Ad 2 - After Blog Grid -->
 {% if ad_2 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_2.ad_code|safe }}
 </div>
 {% endif %}
 
-
-
 <!-- latest news -->
 {% include 'components/home/latest_news.html' %}
+
 <!-- Ad 3 - After Latest News -->
 {% if ad_3 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_3.ad_code|safe }}
 </div>
 {% endif %}
 
-
-
-<!-- parituclar category post -->
+<!-- particular category post -->
 {% include 'components/home/particular_three_category_1.html' %}
+
 <!-- Ad 4 - After Particular Category -->
 {% if ad_4 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_4.ad_code|safe }}
 </div>
 {% endif %}
 
-
-
 <!-- most view -->
 {% include 'components/home/most_view.html' %}
+
 <!-- Ad 5 - After Most View -->
 {% if ad_5 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_5.ad_code|safe }}
 </div>
 {% endif %}
 
-
-
 <!-- marque section -->
 {% include 'components/home/marque.html' %}
+
 <!-- Ad 6 - After Marquee -->
 {% if ad_6 %}
-<div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+<div class="w-full flex justify-center items-center my-3 mx-auto px-3">
     {{ ad_6.ad_code|safe }}
 </div>
 {% endif %}
@@ -65,12 +63,10 @@
 <script>
     function blogCarousel() {
         return {
-            // The template tag was missing a closing brace (}) and should be enclosed in quotes
             currentSlide: 0,
-            totalSlides: parseInt("{{ carousel_blogs|length|default:'0' }}", 10), // Corrected: Using default:'0' and parseInt for safety
+            totalSlides: parseInt("{{ carousel_blogs|length|default:'0' }}", 10),
             autoSlideInterval: null,
             init() {
-                // Only start auto-slide if there's more than one slide
                 if (this.totalSlides > 1) {
                     this.startAutoSlide();
                     this.$el.addEventListener("mouseenter", () => this.stopAutoSlide());
@@ -81,10 +77,7 @@
                 this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
             },
             prevSlide() {
-                this.currentSlide =
-                    this.currentSlide === 0 ?
-                    this.totalSlides - 1 :
-                    this.currentSlide - 1;
+                this.currentSlide = this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
             },
             startAutoSlide() {
                 if (this.totalSlides > 1) {
@@ -95,6 +88,6 @@
                 clearInterval(this.autoSlideInterval);
                 this.autoSlideInterval = null;
             },
-        }; // <-- THIS CLOSING BRACE WAS MISSING/MISPLACED
+        };
     }
 </script>

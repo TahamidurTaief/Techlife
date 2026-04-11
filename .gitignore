@@ -6,7 +6,9 @@ venv
 
 
 .django_tailwind_cli
-
+media
+./media
+./media/*
 
 ./.django_tailwind_cli/
 .django_tailwind_cli/.django_tailwind_cli/
@@ -73,7 +75,7 @@ coverage.xml
 # Database
 # Note: db.sqlite3 is included in this project for development purposes
 # *.sqlite3
-# db.sqlite3
+db.sqlite3
 
 # Environment variables
 .env

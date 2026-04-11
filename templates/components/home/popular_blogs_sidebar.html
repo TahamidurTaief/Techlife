@@ -1,30 +1,32 @@
 {% load static %}
-<div class="flex flex-col w-full lg:w-1/4 gap-4 border-t pt-4 lg:border-t-0 lg:border-l lg:pl-4 border-gray-300" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
 
-    <div class="sm:hidden py-2 text-center font-bold text-lg text-white bg-blue-500 rounded-sm" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-        Popular
+<div class="tl-card rounded-xl overflow-hidden flex flex-col">
+    <!-- Header -->
+    <div class="flex items-center gap-2 px-3 py-2.5 bg-[#1e3a6e]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="text-[12px] font-bold text-white">Popular Posts</span>
     </div>
 
-    <ol class="list-none flex flex-col gap-3 justify-start items-start -mt-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+    <!-- Posts List -->
+    <ol class="divide-y divide-gray-100 flex-1">
         {% for post in latest_popular_blogs|slice:'3' %}
-        <li class="flex items-start cursor-pointer group " data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-            <span class="text-xl font-bold text-blue-600 mr-2 flex-shrink-0">{{ forloop.counter }}</span>
-            <div class="flex flex-col">
-                <a href="{% url 'blog_details' post.slug %}" class="font-medium text-base leading-snug group-hover:text-blue-600 line-clamp-2">{{ post.title }}</a>
-                <span class="text-xs text-gray-500">{{ post.category.name }}</span>
-            </div>
+        <li>
+            <a href="{% url 'blog_details' post.slug %}"
+                class="flex items-start gap-2.5 px-3 py-2.5 hover:bg-gray-50 transition-colors group cursor-pointer">
+                <span class="text-[13px] font-black text-[#1e3a6e] shrink-0 w-5 leading-snug">{{ forloop.counter }}</span>
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-[12px] font-semibold text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] leading-snug">{{ post.title }}</h3>
+                    <span class="inline-block mt-1 text-[10px] text-gray-500">{{ post.category.name }}</span>
+                </div>
+            </a>
         </li>
         {% endfor %}
-
-
-
     </ol>
 
-    <!-- Ad 7 - popular list sidebar -->
+    <!-- Ad -->
     {% if ad_7 %}
-    <div class="w-full flex justify-center items-center mt-5 mx-auto px-4 sm:px-0">
+    <div class="p-3 border-t border-gray-100 flex justify-center">
         {{ ad_7.ad_code|safe }}
     </div>
     {% endif %}
-
 </div>

@@ -16,41 +16,41 @@
     {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}{{ SITE_TITLE }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ META_DESCRIPTION }}{% endblock %}">
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
 
-        <!-- Primary Meta Tags -->
-        <title>{% block title %}{{ SITE_TITLE }}{% endblock %}</title>
-        <meta name="description" content="{% block meta_description %}{{ META_DESCRIPTION }}{% endblock %}">
-        <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="{% block og_title %}{{ SITE_TITLE }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ META_DESCRIPTION }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:site_name" content="{{ SITE_TITLE }}">
 
-        <!-- Open Graph / Facebook -->
-        <meta property="og:title" content="{% block og_title %}{{ SITE_TITLE }}{% endblock %}">
-        <meta property="og:description" content="{% block og_description %}{{ META_DESCRIPTION }}{% endblock %}">
-        <meta property="og:image" content="{% block og_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
-        <meta property="og:url" content="{{ request.build_absolute_uri }}">
-        <meta property="og:type" content="{% block og_type %}website{% endblock %}">
-        <meta property="og:site_name" content="{{ SITE_TITLE }}">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}{{ SITE_TITLE }}{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}{{ META_DESCRIPTION }}{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
 
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{% block twitter_title %}{{ SITE_TITLE }}{% endblock %}">
-        <meta name="twitter:description" content="{% block twitter_description %}{{ META_DESCRIPTION }}{% endblock %}">
-        <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/default_og_image.png' %}{% endblock %}">
-
-        {% block structured_data %}
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "{{ SITE_TITLE }}",
-            "url": "https://techlife.com.bd",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://techlife.com.bd/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-            }
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "{{ SITE_TITLE }}",
+        "url": "https://techlife.com.bd",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://techlife.com.bd/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
         }
-        </script>
-        {% endblock structured_data %}
+    }
+    </script>
+    {% endblock structured_data %}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -58,65 +58,66 @@
 
     <!-- HTMX CSRF -->
     {% csrf_token %}
-    <meta name="csrf-token" content="{{ csrf_token }}" /> {% comment %} emoji picker {% endcomment %}
-    <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script> -->
+    <meta name="csrf-token" content="{{ csrf_token }}" />
 
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
 
-    <!-- Custom Stylesheet (inlined to reduce critical path) -->
+    <!-- Core Styles -->
     <style>
-      html {
-        scroll-behavior: smooth;
+      :root {
+        --navy: #1e3a6e;
+        --navy-dark: #152d56;
+        --navy-light: #dbeafe;
+        --accent: #2563eb;
+        --bg-page: #f0f2f5;
+        --bg-card: #ffffff;
+        --border: #e2e8f0;
+        --text-primary: #1c1c1e;
+        --text-muted: #6b7280;
       }
 
-      @font-face {
-        font-family: 'Font Awesome 6 Free';
-        font-display: swap;
-      }
+      html { scroll-behavior: smooth; }
 
-      @font-face {
-        font-family: 'Font Awesome 6 Brands';
-        font-display: swap;
-      }
+      @font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
+      @font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
 
       body {
         font-family: "Inter", sans-serif;
         line-height: 1.6;
-        color: #333;
-        background-color: rgb(246, 244, 244);
+        color: var(--text-primary);
+        background-color: var(--bg-page);
       }
 
-      .carousel {
-        position: relative;
-        overflow: hidden;
-      }
-      .carousel-track {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-      }
-      .carousel-slide {
-        min-width: 100%;
-      }
-      .carousel-indicator {
-        transition: all 0.3s ease;
-      }
-      .carousel-indicator.active {
-        transform: scale(1.5);
-        background-color: #3b82f6;
-      }
-      @media (max-width: 768px) {
-        .carousel {
-          width: 100%;
-        }
+      /* Carousel */
+      .carousel { position: relative; overflow: hidden; }
+      .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+      .carousel-slide { min-width: 100%; }
+      .carousel-indicator { transition: all 0.3s ease; }
+      .carousel-indicator.active { transform: scale(1.5); background-color: var(--navy); }
+      @media (max-width: 768px) { .carousel { width: 100%; } }
+
+      /* Card shadow */
+      .tl-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
       }
 
-      .card {
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+      /* Scrollbar */
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* Category accent */
+      .cat-accent { border-left: 3px solid var(--navy); }
+
+      /* Mobile bottom nav safe area */
+      @media (max-width: 767px) {
+        body { padding-bottom: 64px; }
       }
 
-      .login,
-      .signup {
+      /* Login / Signup */
+      .login, .signup {
         background-image: url("");
         background-blend-mode: darken;
         background-size: cover;
@@ -125,120 +126,64 @@
         min-height: 100vh;
       }
 
-      .scrollbar-hide::-webkit-scrollbar {
-        display: none;
+      .category-header-bg {
+        background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 10px, transparent 10px, transparent 20px);
       }
-      .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+
+      /* Scroll btn */
+      .show-scroll-btn {
+        visibility: visible !important;
+        opacity: 1 !important;
+        transform: translateY(0) !important;
       }
+
+      /* Loader */
+      #loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #ffffff;
+        display: flex; justify-content: center; align-items: center;
+        z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      .loader-hidden { opacity: 0; visibility: hidden; }
     </style>
 
-    <!-- HTMX & Alpine.js -->
-    {% comment %}
-    <script src="https://unpkg.com/htmx.org@1.9.12" xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd" crossorigin="anonymous">
-    </script> {% endcomment %}
-    {% comment %} AOS animation {% endcomment %}
+    <!-- AOS CSS -->
     <link rel="preload" as="style" href="https://unpkg.com/aos@2.3.1/dist/aos.css" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
 
-    <!-- Unicons -->
-    <!-- <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" /> {% comment %} icon {% endcomment %} -->
-    <!-- Google Adsense Script -->
+    <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
-    <!-- DaisyUI Play CDN -->
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" /> -->
 
     {% block extra_head %} {% endblock extra_head %}
 
-    <!-- Google AdSense Script -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-
-    <!-- favicon section -->
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}?v=2">
     <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}?v=2">
     <link rel="apple-touch-icon" href="{% static 'image/favicon.ico' %}?v=2">
-
-
 
     <!-- Google Analytics -->
     {% if GOOGLE_ANALYTICS_ID %}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}" defer></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', '{{ GOOGLE_ANALYTICS_ID }}');
     </script>
     {% endif %}
 
-
-
-    <style>
-        .category-header-bg {
-            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .05) 10px, transparent 10px, transparent 20px);
-        }
-    </style>
-
-    <!-- loader -->
-    <!-- <style>
-        #loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
-        .loader-hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-    </style> -->
-
+    <!-- Font Awesome -->
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"></noscript>
-
 </head>
 
-<body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
+<body id="user_dashboard" class="font-inter leading-normal tracking-normal">
+
     {% if GTM_ID %}
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ GTM_ID }}"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ GTM_ID }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% endif %}
 
     {% if META_PIXEL_ID %}
-    <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -251,64 +196,92 @@
     fbq('init', '{{ META_PIXEL_ID }}');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id={{ META_PIXEL_ID }}&ev=PageView&noscript=1"/></noscript>
-    <!-- End Meta Pixel Code -->
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={{ META_PIXEL_ID }}&ev=PageView&noscript=1"/></noscript>
     {% endif %}
 
-
-    <!-- under maintenance modal -->
+    <!-- Maintenance Modal -->
     {% include "maintenance/maintenance_modal.html" %}
-    <!-- loader -->
-    <!-- <div id="loader-wrapper">
-        <div class="loader"></div>
-    </div> -->
 
-
-
-    <!-- success message for create message -->
+    <!-- Toast Container -->
     <div id="toast-container" class="fixed top-5 left-5 z-50">
-        {% if messages %} {% for message in messages %}
-        <div class="toast-message bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg mb-3 transition-opacity duration-500">
-            {{ message }}
-        </div>
-        {% endfor %} {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="toast-message bg-[#1e3a6e] text-white px-5 py-3 rounded-md shadow-lg mb-3 text-sm transition-opacity duration-500">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
     </div>
-    {% include 'include/navbar.html' %} {% include 'include/notification.html' %}
 
+    <!-- Navbar -->
+    {% include 'include/navbar.html' %}
+    {% include 'include/notification.html' %}
 
     <!-- Main Content -->
-    <main id="container" class=" mt-9 mx-auto flex-grow min-h-[calc(100vh-128px)] py-6 bg-white">
-
+    <main id="container" class="mt-9 mx-auto flex-grow min-h-[calc(100vh-128px)] py-4">
         {% block content %}
-        <!-- Page content here -->
-        {% if action == 'post_create' %} {% include 'components/blogs/partial_create_blog_content.html' %} {% elif action == 'home_page' %} {% include 'components/home/home_page.html' %} {% elif action == 'all_blogs' %} {% include 'components/blogs/partial_all_blog_page.html'
-        %} {% elif action == 'contact_page' %} {% include 'partial_contact_us_page.html' %} {% elif action == 'category_post' %} {% include 'components/category/category_post_partial.html' %} {% elif action == 'popular_blogs' %} {% include 'components/popular/popular_post_partial.html'
-        %} {% elif action == 'all_article' %} {% include 'components/category/all_article_partial.html' %} {% elif action == 'popular_category_post' %} {% include 'components/popular/popular_category_post_partial.html' %} {% elif action == 'blog_details'
-        %} {% include 'components/blog_details/partial_blog_details_page.html' %} {% elif action == 'right_side_update_in_blog_details' %} {% include 'components/blog_details/blog_right_side_partial.html' %} {% endif %} {% endblock content %}
-
+        {% if action == 'post_create' %} {% include 'components/blogs/partial_create_blog_content.html' %}
+        {% elif action == 'home_page' %} {% include 'components/home/home_page.html' %}
+        {% elif action == 'all_blogs' %} {% include 'components/blogs/partial_all_blog_page.html' %}
+        {% elif action == 'contact_page' %} {% include 'partial_contact_us_page.html' %}
+        {% elif action == 'category_post' %} {% include 'components/category/category_post_partial.html' %}
+        {% elif action == 'popular_blogs' %} {% include 'components/popular/popular_post_partial.html' %}
+        {% elif action == 'all_article' %} {% include 'components/category/all_article_partial.html' %}
+        {% elif action == 'popular_category_post' %} {% include 'components/popular/popular_category_post_partial.html' %}
+        {% elif action == 'blog_details' %} {% include 'components/blog_details/partial_blog_details_page.html' %}
+        {% elif action == 'right_side_update_in_blog_details' %} {% include 'components/blog_details/blog_right_side_partial.html' %}
+        {% endif %}
+        {% endblock content %}
     </main>
 
+    <!-- Footer -->
     {% include 'include/footer.html' %}
 
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-[999] bg-white border-t border-gray-200 flex items-center justify-around px-2 py-2 safe-area-bottom">
+        <a href="/" class="flex flex-col items-center gap-0.5 text-[#1e3a6e] min-w-[44px] py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span class="text-[10px] font-medium">Home</span>
+        </a>
+        <a href="{% url 'redirect_search_results' %}" class="flex flex-col items-center gap-0.5 text-gray-500 min-w-[44px] py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <span class="text-[10px] font-medium">Search</span>
+        </a>
+        <a href="{% url 'popular_blogs' %}" class="flex flex-col items-center gap-0.5 text-gray-500 min-w-[44px] py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            <span class="text-[10px] font-medium">Popular</span>
+        </a>
+        <a href="{% url 'blogs' %}" class="flex flex-col items-center gap-0.5 text-gray-500 min-w-[44px] py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+            </svg>
+            <span class="text-[10px] font-medium">Articles</span>
+        </a>
+        <a href="{% url 'create_blog' %}" class="flex flex-col items-center gap-0.5 text-gray-500 min-w-[44px] py-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span class="text-[10px] font-medium">Write</span>
+        </a>
+    </nav>
 
-    <!-- scroll top -->
-
-    <button id="scrollToTop" class="cursor-pointer fixed bottom-6 right-6 md:bottom-28 md:right-8 z-[9999] translate-y-20 opacity-0 invisible bg-blue-400 text-white p-3 rounded-full hover:bg-blue-600 active:scale-90 transition-all duration-500 group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+    <!-- Scroll To Top -->
+    <button id="scrollToTop"
+        class="cursor-pointer fixed bottom-20 right-4 md:bottom-8 md:right-8 z-[9998] translate-y-20 opacity-0 invisible bg-[#1e3a6e] text-white p-3 rounded-full hover:bg-[#152d56] active:scale-90 transition-all duration-500 shadow-lg"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
         aria-label="Scroll to top">
-    <svg class="w-6 h-6 transform group-hover:-translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
-    </svg>
-</button>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
 
-    <style>
-        .show-scroll-btn {
-            visibility: visible !important;
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    </style>
-
+    <!-- Scripts -->
     <script src="https://unpkg.com/htmx.org@1.9.12" defer></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
@@ -320,42 +293,30 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
-            if (typeof AOS !== 'undefined') AOS.init();
+            if (typeof AOS !== 'undefined') AOS.init({ once: true, duration: 400, offset: 60 });
         });
     </script>
 
     <script>
         document.body.addEventListener('htmx:afterSwap', (event) => {
-            if (window.Alpine) {
-                window.Alpine.initTree(event.target);
-            }
+            if (window.Alpine) window.Alpine.initTree(event.target);
         });
-    </script>
-
-    <script>
-        document.body.addEventListener('htmx:afterSwap', (event) => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+        document.body.addEventListener('htmx:afterSwap', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 
     <script>
         const scrollBtn = document.getElementById('scrollToTop');
-
-        // Check korar jonno (Browser console-e dekhbe error thake kina)
-        if (!scrollBtn) {
-            console.error("Scroll button element-ti pawa jayni!");
+        if (scrollBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.add('show-scroll-btn');
+                } else {
+                    scrollBtn.classList.remove('show-scroll-btn');
+                }
+            });
         }
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.add('show-scroll-btn');
-            } else {
-                scrollBtn.classList.remove('show-scroll-btn');
-            }
-        });
     </script>
 
     <script>
@@ -365,11 +326,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
