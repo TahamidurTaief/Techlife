@@ -35,7 +35,6 @@ from blog_post.models import Post_view_ip
 
 
 
-
 # Ip Tracking system for views section
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -371,54 +370,51 @@ def redirect_search_results(request):
             
     return redirect('homepage')
 
+
+# ──────────────────────────────────────────────────────────────
+# FIX: HTMX detection enabled — was commented out before.
+# Direct URL → full page (all_blog_page.html extends base.html)
+# HTMX swap  → partial only (partial_all_blog_page.html)
+# ──────────────────────────────────────────────────────────────
+@vary_on_headers("HX-Request")
 def all_blog_post_view(request):
     published_posts = published_posts_queryset()
 
     blogs = published_posts.order_by("-created_at")
     categories = Category.objects.all()
-    
 
-    # Sidebar content
-    sidebar_blogs = published_posts.order_by("-created_at")[:10]
-    popular_blogs = published_posts.order_by("-views", "-likes")[:5]
-    
-    paginator = Paginator(blogs, 8)  
-    
+    paginator = Paginator(blogs, 12)
     page_number = request.GET.get('page')
-
     blogs = paginator.get_page(page_number)
-    
-
-    
 
     context = {
         "blogs": blogs,
         "categories": categories,
-        "sidebar_blogs": sidebar_blogs,
-        "popular_blogs": popular_blogs,
-        'action':'all_blogs',
+        'action': 'all_blogs',
     }
 
-
-    # if request.headers.get("HX-Request"):
-    #     return render(request, "components/blogs/partial_all_blog_page.html", context)
+    if request.headers.get("HX-Request"):
+        return render(request, "components/blogs/partial_all_blog_page.html", context)
     return render(request, "components/blogs/all_blog_page.html", context)
 
 
-
+# ──────────────────────────────────────────────────────────────
+# FIX: HTMX detection added — was missing before.
+# Direct URL → full page (popular_post.html extends base.html)
+# HTMX swap  → partial only (popular_post_partial.html)
+# ──────────────────────────────────────────────────────────────
+@vary_on_headers("HX-Request")
 def popular_blog_post(request):
     popular_blogs_list = (
         published_posts_queryset()
         .filter(views__gte=1000)
-        .order_by("-id")
+        .order_by("-views", "-created_at")
         .distinct()
     )
-    blogs_per_page = 8 
-    
-    paginator = Paginator(popular_blogs_list, blogs_per_page)
-    
+
+    paginator = Paginator(popular_blogs_list, 12)
     page = request.GET.get('page')
-    
+
     try:
         blogs = paginator.page(page)
     except PageNotAnInteger:
@@ -426,20 +422,20 @@ def popular_blog_post(request):
     except EmptyPage:
         blogs = paginator.page(paginator.num_pages)
 
-
     context = {
-        "popular_blogs": blogs, 
+        "popular_blogs": blogs,
     }
 
+    if request.headers.get("HX-Request"):
+        return render(request, "components/popular/popular_post_partial.html", context)
     return render(request, "components/popular/popular_post.html", context)
+
 
 def all_article(request):
     published_posts = published_posts_queryset()
     blogs = published_posts
     categories = Category.objects.all()
-    
 
-    # Sidebar content
     sidebar_blogs = published_posts.order_by("-created_at")[:10]
     popular_blogs = published_posts.order_by("-views", "-likes")[:5]
 
@@ -448,9 +444,8 @@ def all_article(request):
         "category": categories,
         "sidebar_blogs": sidebar_blogs,
         "popular_blogs": popular_blogs,
-        'action':'all_article',
+        'action': 'all_article',
     }
-
 
     if request.headers.get("HX-Request"):
         return render(request, "components/category/all_article_partial.html", context)
@@ -626,7 +621,6 @@ def contact_page(request):
 
 
 
-
 @login_required
 @require_POST 
 def add_comment(request, post_slug):
@@ -715,7 +709,6 @@ def record_share(request, post_slug):
         post = get_object_or_404(BlogPost, slug=post_slug)
         
         if request.user.is_authenticated:
-            # Share already exists if created is False
             share_instance, created = Share.objects.get_or_create(
                 post=post,
                 user=request.user,
@@ -764,7 +757,3 @@ def tag_posts(request, tag_slug):
         'blogs': blogs,
     }
     return render(request, 'components/blogs/tag_realted_post.html', context)
-
-
-
-

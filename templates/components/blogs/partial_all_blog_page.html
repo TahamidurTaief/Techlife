@@ -1,21 +1,36 @@
 {% load static %}
 
-<div class="max-w-7xl mx-auto px-3">
-    <!-- Category Scroll Filter -->
-    <div class="relative mb-4" x-data="{ active: 'all' }">
-        <div class="overflow-x-auto scrollbar-hide">
-            <ul class="flex gap-2 py-2 px-1 flex-nowrap">
-                {% for cat in categories %}
-                <li class="shrink-0">
-                    <a href="{% url 'category_post' cat.slug %}" hx-get="{% url 'category_post' cat.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
-                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold border border-gray-200 bg-white text-gray-600 hover:bg-[#1e3a6e] hover:text-white hover:border-[#1e3a6e] transition-all duration-200 whitespace-nowrap">
-                        {{ cat.name }}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
+<div class="max-w-7xl mx-auto px-3 py-4">
+
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+        <div class="flex items-center gap-2">
+            <span class="w-1 h-6 rounded bg-[#1e3a6e] inline-block"></span>
+            <h1 class="font-bold text-[16px] text-gray-800 tracking-tight">All Articles</h1>
+            {% if blogs.paginator.count %}
+            <span class="inline-block text-[11px] font-semibold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full">{{ blogs.paginator.count }} posts</span>
+            {% endif %}
         </div>
     </div>
 
+    <!-- Category Filter Pills -->
+    <div class="overflow-x-auto scrollbar-hide mb-6">
+        <ul class="flex gap-2 flex-nowrap pb-1">
+            {% for cat in categories %}
+            <li class="shrink-0">
+                <a href="{% url 'category_post' cat.slug %}"
+                   hx-get="{% url 'category_post' cat.slug %}"
+                   hx-target="#container"
+                   hx-push-url="true"
+                   hx-swap="innerHTML"
+                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold border border-gray-200 bg-white text-gray-600 hover:bg-[#1e3a6e] hover:text-white hover:border-[#1e3a6e] transition-all duration-200 whitespace-nowrap">
+                    {{ cat.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
     {% include "components/blogs/blog_post_page.html" %}
+
 </div>
