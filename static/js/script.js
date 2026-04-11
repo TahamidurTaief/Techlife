@@ -1,15 +1,6 @@
 (function () {
   "use strict";
 
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: {
-          poppins: ["Poppins", "sans-serif"],
-        },
-      },
-    },
-  };
 
   // Show all blog After clicking Load more button
   document.addEventListener("DOMContentLoaded", function () {
