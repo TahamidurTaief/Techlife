@@ -131,7 +131,7 @@ UNFOLD = {
     "SITE_HEADER_TEXT": "TechLife Admin Dashboard",
     "SITE_TITLE": "TechLife Control Panel",
     "SITE_LOGO": "/static/image/logo-front.PNG",
-    "SITE_FAVICON": "/static/image/company_logo.ico",
+    "SITE_FAVICON": "/static/image/favicon.ico",
     "SHOW_APP_NAME": True,
 }
 
@@ -153,7 +153,8 @@ AUTH_PASSWORD_VALIDATORS = [
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
+WHITENOISE_MANIFEST_STRICT = False
 
 WHITENOISE_MIMETYPES = {
     ".ico": "image/x-icon",
