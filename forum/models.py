@@ -12,7 +12,7 @@ class Question(models.Model):
     content = RichTextUploadingField(blank=True, null=True)
     image = ProcessedImageField(
         upload_to="question_images/",
-        processors=[ResizeToFit(1200, 800)],
+        processors=[ResizeToFit(1000, 700)],
         format="WEBP",
         options={"quality": 80},
         blank=True,
@@ -57,7 +57,7 @@ class Answer(models.Model):
     content = models.TextField()
     image = ProcessedImageField(
         upload_to="answers_images/",
-        processors=[ResizeToFit(1200, 800)],
+        processors=[ResizeToFit(1000, 700)],
         format="WEBP",
         options={"quality": 80},
         blank=True,
