@@ -84,33 +84,7 @@ def blog_details_view(request, slug):
 
     most_viewed_blogs = BlogPost.objects.filter(status="published").order_by("-views")[:15]
 
-    all_comments = (
-        Comment.objects
-        .filter(post=blog_detail)
-        .select_related("user", "post")
-        .prefetch_related("replies__user")
-        .order_by("-created_at")
-    )
-
-    comment_count = all_comments.count()
-    reply_count = sum(comment.replies.count() for comment in all_comments)
-    total_comments = comment_count + reply_count
-
-    paginator = Paginator(all_comments, 3)
-    page_number = request.GET.get('page', 1)
-    try:
-        page_obj = paginator.page(page_number)
-    except Exception:
-        page_obj = paginator.page(paginator.num_pages)
-
-    sort_by = request.GET.get('sort_by', 'newest')
-    comment_order = '-created_at'
-    if sort_by == 'oldest':
-        comment_order = 'created_at'
-    elif sort_by == 'recent':
-        comment_order = '-updated_at'
-
-    all_comments = Comment.objects.filter(post=blog_detail).order_by(comment_order)
+    comment_context = _build_comment_context(request, blog_detail)
 
     # Like check
     user_has_liked = False
@@ -142,16 +116,52 @@ def blog_details_view(request, slug):
         "related_news":   related_news,
         "word_count":     word_count,
         "most_viewed_blogs": most_viewed_blogs,
-        "all_comments":   page_obj,
-        "total_comments": total_comments,
+        "all_comments":   comment_context["all_comments"],
+        "total_comments": comment_context["total_comments"],
         "user_has_liked": user_has_liked,
-        "sort_by":        sort_by,
+        "sort_by":        comment_context["sort_by"],
         "action":         "blog_details",
     }
 
     if request.headers.get("HX-Request"):
         return render(request, "components/blog_details/partial_blog_details_page.html", context)
     return render(request, "components/blog_details/blog_details_page.html", context)
+
+
+def _build_comment_context(request, post):
+    sort_by = request.GET.get("sort_by", "newest")
+    comment_order = "-created_at"
+    if sort_by == "oldest":
+        comment_order = "created_at"
+    elif sort_by == "recent":
+        comment_order = "-updated_at"
+
+    comments_qs = (
+        Comment.objects
+        .filter(post=post)
+        .select_related("user", "post")
+        .prefetch_related("replies__user")
+        .order_by(comment_order)
+    )
+
+    comment_count = comments_qs.count()
+    reply_count = Reply.objects.filter(comment__post=post).count()
+    total_comments = comment_count + reply_count
+
+    paginator = Paginator(comments_qs, 3)
+    page_number = request.GET.get("page", 1)
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+    return {
+        "all_comments": page_obj,
+        "total_comments": total_comments,
+        "sort_by": sort_by,
+    }
 
 
 @cache_page(60 * 5)
@@ -575,9 +585,15 @@ def add_comment(request, post_slug):
     content = request.POST.get('content', '').strip()
 
     if not content:
+        if request.headers.get("HX-Request"):
+            return HttpResponse(status=204)
         return redirect('post_detail', slug=post_slug)
 
     Comment.objects.create(post=post, user=request.user, content=content)
+    if request.headers.get("HX-Request"):
+        context = _build_comment_context(request, post)
+        context["include_oob"] = True
+        return render(request, "components/blog_details/comment_list_partial.html", context)
     return redirect('blog_details', slug=post_slug)
 
 
@@ -589,28 +605,42 @@ def add_reply(request, comment_id):
     content        = request.POST.get('content', '').strip()
 
     if not content:
+        if request.headers.get("HX-Request"):
+            return HttpResponse(status=204)
         return redirect('post_detail', slug=post_slug)
 
     Reply.objects.create(comment=parent_comment, user=request.user, content=content)
+    if request.headers.get("HX-Request"):
+        context = _build_comment_context(request, parent_comment.post)
+        context["include_oob"] = True
+        return render(request, "components/blog_details/comment_list_partial.html", context)
     return redirect('blog_details', slug=post_slug)
 
 
 @login_required
 def user_like_toggle(request, like_slug):
-    if request.user.is_verified:
-        blog_post = get_object_or_404(BlogPost, slug=like_slug)
-        user      = request.user
+    blog_post = get_object_or_404(BlogPost, slug=like_slug)
+    user      = request.user
 
-        if request.headers.get("HX-Request"):
+    if request.user.is_verified and request.headers.get("HX-Request"):
+        try:
+            like_instance = Like.objects.get(post=blog_post, user=user)
+            like_instance.delete()
+        except Like.DoesNotExist:
             try:
-                like_instance = Like.objects.get(post=blog_post, user=user)
-                like_instance.delete()
-            except Like.DoesNotExist:
-                try:
-                    Like.objects.create(post=blog_post, user=user)
-                except IntegrityError:
-                    logout(request)
-                    return redirect('login')
+                Like.objects.create(post=blog_post, user=user)
+            except IntegrityError:
+                logout(request)
+                return redirect('login')
+
+    if request.headers.get("HX-Request"):
+        user_has_liked = Like.objects.filter(post=blog_post, user=user).exists()
+        context = {
+            "blog_detail": blog_post,
+            "user_has_liked": user_has_liked,
+            "include_oob": True,
+        }
+        return render(request, "components/blog_details/like_toggle_partial.html", context)
 
     return redirect('blog_details', slug=like_slug)
 

@@ -145,6 +145,128 @@
         z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;
       }
       .loader-hidden { opacity: 0; visibility: hidden; }
+
+      /* ─── HTMX Loader — Old Money / Apple UI ─────────────────────────────── */
+
+      #htmx-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.22s ease;
+      }
+
+      /* Frosted veil — extremely subtle, Apple-style */
+      #htmx-loader::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(240, 237, 232, 0.55);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+      }
+
+      /* The panel itself */
+      #htmx-loader-panel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+
+        /* Ivory parchment surface */
+        background: #faf9f6;
+
+        /* Hairline border — restrained luxury */
+        border: 0.5px solid rgba(30, 58, 110, 0.16);
+
+        /* Square edges with the slimmest radius — boardroom, not bubble */
+        border-radius: 3px;
+
+        padding: 36px 48px 32px;
+
+        /* Single, barely-there lift */
+        box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.04),
+          0 4px 16px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Monogram mark */
+      #htmx-loader-monogram {
+        width: 36px;
+        height: 36px;
+        border: 0.5px solid rgba(30, 58, 110, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #htmx-loader-monogram span {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 15px;
+        font-weight: 400;
+        color: #1e3a6e;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        user-select: none;
+      }
+
+      /* Ring spinner */
+      #htmx-loader-ring {
+        position: relative;
+        width: 46px;
+        height: 46px;
+      }
+      #htmx-loader-ring-track {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 0.75px solid rgba(30, 58, 110, 0.10);
+      }
+      #htmx-loader-ring-spin {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        border: 0.75px solid transparent;
+        border-top-color: #1e3a6e;
+        animation: htmx-loader-rotate 1.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      /* Tiny centre pip — like a watch seconds hand pivot */
+      #htmx-loader-ring-pip {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 3px; height: 3px;
+        border-radius: 50%;
+        background: rgba(30, 58, 110, 0.35);
+      }
+
+      /* Divider rule */
+      #htmx-loader-rule {
+        width: 20px;
+        height: 0.5px;
+        background: rgba(30, 58, 110, 0.18);
+      }
+
+      /* Label */
+      #htmx-loader-label {
+        font-family: "Inter", sans-serif;
+        font-size: 9px;
+        font-weight: 400;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: rgba(30, 58, 110, 0.45);
+        user-select: none;
+      }
+
+      @keyframes htmx-loader-rotate {
+        to { transform: rotate(360deg); }
+      }
+
+      /* ───────────────────────────────────────────────────────────────────────── */
     </style>
 
     <!-- AOS CSS -->
@@ -179,24 +301,33 @@
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal">
 
-    <!-- 1. Add this div right after <body> tag -->
-<div id="htmx-loader"
-     class="fixed inset-0 z-[99999] pointer-events-none flex items-center justify-center opacity-0 transition-opacity duration-200">
-    <!-- Subtle background blur -->
-    <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
-    <!-- Centered spinner card -->
-    <div class="relative flex flex-col items-center gap-3 bg-white/90 rounded-2xl shadow-lg px-8 py-5 border border-gray-100">
-        <!-- Spinner -->
-        <div class="relative w-8 h-8">
-            <div class="absolute inset-0 rounded-full border-[3px] border-[#1e3a6e]/15"></div>
-            <div class="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#1e3a6e] animate-spin"></div>
+    <!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  HTMX SPA LOADER  ·  Old Money / Apple UI                   ║
+    ╚══════════════════════════════════════════════════════════════╝
+    -->
+    <div id="htmx-loader" role="status" aria-label="Loading" aria-live="polite">
+        <div id="htmx-loader-panel">
+            <!-- Site monogram mark -->
+            <div id="htmx-loader-monogram">
+                <span>T</span>
+            </div>
+
+            <!-- Hairline ring spinner -->
+            <div id="htmx-loader-ring">
+                <div id="htmx-loader-ring-track"></div>
+                <div id="htmx-loader-ring-spin"></div>
+                <div id="htmx-loader-ring-pip"></div>
+            </div>
+
+            <!-- Thin horizontal rule -->
+            <div id="htmx-loader-rule"></div>
+
+            <!-- Spaced uppercase label -->
+            <div id="htmx-loader-label">Loading</div>
         </div>
-        <!-- Loading text -->
-        <span class="text-[11px] font-semibold text-[#1e3a6e] tracking-wide uppercase">Loading…</span>
     </div>
-</div>
-
-
+    <!--  END HTMX LOADER  -->
 
 
     {% if GTM_ID %}
@@ -358,48 +489,36 @@
         });
     </script>
 
+    <!-- HTMX Loader controller -->
+    <script>
+    (function () {
+        var loader = document.getElementById('htmx-loader');
+        var timer  = null;
+        var DELAY  = 180; // ms grace period — avoids flash on instant responses
 
-    <!-- ══════════════════════════════════════════════════════════
-     HTMX SPA LOADING INDICATOR
-     Add this INSIDE <body>, right after the opening <body> tag.
-     Also add the <script> block before </body>.
-═══════════════════════════════════════════════════════════ -->
-
-
-
-<!-- 2. Add this <script> block before </body> tag (after the existing scripts) -->
-<script>
-(function () {
-    var loader  = document.getElementById('htmx-loader');
-    var timer   = null;
-    var DELAY   = 180; // ms before showing loader (avoids flash on fast nav)
-
-    function showLoader() {
-        timer = setTimeout(function () {
-            if (loader) {
-                loader.style.pointerEvents = 'all';
-                loader.style.opacity = '1';
-            }
-        }, DELAY);
-    }
-
-    function hideLoader() {
-        clearTimeout(timer);
-        if (loader) {
-            loader.style.opacity = '0';
-            loader.style.pointerEvents = 'none';
+        function showLoader() {
+            timer = setTimeout(function () {
+                if (loader) {
+                    loader.style.opacity       = '1';
+                    loader.style.pointerEvents = 'all';
+                }
+            }, DELAY);
         }
-    }
 
-    document.body.addEventListener('htmx:beforeRequest',  showLoader);
-    document.body.addEventListener('htmx:afterRequest',   hideLoader);
-    document.body.addEventListener('htmx:responseError',  hideLoader);
-    document.body.addEventListener('htmx:sendError',      hideLoader);
-})();
-</script>
+        function hideLoader() {
+            clearTimeout(timer);
+            if (loader) {
+                loader.style.opacity       = '0';
+                loader.style.pointerEvents = 'none';
+            }
+        }
 
+        document.body.addEventListener('htmx:beforeRequest',  showLoader);
+        document.body.addEventListener('htmx:afterRequest',   hideLoader);
+        document.body.addEventListener('htmx:responseError',  hideLoader);
+        document.body.addEventListener('htmx:sendError',      hideLoader);
+    })();
+    </script>
 
 </body>
-
-
 </html>
