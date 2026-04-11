@@ -179,6 +179,26 @@
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal">
 
+    <!-- 1. Add this div right after <body> tag -->
+<div id="htmx-loader"
+     class="fixed inset-0 z-[99999] pointer-events-none flex items-center justify-center opacity-0 transition-opacity duration-200">
+    <!-- Subtle background blur -->
+    <div class="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+    <!-- Centered spinner card -->
+    <div class="relative flex flex-col items-center gap-3 bg-white/90 rounded-2xl shadow-lg px-8 py-5 border border-gray-100">
+        <!-- Spinner -->
+        <div class="relative w-8 h-8">
+            <div class="absolute inset-0 rounded-full border-[3px] border-[#1e3a6e]/15"></div>
+            <div class="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#1e3a6e] animate-spin"></div>
+        </div>
+        <!-- Loading text -->
+        <span class="text-[11px] font-semibold text-[#1e3a6e] tracking-wide uppercase">Loading…</span>
+    </div>
+</div>
+
+
+
+
     {% if GTM_ID %}
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ GTM_ID }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% endif %}
@@ -337,5 +357,49 @@
             if (loader) loader.classList.add("loader-hidden");
         });
     </script>
+
+
+    <!-- ══════════════════════════════════════════════════════════
+     HTMX SPA LOADING INDICATOR
+     Add this INSIDE <body>, right after the opening <body> tag.
+     Also add the <script> block before </body>.
+═══════════════════════════════════════════════════════════ -->
+
+
+
+<!-- 2. Add this <script> block before </body> tag (after the existing scripts) -->
+<script>
+(function () {
+    var loader  = document.getElementById('htmx-loader');
+    var timer   = null;
+    var DELAY   = 180; // ms before showing loader (avoids flash on fast nav)
+
+    function showLoader() {
+        timer = setTimeout(function () {
+            if (loader) {
+                loader.style.pointerEvents = 'all';
+                loader.style.opacity = '1';
+            }
+        }, DELAY);
+    }
+
+    function hideLoader() {
+        clearTimeout(timer);
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+        }
+    }
+
+    document.body.addEventListener('htmx:beforeRequest',  showLoader);
+    document.body.addEventListener('htmx:afterRequest',   hideLoader);
+    document.body.addEventListener('htmx:responseError',  hideLoader);
+    document.body.addEventListener('htmx:sendError',      hideLoader);
+})();
+</script>
+
+
 </body>
+
+
 </html>

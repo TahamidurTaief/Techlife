@@ -1,28 +1,43 @@
 {% load static %}
 
-<section class="max-w-7xl mx-auto -mt-[45px] overflow-x-hidden">
+<section class="max-w-7xl mx-auto -mt-[45px] overflow-x-hidden pb-8">
 
-    <!-- Category Header -->
-    <div class="bg-[#1e3a6e] category-header-bg px-4 md:px-8 py-4 md:py-5 shadow-sm">
-        <div class="flex items-center justify-between">
+    <!-- ══ Category Header ══════════════════════════════════════════ -->
+    <div class="bg-[#1e3a6e] category-header-bg px-4 sm:px-6 lg:px-8 py-5">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center gap-1.5 text-[11px] text-white/50 mb-2" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-white transition-colors">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <span class="text-white/80">{{ category.name }}</span>
+        </nav>
+        <div class="flex items-center justify-between gap-4">
             <div>
-                <p class="text-[11px] text-white/60 font-medium uppercase tracking-widest mb-0.5">Category</p>
-                <h1 class="text-xl md:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">{{ category.name }}</h1>
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                    {{ category.name }}
+                </h1>
+                {% if category.description %}
+                <p class="text-[12px] text-white/60 mt-1 max-w-lg leading-relaxed line-clamp-2">{{ category.description|truncatechars:120 }}</p>
+                {% endif %}
             </div>
-            {% if category.description %}
-            <p class="hidden md:block text-[12px] text-white/70 max-w-sm text-right leading-relaxed">{{ category.description|truncatechars:100 }}</p>
+            {% if blogs %}
+            <span class="hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-[#1e3a6e] bg-white px-3 py-1.5 rounded-full shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                {{ blogs|length }} Posts
+            </span>
             {% endif %}
         </div>
     </div>
 
-    <!-- Sub-category Tabs -->
+    <!-- ══ Subcategory Tabs ══════════════════════════════════════════ -->
     {% if category.subcategories.all %}
-    <div class="bg-white border-b border-gray-100 shadow-sm overflow-x-auto scrollbar-hide">
-        <ul class="flex items-center px-4 md:px-6 gap-0 flex-nowrap whitespace-nowrap">
+    <div class="bg-white border-b border-gray-100 sticky top-[57px] z-30 overflow-x-auto scrollbar-hide shadow-sm">
+        <ul class="flex items-center px-4 sm:px-6 flex-nowrap whitespace-nowrap">
+            <li class="shrink-0">
+                <a href="#all-posts" class="inline-block px-4 py-3 text-[12px] font-bold text-[#1e3a6e] border-b-2 border-[#1e3a6e]">All</a>
+            </li>
             {% for sub_cat in category.subcategories.all %}
-            <li class="flex-shrink-0">
-                <a href="#{{ sub_cat.slug }}"
-                    class="inline-block px-4 py-3 text-[12px] font-semibold text-gray-500 border-b-2 border-transparent hover:border-[#1e3a6e] hover:text-[#1e3a6e] transition-all duration-200">
+            <li class="shrink-0">
+                <a href="#{{ sub_cat.slug }}" class="inline-block px-4 py-3 text-[12px] font-semibold text-gray-500 border-b-2 border-transparent hover:border-[#1e3a6e] hover:text-[#1e3a6e] transition-all duration-200">
                     {{ sub_cat.name }}
                 </a>
             </li>
@@ -32,151 +47,184 @@
     {% endif %}
 
     {% if blogs %}
-    <div class="px-3 md:px-4 py-4">
+    <div id="all-posts" class="px-3 sm:px-4 lg:px-5 pt-4">
 
         {% if blogs|length == 1 %}
-        <!-- Single post layout -->
-        {% for blog in blogs|slice:":1" %}
-        <div class="tl-card rounded-xl overflow-hidden flex flex-col md:flex-row gap-0">
-            <div class="md:w-1/2 overflow-hidden" style="aspect-ratio: 16/9;">
+        <!-- ── Single post ────────────────────────────── -->
+        {% for blog in blogs %}
+        <a href="{% url 'blog_details' blog.slug %}"
+           hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+           class="tl-card rounded-xl overflow-hidden flex flex-col sm:flex-row group cursor-pointer hover:shadow-md transition-all duration-200 mb-4 block">
+            <div class="sm:w-1/2 overflow-hidden" style="aspect-ratio: 16/9;">
                 {% if blog.featured_image %}
-                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="600" height="338" loading="lazy" decoding="async">
+                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="600" height="338" loading="eager" fetchpriority="high" decoding="async">
                 {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="600" height="338" loading="lazy" decoding="async">
+                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="600" height="338" loading="eager" fetchpriority="high" decoding="async">
                 {% endif %}
             </div>
-            <div class="md:w-1/2 p-5 flex flex-col justify-center">
-                <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full mb-3">{{ category.name }}</span>
-                <h2 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                    class="cursor-pointer text-lg md:text-xl font-bold line-clamp-3 leading-snug hover:text-[#1e3a6e] transition-colors mb-3">{{ blog.title }}</h2>
-                <p class="text-[13px] text-gray-500 line-clamp-4 leading-relaxed">{{ blog.description|striptags }}</p>
+            <div class="sm:w-1/2 p-5 flex flex-col justify-center">
+                <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full mb-3 w-fit">{{ category.name }}</span>
+                <h2 class="text-base sm:text-lg font-bold line-clamp-3 leading-snug group-hover:text-[#1e3a6e] transition-colors mb-2">{{ blog.title }}</h2>
+                <p class="text-[12px] text-gray-500 line-clamp-3 leading-relaxed mb-3">{{ blog.description|striptags|truncatechars:160 }}</p>
+                <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
             </div>
-        </div>
-        {% if ad_10 %}<div class="flex justify-center mt-4">{{ ad_10.ad_code|safe }}</div>{% endif %}
+        </a>
         {% endfor %}
 
         {% else %}
-        <!-- Multi-post layout -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-4">
-
-            <!-- Featured hero post -->
-            <div class="col-span-1 md:col-span-7 lg:col-span-8">
-                {% for blog in blogs|slice:":1" %}
-                <div class="tl-card rounded-xl overflow-hidden group">
-                    <div class="overflow-hidden" style="aspect-ratio: 16/9;">
-                        {% if blog.featured_image %}
-                        <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="lazy" decoding="async">
-                        {% elif blog.featured_image_url %}
-                        <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="lazy" decoding="async">
-                        {% endif %}
-                    </div>
-                    <div class="p-4">
-                        <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full mb-2">{{ category.name }}</span>
-                        <h2 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                            class="cursor-pointer text-lg md:text-xl font-bold line-clamp-2 leading-snug hover:text-[#1e3a6e] transition-colors mb-2">{{ blog.title }}</h2>
-                        <p class="text-[12px] text-gray-500 line-clamp-2">{{ blog.description|striptags }}</p>
-                    </div>
-                </div>
-                {% endfor %}
+        <!-- ── Multi-post: Hero (full compact) ────────── -->
+        {% for blog in blogs|slice:":1" %}
+        <a href="{% url 'blog_details' blog.slug %}"
+           hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+           class="flex flex-col sm:flex-row tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 mb-3 block">
+            <div class="sm:w-3/5 overflow-hidden" style="aspect-ratio: 16/9; max-height: 260px;">
+                {% if blog.featured_image %}
+                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="eager" fetchpriority="high" decoding="async">
+                {% elif blog.featured_image_url %}
+                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="eager" fetchpriority="high" decoding="async">
+                {% else %}
+                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="700" height="394" loading="eager" decoding="async">
+                {% endif %}
             </div>
-
-            <!-- Sidebar list -->
-            <div class="col-span-1 md:col-span-5 lg:col-span-4">
-                <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100">
-                    {% for blog in blogs|slice:"1:6" %}
-                    <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                        class="flex items-start gap-3 p-3 hover:bg-gray-50 transition-colors group cursor-pointer">
-                        <div class="w-16 h-12 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                            {% if blog.featured_image %}
-                            <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]" width="64" height="48" loading="lazy" decoding="async">
-                            {% elif blog.featured_image_url %}
-                            <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]" width="64" height="48" loading="lazy" decoding="async">
-                            {% endif %}
-                        </div>
-                        <p class="text-[12px] font-semibold text-gray-800 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug transition-colors">{{ blog.title }}</p>
-                    </a>
-                    {% endfor %}
+            <div class="sm:w-2/5 p-4 flex flex-col justify-center bg-white">
+                <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full mb-2.5 w-fit">{{ category.name }}</span>
+                <h2 class="text-base sm:text-lg font-bold line-clamp-3 leading-snug group-hover:text-[#1e3a6e] transition-colors mb-2">{{ blog.title }}</h2>
+                <p class="text-[11px] text-gray-500 line-clamp-3 leading-relaxed mb-3">{{ blog.description|striptags|truncatechars:140 }}</p>
+                <div class="flex items-center gap-3 text-[10px] text-gray-400">
+                    <span>{{ blog.created_at|date:"d M, Y" }}</span>
+                    <span>·</span>
+                    <span class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        {{ blog.views }}
+                    </span>
                 </div>
             </div>
-        </div>
+        </a>
+        {% endfor %}
 
-        <!-- Ad -->
-        {% if ad_10 %}
-        <div class="flex justify-center my-4">{{ ad_10.ad_code|safe }}</div>
-        {% endif %}
-
-        <!-- Extra posts row -->
-        {% if blogs|length > 6 %}
-        <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100 mb-4">
-            {% for blog in blogs|slice:"6:8" %}
-            <div class="flex items-start gap-4 p-4 group cursor-pointer hover:bg-gray-50 transition-colors">
-                <div class="w-20 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+        <!-- ── 3-col grid: posts 2–4 ─────────────────── -->
+        {% with row1=blogs|slice:"1:4" %}
+        {% if row1 %}
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+            {% for blog in row1 %}
+            <a href="{% url 'blog_details' blog.slug %}"
+               hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+               class="tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 flex flex-col">
+                <div class="overflow-hidden" style="aspect-ratio: 16/9;">
                     {% if blog.featured_image %}
-                    <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="80" height="64" loading="lazy" decoding="async">
+                    <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="350" height="197" loading="lazy" decoding="async">
                     {% elif blog.featured_image_url %}
-                    <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="80" height="64" loading="lazy" decoding="async">
+                    <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="350" height="197" loading="lazy" decoding="async">
+                    {% else %}
+                    <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="350" height="197" loading="lazy" decoding="async">
                     {% endif %}
                 </div>
-                <div class="flex-1 min-w-0">
-                    <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                        class="text-[14px] font-bold hover:text-[#1e3a6e] cursor-pointer line-clamp-2 leading-snug transition-colors mb-1">{{ blog.title }}</h3>
-                    <p class="text-[12px] text-gray-500 line-clamp-2">{{ blog.description|striptags }}</p>
+                <div class="p-3 flex flex-col flex-1">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="inline-block text-[9px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ category.name }}</span>
+                        <span class="text-[9px] text-gray-400">{{ blog.created_at|date:"d M" }}</span>
+                    </div>
+                    <h3 class="font-bold text-[12px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug flex-1">{{ blog.title }}</h3>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
         {% endif %}
+        {% endwith %}
+
+        <!-- Ad slot -->
+        {% if ad_10 %}<div class="flex justify-center my-3">{{ ad_10.ad_code|safe }}</div>{% endif %}
+
+        <!-- ── Horizontal list: posts 5+ ─────────────── -->
+        {% with row2=blogs|slice:"4:" %}
+        {% if row2 %}
+        <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100 mb-3">
+            {% for blog in row2|slice:":10" %}
+            <a href="{% url 'blog_details' blog.slug %}"
+               hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+               class="flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors group cursor-pointer">
+                <div class="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                    {% if blog.featured_image %}
+                    <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]" width="80" height="56" loading="lazy" decoding="async">
+                    {% elif blog.featured_image_url %}
+                    <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]" width="80" height="56" loading="lazy" decoding="async">
+                    {% else %}
+                    <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="80" height="56" loading="lazy" decoding="async">
+                    {% endif %}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="inline-block text-[9px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ category.name }}</span>
+                        <span class="text-[9px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                    </div>
+                    <h3 class="font-semibold text-[12px] text-gray-800 line-clamp-1 group-hover:text-[#1e3a6e] transition-colors">{{ blog.title }}</h3>
+                    <p class="hidden sm:block text-[10px] text-gray-400 line-clamp-1 mt-0.5">{{ blog.description|striptags|truncatechars:80 }}</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
 
         {% endif %}
+        <!-- end single/multi check -->
 
-        <!-- Subcategory sections -->
+        <!-- ══ Subcategory Sections ══════════════════════════════════ -->
         {% for featured_sub_cat, sub_blogs in subcategory_blogs_map.items|slice:"4" %}
-        <div id="{{ featured_sub_cat.slug }}" class="mt-6 mb-3">
-            <div class="flex items-center gap-2 mb-3">
-                <span class="w-1 h-5 rounded bg-[#1e3a6e] inline-block"></span>
-                <h2 class="text-[15px] font-bold text-gray-800">{{ featured_sub_cat.name }}</h2>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <div id="{{ featured_sub_cat.slug }}" class="mt-6 mb-2">
+            <!-- Section header -->
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-1 h-5 rounded bg-[#1e3a6e] inline-block shrink-0"></span>
+                    <h2 class="text-[14px] font-bold text-gray-800">{{ featured_sub_cat.name }}</h2>
+                    {% if featured_sub_cat.description %}
+                    <span class="hidden sm:inline text-[11px] text-gray-400">— {{ featured_sub_cat.description|truncatechars:60 }}</span>
+                    {% endif %}
+                </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+
+            <!-- 4-col compact grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
                 {% for post in sub_blogs %}
-                <a href="{% url 'blog_details' post.slug %}" hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                    class="tl-card rounded-xl overflow-hidden group hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col">
+                <a href="{% url 'blog_details' post.slug %}"
+                   hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+                   class="tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 flex flex-col">
                     <div class="overflow-hidden" style="aspect-ratio: 16/9;">
                         {% if post.featured_image %}
-                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="280" height="158" loading="lazy" decoding="async">
                         {% elif post.featured_image_url %}
-                        <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
+                        <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="280" height="158" loading="lazy" decoding="async">
+                        {% else %}
+                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ post.title }}" class="w-full h-full object-cover" width="280" height="158" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
-                    <div class="p-3 flex-1 flex flex-col">
-                        <h3 class="text-[12px] font-bold text-gray-800 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug flex-1 transition-colors">{{ post.title }}</h3>
-                        <p class="text-[11px] text-gray-500 mt-1.5 line-clamp-2">{{ post.description|striptags|truncatewords:15 }}</p>
+                    <div class="p-2.5 flex-1 flex flex-col">
+                        <h3 class="text-[11px] font-bold text-gray-800 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug flex-1 transition-colors">{{ post.title }}</h3>
+                        <span class="text-[9px] text-gray-400 mt-1.5">{{ post.created_at|date:"d M, Y" }}</span>
                     </div>
                 </a>
                 {% endfor %}
             </div>
         </div>
         {% empty %}
-        <div class="mt-4">
-            <div class="flex items-center gap-2 mb-3">
-                <span class="w-1 h-5 rounded bg-[#1e3a6e] inline-block"></span>
-                <h2 class="text-[15px] font-bold text-gray-800">{{ category.name }} Stories</h2>
-            </div>
-        </div>
+        <!-- no subcategories, already shown posts above -->
         {% endfor %}
 
     </div>
 
     {% else %}
-    <!-- Empty state -->
+    <!-- ══ Empty State ══════════════════════════════════════════════ -->
     <div class="py-20 px-4 flex flex-col items-center justify-center text-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-5">
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-        </svg>
-        <h2 class="text-xl font-extrabold text-gray-800 mb-3">No Content Available</h2>
-        <p class="text-[13px] text-gray-500 max-w-md mb-6">We currently don't have any published posts in the <strong>{{ category.name }}</strong> category. Please check back soon!</p>
-        <a href="{% url 'blogs' %}" hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
-            class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1e3a6e] text-white text-[13px] font-semibold rounded-xl hover:bg-[#152d56] transition-colors">
+        <div class="w-16 h-16 bg-[#1e3a6e]/10 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        </div>
+        <h2 class="text-[17px] font-extrabold text-gray-800 mb-2">No Posts in {{ category.name }}</h2>
+        <p class="text-[13px] text-gray-500 max-w-sm mb-6 leading-relaxed">We haven't published anything here yet. Check back soon or explore other categories.</p>
+        <a href="{% url 'blogs' %}"
+           hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+           class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1e3a6e] text-white text-[13px] font-semibold rounded-xl hover:bg-[#152d56] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
             Browse All Articles
         </a>
     </div>

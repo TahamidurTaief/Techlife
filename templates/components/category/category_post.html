@@ -1,9 +1,33 @@
-<!-- ============================================================ -->
-<!-- FILE: category_post.html                                     -->
-<!-- ============================================================ -->
-{% extends 'base.html' %} {% load static %}
+{% extends 'base.html' %}
+{% load static %}
+
 {% block title %}{{ category.name }} — TechLife BD{% endblock title %}
-{% block meta_description %}Browse all {{ category.name }} articles on TechLife BD.{% endblock %}
+
+{% block meta_description %}{{ category.description|default:"Browse all"|truncatechars:120 }} {{ category.name }} articles on TechLife BD — Bangladesh's leading tech blog.{% endblock %}
+
+{% block canonical_url %}https://techlife.com.bd/category/{{ category.slug }}/{% endblock %}
+
+{% block og_title %}{{ category.name }} | TechLife BD{% endblock %}
+{% block og_description %}Browse all {{ category.name }} articles on TechLife BD.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "{{ category.name }} — TechLife BD",
+    "description": "Browse all {{ category.name }} articles on TechLife BD",
+    "url": "https://techlife.com.bd/category/{{ category.slug }}/",
+    "publisher": {
+        "@type": "Organization",
+        "name": "TechLife BD",
+        "url": "https://techlife.com.bd"
+    }
+}
+</script>
+{% endblock structured_data %}
+
 {% block content %}
 {% include 'components/category/category_post_partial.html' %}
 {% endblock content %}
