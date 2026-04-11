@@ -8,9 +8,9 @@ staticfiles
 staticfiles/*
 
 .django_tailwind_cli
-media
-./media
-./media/*
+# media
+# ./media
+# ./media/*
 
 ./.django_tailwind_cli/
 .django_tailwind_cli/.django_tailwind_cli/
