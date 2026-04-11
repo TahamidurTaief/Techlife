@@ -131,10 +131,72 @@
 
 
     <!-- ═══════════════════════════════════════════
-         ROW 2 — 3-COL CARD GRID WITH VIEW BADGE
-         Posts 7–9
+         ROW 1B — FEATURED DUO (posts 7–8)
+         Two medium cards
     ════════════════════════════════════════════ -->
-    {% with row2=popular_blogs|slice:"6:9" %}
+    {% with row1b=popular_blogs|slice:"6:8" %}
+    {% if row1b %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+        {% for blog in row1b %}
+        <a href="{% url 'blog_details' blog.slug %}"
+           hx-get="{% url 'blog_details' blog.slug %}"
+           hx-target="#container"
+           hx-push-url="true"
+           hx-swap="innerHTML"
+           class="tl-card rounded-xl overflow-hidden group cursor-pointer flex flex-col">
+
+            <div class="overflow-hidden relative" style="aspect-ratio: 16/9;">
+                {% if blog.featured_image %}
+                <img src="{{ blog.featured_image.url }}"
+                     alt="{{ blog.title }}"
+                     class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]"
+                     width="400" height="225"
+                     loading="lazy" decoding="async" />
+                {% elif blog.featured_image_url %}
+                <img src="{{ blog.featured_image_url }}"
+                     alt="{{ blog.title }}"
+                     class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]"
+                     width="400" height="225"
+                     loading="lazy" decoding="async" />
+                {% else %}
+                <img src="{% static 'image/placeholder-5.png' %}"
+                     alt="{{ blog.title }}"
+                     class="w-full h-full object-cover"
+                     width="400" height="225"
+                     loading="lazy" decoding="async" />
+                {% endif %}
+                <!-- View count badge -->
+                <div class="absolute bottom-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-sm text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                    {{ blog.views }}
+                </div>
+            </div>
+
+            <div class="p-3 flex flex-col flex-1">
+                <div class="flex items-center justify-between mb-2">
+                    {% if blog.category %}
+                    <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full">{{ blog.category.name }}</span>
+                    {% endif %}
+                    <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                </div>
+                <h3 class="font-bold text-[13px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug flex-1 mb-2">
+                    {{ blog.title }}
+                </h3>
+                <p class="text-[11px] text-gray-500 line-clamp-2 leading-relaxed">
+                    {{ blog.description|striptags|truncatechars:75 }}
+                </p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- ═══════════════════════════════════════════
+            ROW 2 — 3-COL CARD GRID WITH VIEW BADGE
+            Posts 9–11
+    ════════════════════════════════════════════ -->
+        {% with row2=popular_blogs|slice:"8:11" %}
     {% if row2 %}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-3">
         {% for blog in row2 %}
@@ -194,75 +256,147 @@
 
 
     <!-- ═══════════════════════════════════════════
-         ROW 3 — EDITORIAL HORIZONTAL ROWS (posts 10–12)
+         ROW 3 — EDITORIAL HORIZONTAL ROWS (posts 12–17)
          Bold typography, "Every" magazine style
     ════════════════════════════════════════════ -->
-    {% with row3=popular_blogs|slice:"9:12" %}
-    {% if row3 %}
-    <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100 mb-3">
-        {% for blog in row3 %}
-        <a href="{% url 'blog_details' blog.slug %}"
-           hx-get="{% url 'blog_details' blog.slug %}"
-           hx-target="#container"
-           hx-push-url="true"
-           hx-swap="innerHTML"
-           class="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors group cursor-pointer">
+    {% with row3_left=popular_blogs|slice:"11:14" row3_right=popular_blogs|slice:"14:17" %}
+    {% if row3_left or row3_right %}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
+        {% if row3_left %}
+        <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100">
+            {% for blog in row3_left %}
+            <a href="{% url 'blog_details' blog.slug %}"
+               hx-get="{% url 'blog_details' blog.slug %}"
+               hx-target="#container"
+               hx-push-url="true"
+               hx-swap="innerHTML"
+               class="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors group cursor-pointer">
 
-            <!-- Rank number -->
-            <span class="text-[28px] font-black text-gray-100 shrink-0 w-10 text-center leading-none select-none">
-                {{ forloop.counter|add:"9" }}
-            </span>
+                <!-- Rank number -->
+                <span class="text-[28px] font-black text-gray-100 shrink-0 w-10 text-center leading-none select-none">
+                    {{ forloop.counter|add:"11" }}
+                </span>
 
-            <!-- Thumbnail -->
-            <div class="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                {% if blog.featured_image %}
-                <img src="{{ blog.featured_image.url }}"
-                     alt="{{ blog.title }}"
-                     class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
-                     width="80" height="56"
-                     loading="lazy" decoding="async" />
-                {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}"
-                     alt="{{ blog.title }}"
-                     class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
-                     width="80" height="56"
-                     loading="lazy" decoding="async" />
-                {% else %}
-                <img src="{% static 'image/placeholder-5.png' %}"
-                     alt="{{ blog.title }}"
-                     class="w-full h-full object-cover"
-                     width="80" height="56"
-                     loading="lazy" decoding="async" />
-                {% endif %}
-            </div>
-
-            <!-- Text -->
-            <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2 mb-1">
-                    {% if blog.category %}
-                    <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ blog.category.name }}</span>
+                <!-- Thumbnail -->
+                <div class="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                    {% if blog.featured_image %}
+                    <img src="{{ blog.featured_image.url }}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
+                    {% elif blog.featured_image_url %}
+                    <img src="{{ blog.featured_image_url }}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
+                    {% else %}
+                    <img src="{% static 'image/placeholder-5.png' %}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
                     {% endif %}
-                    <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
                 </div>
-                <h3 class="font-bold text-[14px] sm:text-[15px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug">
-                    {{ blog.title }}
-                </h3>
-                <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-400">
-                    <span class="flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                        {{ blog.views }} views
-                    </span>
-                    <span>·</span>
-                    <span class="flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        {% if blog.author.first_name %}{{ blog.author.first_name }}{% else %}TechLife{% endif %}
-                    </span>
-                </div>
-            </div>
 
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
-        </a>
-        {% endfor %}
+                <!-- Text -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        {% if blog.category %}
+                        <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ blog.category.name }}</span>
+                        {% endif %}
+                        <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                    </div>
+                    <h3 class="font-bold text-[14px] sm:text-[15px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug">
+                        {{ blog.title }}
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-400">
+                        <span class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            {{ blog.views }} views
+                        </span>
+                        <span>·</span>
+                        <span class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {% if blog.author.first_name %}{{ blog.author.first_name }}{% else %}TechLife{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if row3_right %}
+        <div class="tl-card rounded-xl overflow-hidden divide-y divide-gray-100">
+            {% for blog in row3_right %}
+            <a href="{% url 'blog_details' blog.slug %}"
+               hx-get="{% url 'blog_details' blog.slug %}"
+               hx-target="#container"
+               hx-push-url="true"
+               hx-swap="innerHTML"
+               class="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors group cursor-pointer">
+
+                <!-- Rank number -->
+                <span class="text-[28px] font-black text-gray-100 shrink-0 w-10 text-center leading-none select-none">
+                    {{ forloop.counter|add:"14" }}
+                </span>
+
+                <!-- Thumbnail -->
+                <div class="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                    {% if blog.featured_image %}
+                    <img src="{{ blog.featured_image.url }}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
+                    {% elif blog.featured_image_url %}
+                    <img src="{{ blog.featured_image_url }}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.05]"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
+                    {% else %}
+                    <img src="{% static 'image/placeholder-5.png' %}"
+                         alt="{{ blog.title }}"
+                         class="w-full h-full object-cover"
+                         width="80" height="56"
+                         loading="lazy" decoding="async" />
+                    {% endif %}
+                </div>
+
+                <!-- Text -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                        {% if blog.category %}
+                        <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ blog.category.name }}</span>
+                        {% endif %}
+                        <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                    </div>
+                    <h3 class="font-bold text-[14px] sm:text-[15px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug">
+                        {{ blog.title }}
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1 text-[10px] text-gray-400">
+                        <span class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                            {{ blog.views }} views
+                        </span>
+                        <span>·</span>
+                        <span class="flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            {% if blog.author.first_name %}{{ blog.author.first_name }}{% else %}TechLife{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3a6e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endif %}
     {% endwith %}
