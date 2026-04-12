@@ -490,7 +490,7 @@
     (function () {
         var loader = document.getElementById('htmx-loader');
         var timer  = null;
-        var DELAY  = 180; // ms grace period — avoids flash on instant responses
+        var DELAY  = 180;
 
         function showLoader() {
             timer = setTimeout(function () {
@@ -513,6 +513,9 @@
         document.body.addEventListener('htmx:afterRequest',   hideLoader);
         document.body.addEventListener('htmx:responseError',  hideLoader);
         document.body.addEventListener('htmx:sendError',      hideLoader);
+        // ✅ FIX: back button এ browser history restore হলে loader hide করো
+        document.body.addEventListener('htmx:historyRestore', hideLoader);
+        window.addEventListener('popstate', hideLoader);
     })();
     </script>
 

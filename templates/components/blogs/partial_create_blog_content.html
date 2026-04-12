@@ -1,9 +1,12 @@
 {% load static %}
 
-<!-- Blog Create Form -->
+<!-- CKEditor CSS -->
+<link rel="stylesheet" href="{% static 'ckeditor/ckeditor/contents.css' %}">
+
 <div class="max-w-2xl mx-auto px-3 py-8">
     <div class="tl-card rounded-2xl overflow-hidden">
-        <!-- Card Header -->
+
+        <!-- Header -->
         <div class="flex items-center gap-3 px-6 py-4 bg-[#1e3a6e]">
             <img src="{% static 'image/company_logo.webp' %}" alt="TechLife Logo" class="w-8 h-8 rounded-full object-cover" />
             <div>
@@ -12,8 +15,8 @@
             </div>
         </div>
 
-        <!-- Form Body -->
-        <form class="p-6 space-y-4 overflow-y-auto max-h-[75vh] scrollbar-hide"
+        <!-- ✅ FIX: removed max-h + overflow-y-auto so form is fully open -->
+        <form class="p-6 space-y-4"
             id="loginForm"
             hx-post="{% url 'create_blog' %}"
             hx-encoding="multipart/form-data"
@@ -23,7 +26,9 @@
 
             <!-- Category -->
             <div>
-                <label for="category_select" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">Category <span class="text-red-400">*</span></label>
+                <label for="category_select" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                    Category <span class="text-red-400">*</span>
+                </label>
                 <div class="relative">
                     <select id="category_select" name="category" required
                         class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] focus:border-[#1e3a6e] appearance-none transition-all">
@@ -57,18 +62,23 @@
 
             <!-- Title -->
             <div>
-                <label for="post_title" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">Post Title <span class="text-red-400">*</span></label>
+                <label for="post_title" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                    Post Title <span class="text-red-400">*</span>
+                </label>
                 <input type="text" name="title" id="post_title" required autocomplete="off"
                     placeholder="Enter a clear, descriptive title..."
                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] focus:border-[#1e3a6e] transition-all" />
             </div>
 
-            <!-- Description -->
+            <!-- ✅ Description with CKEditor -->
             <div>
-                <label for="post_description" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">Description <span class="text-red-400">*</span></label>
-                <textarea name="description" id="post_description" required rows="5"
+                <label for="post_description" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                    Description <span class="text-red-400">*</span>
+                </label>
+                <!-- CKEditor replaces this textarea -->
+                <textarea name="description" id="post_description" required rows="10"
                     placeholder="Write your article content here..."
-                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] focus:border-[#1e3a6e] transition-all resize-vertical"></textarea>
+                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] transition-all"></textarea>
             </div>
 
             <!-- Featured Image Upload -->
@@ -77,13 +87,15 @@
                 <div class="border-2 border-dashed border-gray-200 rounded-xl p-4 hover:border-[#1e3a6e] transition-colors">
                     <input type="file" name="featured_image" id="featured_image" accept="image/*"
                         class="w-full text-[12px] text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[11px] file:font-semibold file:bg-[#1e3a6e] file:text-white hover:file:bg-[#152d56] file:cursor-pointer" />
-                    <p class="text-[10px] text-gray-400 mt-1.5">PNG, JPG, WebP accepted · Max 5MB</p>
+                    <p class="text-[10px] text-gray-400 mt-1.5">PNG, JPG, WebP · Max 5MB</p>
                 </div>
             </div>
 
             <!-- Featured Image URL -->
             <div>
-                <label for="featured_image_url" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">Featured Image URL <span class="text-gray-400 font-normal normal-case">(optional)</span></label>
+                <label for="featured_image_url" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                    Featured Image URL <span class="text-gray-400 font-normal normal-case">(optional)</span>
+                </label>
                 <input type="url" name="featured_image_url" id="featured_image_url"
                     placeholder="https://example.com/image.jpg"
                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] focus:border-[#1e3a6e] transition-all" />
@@ -91,7 +103,9 @@
 
             <!-- Tags -->
             <div>
-                <label for="tags_list" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">Tags <span class="text-gray-400 font-normal normal-case">(comma separated)</span></label>
+                <label for="tags_list" class="block text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-1.5">
+                    Tags <span class="text-gray-400 font-normal normal-case">(comma separated)</span>
+                </label>
                 <input type="text" name="tags_list" id="tags_list"
                     placeholder="e.g., android, AI, bangladesh"
                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a6e] focus:border-[#1e3a6e] transition-all" />
@@ -103,13 +117,60 @@
                     class="px-5 py-2.5 border border-gray-200 text-gray-600 text-[13px] font-semibold rounded-xl hover:bg-gray-50 transition-colors">
                     Cancel
                 </a>
-                <button type="submit"
-                    class="px-6 py-2.5 bg-[#1e3a6e] text-white text-[13px] font-bold rounded-xl hover:bg-[#152d56] transition-colors shadow-sm">
+                <button type="submit" id="create-submit-btn"
+                    class="px-6 py-2.5 bg-[#1e3a6e] text-white text-[13px] font-bold rounded-xl hover:bg-[#152d56] transition-colors shadow-sm flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     Publish Article
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- ✅ CKEditor Load + Init -->
+<script src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script>
+(function() {
+    // CKEditor init with full toolbar
+    function initCKEditor() {
+        if (typeof CKEDITOR === 'undefined') return;
+
+        CKEDITOR.replace('post_description', {
+            toolbar: [
+                { name: 'document',    items: ['Source'] },
+                { name: 'clipboard',   items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                { name: 'paragraph',   items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'] },
+                { name: 'links',       items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert',      items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe'] },
+                { name: 'styles',      items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                { name: 'colors',      items: ['TextColor', 'BGColor'] },
+            ],
+            height: 400,
+            filebrowserUploadUrl: "{% url 'ckeditor_upload' %}",
+            filebrowserBrowseUrl: "{% url 'ckeditor_browse' %}",
+            allowedContent: true,
+            extraAllowedContent: 'script[*]; iframe[*]',
+            removePlugins: 'exportpdf',
+        });
+
+        // HTMX submit এর আগে CKEditor data sync করো
+        var form = document.getElementById('loginForm');
+        if (form) {
+            form.addEventListener('htmx:configRequest', function() {
+                for (var name in CKEDITOR.instances) {
+                    CKEDITOR.instances[name].updateElement();
+                }
+            });
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCKEditor);
+    } else {
+        initCKEditor();
+    }
+})();
+</script>
 
 <script src="{% static 'js/create_blog.js' %}"></script>
