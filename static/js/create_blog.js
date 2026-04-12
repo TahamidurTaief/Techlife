@@ -30,10 +30,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Simple form submission handler
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log('Form Submitted!');
-        // You would typically send the data to a server here using fetch.
-    });
+    // Let HTMX or normal form submission proceed without blocking.
 });

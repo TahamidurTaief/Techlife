@@ -108,8 +108,10 @@ CKEDITOR_CONFIGS = {
     "default": {
         "allowedContent": True,
         "extraAllowedContent": "script[*]; iframe[*]",
+        'versionCheck': False,  # ← এই line টা warning বন্ধ করবে
     }
 }
+
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [

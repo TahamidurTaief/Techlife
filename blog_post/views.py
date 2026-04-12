@@ -457,6 +457,7 @@ def update_blog_stat(request, slug, stat_type):
     )
 
 
+@login_required
 def create_blog(request):
     categories   = Category.objects.all()
     subcategories = SubCategory.objects.all()
@@ -486,7 +487,7 @@ def create_blog(request):
                     pk=subcategory_id, category=category
                 ).first()
 
-            new_blog = BlogPost.objects.create(
+            new_blog = BlogPost(
                 author=request.user,
                 category=category,
                 subcategory=subcategory,
@@ -494,7 +495,9 @@ def create_blog(request):
                 description=description,
                 featured_image=featured_image_file if featured_image_file else None,
                 featured_image_url=featured_image_url if not featured_image_file else None,
+                status="pending",
             )
+            new_blog.save(skip_auto_status=True)
 
             if tags_list_input:
                 tag_names   = [t.strip().lower() for t in tags_list_input.split(',') if t.strip()]
