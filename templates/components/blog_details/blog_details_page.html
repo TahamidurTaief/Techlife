@@ -2,8 +2,8 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}{{ post.meta_title|default:post.title }} — {{ SITE_TITLE }}{% endblock %}
-{% block meta_description %}{{ post.meta_description|default:post.subtitle|default:post.description|striptags|truncatechars:160 }}{% endblock %}
+{% block title %}{{ post.title }} | TechLife BD{% endblock %}
+{% block meta_description %}{{ post.meta_description|default:post.description|striptags|truncatechars:155 }}{% endblock %}
 {% block canonical_url %}https://techlife.com.bd/details/{{ post.slug }}/{% endblock %}
 {% block og_type %}article{% endblock %}
 {% block og_title %}{{ post.title }}{% endblock %}

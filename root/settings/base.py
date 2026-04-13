@@ -157,6 +157,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_MAX_AGE = 31536000
 
 WHITENOISE_MIMETYPES = {
     ".ico": "image/x-icon",

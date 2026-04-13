@@ -34,7 +34,7 @@
                         }">
 
                         <div class="flex items-start gap-3 w-full relative">
-                            <img src="{{ particular_question.author.profile_picture.url }}" class="border-2 border-blue-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex-shrink-0 cursor-pointer object-cover" @mouseover="hoverCardEnter()" @mouseleave="hoverCardLeave()" />
+                            <img src="{{ particular_question.author.profile_picture.url }}" alt="{{ particular_question.author.first_name }} profile photo" class="border-2 border-blue-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex-shrink-0 cursor-pointer object-cover" @mouseover="hoverCardEnter()" @mouseleave="hoverCardLeave()" />
 
                             <div class="flex flex-1 flex-col min-w-0">
                                 <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0" @mouseover="hoverCardEnter()" @mouseleave="hoverCardLeave()">

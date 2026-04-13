@@ -12,7 +12,7 @@
             <div class="bg-gray-50 rounded-xl px-4 py-3">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
                     <h3 class="font-semibold text-gray-800 text-[13px]">{{ comment.user.first_name }} {{ comment.user.last_name }}</h3>
-                    <span class="flex items-center gap-1 text-[10px] text-gray-400">
+                    <span class="flex items-center gap-1 text-[11px] text-gray-500">
                         <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         {{ comment.created_at|timesince|slice:":10" }} ago
                     </span>
@@ -32,14 +32,11 @@
                 {% endif %}
             </div>
             <form method="POST"
-                  hx-post="{% url 'add_reply' comment_id=comment.id %}"
-                  hx-target="#comment-list"
-                  hx-swap="outerHTML"
-                  data-no-scroll
+                action="{% url 'add_reply' comment_id=comment.id %}"
                   class="hidden reply-form mt-2.5 flex gap-2 items-center">
                 {% csrf_token %}
                 {% if request.user.profile_picture %}
-                <img src="{{ request.user.profile_picture.url }}" class="w-7 h-7 rounded-full border flex-shrink-0 object-cover" />
+                <img src="{{ request.user.profile_picture.url }}" alt="{{ request.user.first_name }} profile photo" class="w-7 h-7 rounded-full border flex-shrink-0 object-cover" />
                 {% else %}
                 <div class="w-7 h-7 rounded-full bg-[#1e3a6e] flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">{{ request.user.first_name|slice:":1" }}</div>
                 {% endif %}
@@ -55,14 +52,14 @@
                 {% for reply in comment.replies.all %}
                 <div class="flex gap-2 ml-4">
                     {% if reply.user.profile_picture %}
-                    <img src="{{ reply.user.profile_picture.url }}" class="w-7 h-7 rounded-full border flex-shrink-0 object-cover" />
+                    <img src="{{ reply.user.profile_picture.url }}" alt="{{ reply.user.first_name }} profile photo" class="w-7 h-7 rounded-full border flex-shrink-0 object-cover" />
                     {% else %}
                     <div class="w-7 h-7 rounded-full bg-[#1e3a6e]/80 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">{{ reply.user.first_name|slice:":1" }}</div>
                     {% endif %}
                     <div class="flex-1 bg-gray-50 rounded-xl px-3 py-2">
                         <div class="flex items-center justify-between mb-0.5">
                             <h4 class="font-semibold text-gray-800 text-[12px]">{{ reply.user.first_name }} {{ reply.user.last_name }}</h4>
-                            <span class="text-[10px] text-gray-400">{{ reply.created_at|date:"d M Y, h:i A" }}</span>
+                            <span class="text-[11px] text-gray-500">{{ reply.created_at|date:"d M Y, h:i A" }}</span>
                         </div>
                         <p class="text-gray-700 text-[12px]">{{ reply.content }}</p>
                     </div>

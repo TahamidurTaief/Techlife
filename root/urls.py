@@ -1,19 +1,19 @@
 from django.contrib import admin
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import sitemap
-from django.urls import path, include
+from django.urls import path, include, reverse
 from django.views.generic import TemplateView
 from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
-from blog_post.models import BlogPost
+from blog_post.models import BlogPost, Category
 
 from django.views.static import serve
 from django.urls import re_path
 
 class PostSitemap(Sitemap):
     changefreq = "daily"
-    priority = 0.9
+    priority = 0.8
     protocol = "https"
 
     def items(self):
@@ -26,7 +26,35 @@ class PostSitemap(Sitemap):
         return f"/details/{obj.slug}/"
 
 
-sitemaps = {"posts": PostSitemap}
+class CategorySitemap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.6
+    protocol = "https"
+
+    def items(self):
+        return Category.objects.all().order_by("name")
+
+    def location(self, obj):
+        return f"/category/{obj.slug}/"
+
+
+class StaticViewSitemap(Sitemap):
+    changefreq = "monthly"
+    priority = 0.5
+    protocol = "https"
+
+    def items(self):
+        return ["homepage", "blogs", "popular_blogs", "redirect_search_results"]
+
+    def location(self, item):
+        return reverse(item)
+
+
+sitemaps = {
+    "posts": PostSitemap,
+    "categories": CategorySitemap,
+    "static": StaticViewSitemap,
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),

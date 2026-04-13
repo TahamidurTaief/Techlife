@@ -107,7 +107,7 @@
                 <h3 class="font-bold text-[12px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug flex-1">
                     {{ blog.title }}
                 </h3>
-                <span class="text-[10px] text-gray-400 mt-1.5">{{ blog.created_at|date:"d M, Y" }}</span>
+                <span class="text-[11px] text-gray-500 mt-1.5">{{ blog.created_at|date:"d M, Y" }}</span>
             </div>
         </a>
         {% endfor %}
@@ -219,7 +219,7 @@
                 {% if blog.category %}
                 <span class="inline-block text-[9px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2 py-0.5 rounded-full">{{ blog.category.name }}</span>
                 {% endif %}
-                <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                <span class="text-[11px] text-gray-500">{{ blog.created_at|date:"d M, Y" }}</span>
             </div>
             <h3 class="font-bold text-[13px] text-gray-800 line-clamp-1 group-hover:text-[#1e3a6e] transition-colors leading-snug">
                 {{ blog.title }}

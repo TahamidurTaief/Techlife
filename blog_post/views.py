@@ -27,6 +27,7 @@ from comments.models import Comment, Reply
 
 from interactions.models import Share
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
 from blog_post.models import Post_view_ip
@@ -577,9 +578,13 @@ def add_comment(request, post_slug):
     content = request.POST.get('content', '').strip()
 
     if not content:
-        return redirect('post_detail', slug=post_slug)
+        return redirect('blog_details', slug=post_slug)
 
     Comment.objects.create(post=post, user=request.user, content=content)
+    if request.headers.get("HX-Request"):
+        response = HttpResponse(status=204)
+        response["HX-Redirect"] = f"/details/{post_slug}/#comments"
+        return response
     return redirect('blog_details', slug=post_slug)
 
 
@@ -591,9 +596,13 @@ def add_reply(request, comment_id):
     content        = request.POST.get('content', '').strip()
 
     if not content:
-        return redirect('post_detail', slug=post_slug)
+        return redirect('blog_details', slug=post_slug)
 
     Reply.objects.create(comment=parent_comment, user=request.user, content=content)
+    if request.headers.get("HX-Request"):
+        response = HttpResponse(status=204)
+        response["HX-Redirect"] = f"/details/{post_slug}/#comments"
+        return response
     return redirect('blog_details', slug=post_slug)
 
 
@@ -603,16 +612,20 @@ def user_like_toggle(request, like_slug):
         blog_post = get_object_or_404(BlogPost, slug=like_slug)
         user      = request.user
 
-        if request.headers.get("HX-Request"):
+        try:
+            like_instance = Like.objects.get(post=blog_post, user=user)
+            like_instance.delete()
+        except Like.DoesNotExist:
             try:
-                like_instance = Like.objects.get(post=blog_post, user=user)
-                like_instance.delete()
-            except Like.DoesNotExist:
-                try:
-                    Like.objects.create(post=blog_post, user=user)
-                except IntegrityError:
-                    logout(request)
-                    return redirect('login')
+                Like.objects.create(post=blog_post, user=user)
+            except IntegrityError:
+                logout(request)
+                return redirect('login')
+
+    if request.headers.get("HX-Request"):
+        response = HttpResponse(status=204)
+        response["HX-Redirect"] = f"/details/{like_slug}/"
+        return response
 
     return redirect('blog_details', slug=like_slug)
 

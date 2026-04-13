@@ -10,6 +10,7 @@
 {% block og_title %}{{ category.name }} | TechLife BD{% endblock %}
 {% block og_description %}Browse all {{ category.name }} articles on TechLife BD.{% endblock %}
 {% block og_type %}website{% endblock %}
+{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% load static %}{% static 'images/default_og_image.png' %}{% endblock %}
 
 {% block structured_data %}
 <script type="application/ld+json">
@@ -24,6 +25,26 @@
         "name": "TechLife BD",
         "url": "https://techlife.com.bd"
     }
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://techlife.com.bd/"
+        },
+        {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{ category.name }}",
+            "item": "https://techlife.com.bd/category/{{ category.slug }}/"
+        }
+    ]
 }
 </script>
 {% endblock structured_data %}

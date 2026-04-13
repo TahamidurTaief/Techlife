@@ -118,7 +118,7 @@
                         </div>
                         <!-- Share icons -->
                         <div class="flex items-center gap-2">
-                            <span class="text-[10px] text-gray-400 font-medium">Share:</span>
+                            <span class="text-[11px] text-gray-500 font-medium">Share:</span>
                             <div class="share-option flex w-7 h-7 border border-[#1877F2] rounded-full justify-center items-center hover:bg-[#1877F2] hover:text-white transition-colors cursor-pointer text-[#1877F2]" data-platform="facebook">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                             </div>
@@ -246,7 +246,7 @@
                     </div>
 
                     {% if user.is_verified %}
-                    <form method="POST" hx-post="{% url 'add_comment' post_slug=blog_detail.slug %}" hx-target="#comment-list" hx-swap="outerHTML" data-no-scroll hx-on:htmx:afterRequest="this.querySelector('textarea').value = ''" class="flex gap-3 mb-5">
+                    <form method="POST" action="{% url 'add_comment' post_slug=blog_detail.slug %}" class="flex gap-3 mb-5">
                         {% csrf_token %}
                         {% if request.user.profile_picture %}
                         <img src="{{ request.user.profile_picture.url }}" alt="User" class="w-9 h-9 rounded-full border-2 border-[#1e3a6e]/20 flex-shrink-0 object-cover" />

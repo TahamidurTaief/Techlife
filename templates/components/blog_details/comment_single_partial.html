@@ -10,7 +10,7 @@
         <div class="bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
                 <h3 class="font-semibold text-gray-800 text-[13px]">{{ comment.user.first_name }}</h3>
-                <span class="text-[10px] text-gray-400">{{ comment.created_at|date:"d M Y, h:i A" }}</span>
+                <span class="text-[11px] text-gray-500">{{ comment.created_at|date:"d M Y, h:i A" }}</span>
             </div>
             <p class="text-gray-700 text-[13px] leading-relaxed">{{ comment.content }}</p>
         </div>

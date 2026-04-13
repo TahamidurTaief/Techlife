@@ -29,13 +29,13 @@
             <div class="p-3 flex flex-col flex-1">
                 <div class="flex items-center justify-between mb-2">
                     <span class="inline-block text-[10px] font-bold text-[#1e3a6e] bg-[#dbeafe]/60 px-2.5 py-0.5 rounded-full">{{ blog.category.name|truncatewords:1 }}</span>
-                    <span class="text-[10px] text-gray-400">{{ blog.created_at|date:"d M, Y" }}</span>
+                    <span class="text-[11px] text-gray-500">{{ blog.created_at|date:"d M, Y" }}</span>
                 </div>
                 <h3 class="font-bold text-[13px] text-gray-800 line-clamp-2 group-hover:text-[#1e3a6e] transition-colors leading-snug flex-1 mb-3">{{ blog.title }}</h3>
                 <p class="text-[11px] text-gray-500 line-clamp-2 mb-3 leading-relaxed">{{ blog.description|truncatechars:80|striptags }}</p>
                 <div class="flex items-center justify-between pt-2 border-t border-gray-100">
                     <span class="flex items-center gap-1.5 text-[11px] font-medium text-[#1e3a6e]">
-                        Read more
+                        Read {{ blog.title|truncatechars:30 }}
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-0.5 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </span>
                     <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
