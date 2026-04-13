@@ -73,9 +73,9 @@
             <!-- Indicators -->
             <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                 {% for blog in carousel_blogs %}
-                <button @click="currentSlide = {{ forloop.counter0 }}" aria-label="Slide {{ forloop.counter }}"
-                    class="w-5 h-1.5 rounded-full transition-all duration-300"
-                    :class="currentSlide === {{ forloop.counter0 }} ? 'bg-white w-8' : 'bg-white/50'"></button>
+                <button @click="currentSlide = {{ forloop.counter0 }}" class="p-3 -m-3 flex items-center justify-center" aria-label="Slide {{ forloop.counter }}">
+                    <span class="w-5 h-1.5 rounded-full transition-all duration-300 bg-white/50" :class="currentSlide === {{ forloop.counter0 }} ? 'bg-white w-8' : 'bg-white/50'"></span>
+                </button>
                 {% endfor %}
             </div>
             {% endif %}

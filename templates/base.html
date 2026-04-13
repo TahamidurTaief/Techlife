@@ -464,6 +464,38 @@
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        document.body.addEventListener('htmx:afterSwap', function(e) {
+            const container = document.getElementById('container');
+            if (!container) return;
+
+            // Find meta update element injected by partials
+            const metaEl = container.querySelector('#page-meta-update');
+            if (!metaEl) return;
+
+            const title = metaEl.dataset.title;
+            const description = metaEl.dataset.description;
+            const canonical = metaEl.dataset.canonical;
+
+            if (title) document.title = title;
+
+            if (description) {
+                let metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) metaDesc.setAttribute('content', description);
+            }
+
+            if (canonical) {
+                let canonicalEl = document.querySelector('link[rel="canonical"]');
+                if (canonicalEl) canonicalEl.setAttribute('href', canonical);
+
+                // Also update OG URL
+                let ogUrl = document.querySelector('meta[property="og:url"]');
+                if (ogUrl) ogUrl.setAttribute('content', canonical);
+            }
+
+            // Remove after processing
+            metaEl.remove();
+        });
     </script>
 
     <script>

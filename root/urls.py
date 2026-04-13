@@ -9,7 +9,16 @@ from django.conf.urls.static import static
 from blog_post.models import BlogPost, Category
 
 from django.views.static import serve
+from django.http import FileResponse
 from django.urls import re_path
+import os
+
+
+def cached_media_serve(request, path):
+    """Serve media files with 1-year cache headers."""
+    response = serve(request, path, document_root=settings.MEDIA_ROOT)
+    response['Cache-Control'] = 'public, max-age=31536000, immutable'
+    return response
 
 class PostSitemap(Sitemap):
     changefreq = "daily"
@@ -79,7 +88,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
-    # Production: serve media files via django view (whitenoise handles static files)
+    # Production: serve media files with 1-year cache headers
     urlpatterns += [
-        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': False}),
+        re_path(r'^media/(?P<path>.*)$', cached_media_serve),
     ]

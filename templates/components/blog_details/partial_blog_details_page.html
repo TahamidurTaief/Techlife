@@ -1,4 +1,9 @@
 {% load static %} {% load humanize %} {% load custom_filters %}
+<div id="page-meta-update" class="hidden"
+    data-title="{{ blog_detail.title }} | TechLife BD"
+    data-description="{{ blog_detail.description|striptags|truncatechars:155 }}"
+    data-canonical="https://techlife.com.bd/details/{{ blog_detail.slug }}/">
+</div>
 
 <!-- Hidden Share Data -->
 <div id="share-data-container" class="hidden"
