@@ -5,3 +5,7 @@
 @source "../../static/js";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .scrollbar-hide { overflow: -moz-scrollbars-none; }
+}

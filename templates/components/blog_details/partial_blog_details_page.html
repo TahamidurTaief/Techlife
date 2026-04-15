@@ -76,7 +76,7 @@
         <span class="text-gray-400 truncate max-w-[200px]">{{ blog_detail.title|truncatechars:40 }}</span>
     </nav>
 
-    <div class="flex flex-col lg:flex-row gap-5">
+    <div class="flex flex-col lg:flex-row gap-5" style="min-height: 0;">
 
         <!-- ═══ MAIN CONTENT ═══ -->
         <main class="w-full lg:w-[68%] min-w-0">
@@ -277,7 +277,7 @@
         </main>
 
         <!-- ═══ SIDEBAR ═══ -->
-        <aside class="w-full lg:w-[32%] flex flex-col gap-4">
+        <aside class="w-full lg:w-[32%] min-w-0 flex flex-col gap-4">
 
             {% if ad_8 %}
             <div class="flex justify-center items-center">{{ ad_8.ad_code|safe }}</div>

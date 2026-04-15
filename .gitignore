@@ -141,4 +141,4 @@ error.log
 
 # Cache files
 *.pyc
-.cache/
+.cache/media/
