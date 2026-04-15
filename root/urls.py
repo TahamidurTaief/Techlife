@@ -14,6 +14,16 @@ from django.urls import re_path
 import os
 
 
+
+from django.http import HttpResponse
+
+def ads_txt(request):
+    return HttpResponse(
+        "google.com, pub-7286281628917450, DIRECT, f08c47fec0942fa0",
+        content_type="text/plain"
+    )
+
+
 def cached_media_serve(request, path):
     """Serve media files with 1-year cache headers."""
     response = serve(request, path, document_root=settings.MEDIA_ROOT)
@@ -80,6 +90,8 @@ urlpatterns = [
 
     path("__reload__/", include("django_browser_reload.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+
+    path('ads.txt', ads_txt),
 
 ]
 
