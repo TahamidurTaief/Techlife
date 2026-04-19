@@ -112,11 +112,11 @@
             class="block tl-card rounded-xl overflow-hidden group cursor-pointer">
             <div class="w-full overflow-hidden" style="aspect-ratio: 16/9;">
                 {% if latest_blog.featured_image %}
-                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{{ latest_blog.featured_image.url }}" alt="{{ latest_blog.title }}" width="600" height="338" loading="lazy" decoding="async" />
+                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{{ latest_blog.featured_image.url }}" alt="{{ latest_blog.title }}" width="400" height="225" loading="lazy" decoding="async" />
                 {% elif latest_blog.featured_image_url %}
-                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{{ latest_blog.featured_image_url }}" alt="{{ latest_blog.title }}" width="600" height="338" loading="lazy" decoding="async" />
+                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{{ latest_blog.featured_image_url }}" alt="{{ latest_blog.title }}" width="400" height="225" loading="lazy" decoding="async" />
                 {% else %}
-                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{% static 'image/placeholder-5.png' %}" alt="{{ latest_blog.title }}" width="600" height="338" loading="lazy" decoding="async" />
+                <img class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" src="{% static 'image/placeholder-5.png' %}" alt="{{ latest_blog.title }}" width="400" height="225" loading="lazy" decoding="async" />
                 {% endif %}
             </div>
             <div class="p-3">
@@ -137,13 +137,13 @@
                 <li>
                     <a href="{% url 'blog_details' blog.slug %}" hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
                         class="flex items-center gap-2.5 px-3 py-2.5 hover:bg-gray-50 transition-colors duration-150 group cursor-pointer">
-                        <div class="w-14 h-10 shrink-0 rounded overflow-hidden bg-gray-100" style="aspect-ratio: 16/9;">
+                        <div class="w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100" style="aspect-ratio: 16/9;">
                             {% if blog.featured_image %}
-                            <img loading="lazy" decoding="async" src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="56" height="40" />
+                            <img loading="lazy" decoding="async" src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="64" height="48" />
                             {% elif blog.featured_image_url %}
-                            <img loading="lazy" decoding="async" src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="56" height="40" />
+                            <img loading="lazy" decoding="async" src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="64" height="48" />
                             {% else %}
-                            <img loading="lazy" decoding="async" src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="56" height="40" />
+                            <img loading="lazy" decoding="async" src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="64" height="48" />
                             {% endif %}
                         </div>
                         <div class="flex-1 min-w-0">

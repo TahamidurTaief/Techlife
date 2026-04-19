@@ -47,11 +47,11 @@
                 <li>
                     <a href="{% url 'blog_details' slug=post.slug %}"
                         class="flex items-center gap-2.5 px-3 py-2.5 hover:bg-gray-50 transition-colors group cursor-pointer">
-                        <div class="w-12 h-9 shrink-0 rounded overflow-hidden bg-gray-100">
+                        <div class="w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100">
                             {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% endif %}
                         </div>
                         <span class="text-[12px] font-medium text-gray-700 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug">{{ post.title }}</span>
@@ -93,11 +93,11 @@
                 <li>
                     <a href="{% url 'blog_details' slug=post.slug %}"
                         class="flex items-center gap-2.5 px-3 py-2.5 hover:bg-gray-50 transition-colors group cursor-pointer">
-                        <div class="w-12 h-9 shrink-0 rounded overflow-hidden bg-gray-100">
+                        <div class="w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100">
                             {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% endif %}
                         </div>
                         <span class="text-[12px] font-medium text-gray-700 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug">{{ post.title }}</span>
@@ -138,11 +138,11 @@
                 <li>
                     <a href="{% url 'blog_details' slug=post.slug %}"
                         class="flex items-center gap-2.5 px-3 py-2.5 hover:bg-gray-50 transition-colors group cursor-pointer">
-                        <div class="w-12 h-9 shrink-0 rounded overflow-hidden bg-gray-100">
+                        <div class="w-16 h-12 shrink-0 rounded overflow-hidden bg-gray-100">
                             {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="48" height="36" loading="lazy" decoding="async">
+                            <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="64" height="48" loading="lazy" decoding="async">
                             {% endif %}
                         </div>
                         <span class="text-[12px] font-medium text-gray-700 group-hover:text-[#1e3a6e] line-clamp-2 leading-snug">{{ post.title }}</span>

@@ -7,7 +7,6 @@ from django.utils.text import slugify
 from accounts.models import CustomUserModel
 from tags.models import Tag
 from django.utils.text import slugify
-from ckeditor_uploader.fields import RichTextUploadingField
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill, Adjust, ResizeToFit
 
@@ -84,7 +83,7 @@ class BlogPost(models.Model):
     meta_description = models.CharField(max_length=1000, blank=True)
     slug = models.SlugField(max_length=600, unique=True, blank=True)
     # description = models.TextField()
-    description = RichTextUploadingField()
+    description = models.TextField(blank=True, null=True)
     featured_image = ProcessedImageField(
         upload_to="blog_images/",
         processors=[ResizeToFit(1200, 800)],

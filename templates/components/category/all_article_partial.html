@@ -34,11 +34,11 @@
 
             <div class="overflow-hidden" style="aspect-ratio: 16/9;">
                 {% if blog.featured_image %}
-                <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="400" height="225" loading="lazy" decoding="async" />
+                <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async" />
                 {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="400" height="225" loading="lazy" decoding="async" />
+                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async" />
                 {% else %}
-                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="400" height="225" loading="lazy" decoding="async" />
+                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="300" height="169" loading="lazy" decoding="async" />
                 {% endif %}
             </div>
 

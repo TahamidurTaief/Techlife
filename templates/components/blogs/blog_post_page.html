@@ -20,22 +20,22 @@
 
         <div class="absolute inset-0">
             {% if blog.featured_image %}
-            <img src="{{ blog.featured_image.url }}"
+              <img src="{{ blog.featured_image.url }}"
                  alt="{{ blog.title }}"
                  class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-[1.04]"
-                 width="700" height="300"
+                  width="800" height="450"
                  loading="eager" fetchpriority="high" decoding="async" />
             {% elif blog.featured_image_url %}
-            <img src="{{ blog.featured_image_url }}"
+              <img src="{{ blog.featured_image_url }}"
                  alt="{{ blog.title }}"
                  class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-[1.04]"
-                 width="700" height="300"
+                  width="800" height="450"
                  loading="eager" fetchpriority="high" decoding="async" />
             {% else %}
-            <img src="{% static 'image/placeholder-5.png' %}"
+              <img src="{% static 'image/placeholder-5.png' %}"
                  alt="{{ blog.title }}"
                  class="w-full h-full object-cover"
-                 width="700" height="300"
+                  width="800" height="450"
                  loading="eager" decoding="async" />
             {% endif %}
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>

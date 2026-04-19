@@ -6,6 +6,7 @@ from django.views.decorators.vary import vary_on_headers
 from django.db.models import Q
 from .models import BlogPost, Category, Review, SubCategory
 from .models import BlogPost, BlogAdditionalImage, Category, Tag
+from .forms import BlogPostForm
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -462,62 +463,48 @@ def update_blog_stat(request, slug, stat_type):
 def create_blog(request):
     categories   = Category.objects.all()
     subcategories = SubCategory.objects.all()
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                new_blog = form.save(commit=False)
+                new_blog.author = request.user
+                new_blog.status = "pending"
+
+                category = form.cleaned_data.get("category")
+                subcategory = form.cleaned_data.get("subcategory")
+                if subcategory and category and subcategory.category_id != category.id:
+                    subcategory = None
+                new_blog.subcategory = subcategory
+
+                if new_blog.featured_image:
+                    new_blog.featured_image_url = None
+
+                new_blog.save(skip_auto_status=True)
+                form.save_m2m()
+
+                messages.success(request, "Blog post created successfully!")
+
+                if request.headers.get("HX-Request"):
+                    response = HttpResponse(status=204)
+                    response["HX-Redirect"] = reverse('homepage')
+                    return response
+
+                return redirect(reverse('homepage'))
+
+            except Exception as e:
+                print(f"Error: {e}")
+                messages.error(request, "An internal error occurred.")
+        else:
+            messages.error(request, "Please fix the errors below.")
+    else:
+        form = BlogPostForm()
+
     context = {
         "categories":   categories,
         "subcategories": subcategories,
+        "form":         form,
     }
-
-    if request.method == 'POST':
-        title              = request.POST.get('title')
-        description        = request.POST.get('description')
-        category_id        = request.POST.get('category')
-        subcategory_id     = request.POST.get('subcategory')
-        featured_image_file = request.FILES.get('featured_image')
-        featured_image_url = request.POST.get('featured_image_url')
-        tags_list_input    = request.POST.get('tags_list')
-
-        if not (title and description and category_id):
-            messages.error(request, "Please fill in all required fields.")
-            return render(request, "components/blogs/partial_create_blog_content.html", context)
-
-        try:
-            category   = get_object_or_404(Category, pk=category_id)
-            subcategory = None
-            if subcategory_id:
-                subcategory = SubCategory.objects.filter(
-                    pk=subcategory_id, category=category
-                ).first()
-
-            new_blog = BlogPost(
-                author=request.user,
-                category=category,
-                subcategory=subcategory,
-                title=title,
-                description=description,
-                featured_image=featured_image_file if featured_image_file else None,
-                featured_image_url=featured_image_url if not featured_image_file else None,
-                status="pending",
-            )
-            new_blog.save(skip_auto_status=True)
-
-            if tags_list_input:
-                tag_names   = [t.strip().lower() for t in tags_list_input.split(',') if t.strip()]
-                tag_objects = [Tag.objects.get_or_create(name=name)[0] for name in tag_names]
-                new_blog.tags.set(tag_objects)
-
-            messages.success(request, "Blog post created successfully!")
-
-            if request.headers.get("HX-Request"):
-                response = HttpResponse(status=204)
-                response["HX-Redirect"] = reverse('homepage')
-                return response
-
-            return redirect(reverse('homepage'))
-
-        except Exception as e:
-            print(f"Error: {e}")
-            messages.error(request, "An internal error occurred.")
-            return render(request, "components/blogs/partial_create_blog_content.html", context)
 
     if request.headers.get("HX-Request"):
         return render(request, "components/blogs/partial_create_blog_content.html", context)

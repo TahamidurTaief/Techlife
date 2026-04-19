@@ -62,9 +62,9 @@
            class="tl-card rounded-xl overflow-hidden flex flex-col sm:flex-row group cursor-pointer hover:shadow-md transition-all duration-200 mb-4 block">
             <div class="sm:w-1/2 overflow-hidden" style="aspect-ratio: 16/9;">
                 {% if blog.featured_image %}
-                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="600" height="338" loading="eager" fetchpriority="high" decoding="async">
+                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
                 {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="600" height="338" loading="eager" fetchpriority="high" decoding="async">
+                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
                 {% endif %}
             </div>
             <div class="sm:w-1/2 p-5 flex flex-col justify-center">
@@ -84,11 +84,11 @@
            class="flex flex-col sm:flex-row tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 mb-3 block">
             <div class="sm:w-3/5 overflow-hidden" style="aspect-ratio: 16/9; max-height: 260px;">
                 {% if blog.featured_image %}
-                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="eager" fetchpriority="high" decoding="async">
+                <img src="{{ blog.featured_image_thumbnail.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
                 {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="700" height="394" loading="eager" fetchpriority="high" decoding="async">
+                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.02]" width="800" height="450" loading="eager" fetchpriority="high" decoding="async">
                 {% else %}
-                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="700" height="394" loading="eager" decoding="async">
+                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="800" height="450" loading="eager" decoding="async">
                 {% endif %}
             </div>
             <div class="sm:w-2/5 p-4 flex flex-col justify-center bg-white">
@@ -117,11 +117,11 @@
                class="tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 flex flex-col">
                 <div class="overflow-hidden" style="aspect-ratio: 16/9;">
                     {% if blog.featured_image %}
-                    <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="350" height="197" loading="lazy" decoding="async">
+                    <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
                     {% elif blog.featured_image_url %}
-                    <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="350" height="197" loading="lazy" decoding="async">
+                    <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
                     {% else %}
-                    <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="350" height="197" loading="lazy" decoding="async">
+                    <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover" width="300" height="169" loading="lazy" decoding="async">
                     {% endif %}
                 </div>
                 <div class="p-3 flex flex-col flex-1">
@@ -197,11 +197,11 @@
                    class="tl-card rounded-xl overflow-hidden group cursor-pointer hover:shadow-md transition-all duration-200 flex flex-col">
                     <div class="overflow-hidden" style="aspect-ratio: 16/9;">
                         {% if post.featured_image %}
-                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="280" height="158" loading="lazy" decoding="async">
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
                         {% elif post.featured_image_url %}
-                        <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="280" height="158" loading="lazy" decoding="async">
+                        <img src="{{ post.featured_image_url }}" alt="{{ post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.04]" width="300" height="169" loading="lazy" decoding="async">
                         {% else %}
-                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ post.title }}" class="w-full h-full object-cover" width="280" height="158" loading="lazy" decoding="async">
+                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ post.title }}" class="w-full h-full object-cover" width="300" height="169" loading="lazy" decoding="async">
                         {% endif %}
                     </div>
                     <div class="p-2.5 flex-1 flex flex-col">

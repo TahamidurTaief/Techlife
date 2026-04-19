@@ -23,9 +23,9 @@
                     class="block md:w-3/5 overflow-hidden group cursor-pointer">
                     <div class="w-full h-48 md:h-full overflow-hidden" style="aspect-ratio: 16/9;">
                         {% if latest_post.featured_image_url %}
-                        <img src="{{ latest_post.featured_image_url }}" alt="{{ latest_post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="500" height="281" loading="lazy" decoding="async" />
+                        <img src="{{ latest_post.featured_image_url }}" alt="{{ latest_post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="400" height="225" loading="lazy" decoding="async" />
                         {% elif latest_post.featured_image %}
-                        <img src="{{ latest_post.featured_image.url }}" alt="{{ latest_post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="500" height="281" loading="lazy" decoding="async" />
+                        <img src="{{ latest_post.featured_image.url }}" alt="{{ latest_post.title }}" class="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-[1.03]" width="400" height="225" loading="lazy" decoding="async" />
                         {% endif %}
                     </div>
                 </a>

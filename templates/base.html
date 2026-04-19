@@ -295,9 +295,6 @@
     <link rel="preload" as="style" href="https://unpkg.com/aos@2.3.1/dist/aos.css" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
 
-    <!-- Google Adsense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXX" crossorigin="anonymous"></script>
-
     {% if action == 'home_page' and carousel_blogs %}
     {% with first_blog=carousel_blogs|first %}
     {% if first_blog.featured_image %}
@@ -311,9 +308,10 @@
     {% block extra_head %} {% endblock extra_head %}
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}?v={% now 'U' %}">
-    <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}?v={% now 'U' %}">
-    <link rel="apple-touch-icon" href="{% static 'image/favicon.ico' %}?v={% now 'U' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'image/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'image/favicon.ico' %}">
+    <meta name="theme-color" content="#1e3a6e">
 
     <!-- Google Analytics -->
     {% if GOOGLE_ANALYTICS_ID %}

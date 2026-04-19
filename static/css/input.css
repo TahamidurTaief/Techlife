@@ -58,6 +58,7 @@
 .prose-content img {
   max-width: 100%;
   height: auto;
+  width: auto;
   border-radius: 4px;
   margin: 0.75rem 0;
 }
@@ -89,4 +90,24 @@
   border-radius: 3px;
   font-size: 0.875rem;
   font-family: monospace;
+}
+
+/* Force GPU compositing for animated elements */
+.transform {
+  will-change: transform;
+}
+.transition-transform {
+  will-change: transform;
+}
+.transition-all {
+  will-change: auto;
+}
+
+/* Reduce animation on low-power devices */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
